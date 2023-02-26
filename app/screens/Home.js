@@ -7,9 +7,10 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  DrawerLayoutAndroid,
 } from "react-native";
 import React from "react";
-import { Header, Input } from "@rneui/base";
+import { Button, Header, Input } from "@rneui/base";
 import { data } from "../data/Data";
 import Navigation from "../components/Navigation";
 //icons
@@ -17,7 +18,26 @@ import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-export default function Home({ toExplore, toAccount, toReviews, toBookings }) {
+export default function Home({
+  toExplore,
+  toAccount,
+  toReviews,
+  toBookings,
+  toSearch,
+}) {
+  const renderRecommendations = ({ item }) => {
+    return (
+      <View key={item.id} style={{ margin: 5, width: 80, height: 80 }}>
+        <Image
+          source={{ uri: item.image }}
+          style={{ width: "100%", height: "80%" }}
+        />
+        <Text>Item</Text>
+      </View>
+    );
+  };
+  const renderCatergories = ({ category }) => {};
+
   const renderItem = ({ item }) => {
     return (
       <View style={[styles.item, styles.boxShadow]}>
@@ -34,6 +54,7 @@ export default function Home({ toExplore, toAccount, toReviews, toBookings }) {
       </View>
     );
   };
+
   return (
     <View style={styles.container}>
       <StatusBar style="light" backgroundColor="orange" />
@@ -43,27 +64,51 @@ export default function Home({ toExplore, toAccount, toReviews, toBookings }) {
         height={100}
         centerComponent={
           <View style={{ marginLeft: -30 }}>
-            <Text style={{ color: "#fff", fontWeight: "bold", fontSize: 30 }}>
-              MySafari
+            <Text
+              style={{
+                color: "#fff",
+                fontWeight: "bold",
+                fontSize: 29,
+                textTransform: "capitalize",
+              }}
+            >
+              MySafari App
             </Text>
           </View>
         }
-        leftComponent={<Ionicons name="search" size={30} color="#fff" />}
+        leftComponent={
+          <TouchableOpacity onPress={toSearch}>
+            <Ionicons name="search" size={30} color="#fff" />
+          </TouchableOpacity>
+        }
         rightComponent={
           <View style={{ display: "flex", flexDirection: "row" }}>
-            <MaterialCommunityIcons name="cart-plus" size={30} color="#fff" />
-            <Ionicons name="heart-outline" size={30} color="#fff" />
-            <Ionicons name="notifications-outline" size={30} color="#fff" />
+            <TouchableOpacity>
+              <MaterialCommunityIcons name="cart-plus" size={30} color="#fff" />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Ionicons name="heart-outline" size={30} color="#fff" />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Ionicons name="notifications-outline" size={30} color="#fff" />
+            </TouchableOpacity>
           </View>
         }
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={[styles.add, styles.boxShadow]}>
-          <Text style={{ fontWeight: "900", fontSize: 30, color: "orange" }}>
-            Get 25%
-          </Text>
-          <Text>Discount on your first trip</Text>
-          {/* <View style={styles.addRight}></View> */}
+          <View>
+            <Text style={{ fontWeight: "600", fontSize: 30, color: "orange" }}>
+              Get 25%
+            </Text>
+            <Text>Discount on your first trip</Text>
+          </View>
+          <View style={styles.addRight}>
+            <Image
+              source={require("../assets/add.png")}
+              style={{ width: "100%", height: "100%" }}
+            />
+          </View>
         </View>
         <View style={{ backgroundColor: "#fff", padding: 10 }}>
           <View style={styles.itemsTop}>
@@ -74,48 +119,42 @@ export default function Home({ toExplore, toAccount, toReviews, toBookings }) {
               color="orange"
             />
           </View>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            {data.map((item) => {
-              return (
-                <View
-                  key={item.id}
-                  style={{ margin: 5, width: 80, height: 80 }}
-                >
-                  <Image
-                    source={{ uri: item.image }}
-                    style={{ width: "100%", height: "80%" }}
-                  />
-                  <Text>Item</Text>
-                </View>
-              );
-            })}
-          </ScrollView>
-        </View>
-        <View style={{ backgroundColor: "#fff" }}>
-          <Text>Categories</Text>
-          <ScrollView
+          <FlatList
+            data={data}
+            renderItem={renderRecommendations}
+            keyExtractor={(item) => item.id}
             horizontal={true}
-            style={{ height: 100 }}
             showsHorizontalScrollIndicator={false}
-          >
-            {data.map((item) => {
-              return (
-                <View key={item.id} style={{ margin: 15 }}>
-                  <Image
-                    source={{ uri: item.image }}
-                    style={{ width: "100%", height: "80%" }}
-                  />
-                  <Text>Category {item.id}</Text>
-                </View>
-              );
-            })}
-          </ScrollView>
+          />
         </View>
         <View style={styles.itemsTop}>
+          <Text>Categories</Text>
+        </View>
+
+        <ScrollView
+          horizontal={true}
+          style={{ height: 100, backgroundColor: "#fff" }}
+          showsHorizontalScrollIndicator={false}
+        >
+          {data.map((item) => {
+            return (
+              <View key={item.id} style={{ margin: 15 }}>
+                <Image
+                  source={{ uri: item.image }}
+                  style={{ width: "100%", height: "80%" }}
+                />
+                <Text>Category {item.id}</Text>
+              </View>
+            );
+          })}
+        </ScrollView>
+
+        <View style={styles.itemsTop}>
           <Text>Recentyle Added</Text>
-          <FontAwesome name="sliders" size={30} color="orange" />
+          <FontAwesome name="sliders" size={40} color="orange" />
         </View>
         <FlatList
+          scrollEnabled={false}
           showsVerticalScrollIndicator={false}
           data={data}
           renderItem={renderItem}
@@ -123,6 +162,7 @@ export default function Home({ toExplore, toAccount, toReviews, toBookings }) {
           numColumns={2}
           columnWrapperStyle={styles.columnWrapper}
           style={{ marginBottom: 20 }}
+          onEndReached={() => console.log("end")}
         />
       </ScrollView>
       <Navigation
@@ -152,15 +192,16 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginBottom: 10,
     borderWidth: 0.5,
-    borderColor: "grey",
+    borderColor: "lightgrey",
+    margin: 5,
   },
   addRight: {
     width: "40%",
     alignSelf: "flex-end",
-    backgroundColor: "#000",
+    backgroundColor: "orange",
     height: "125%",
-    borderTopLeftRadius: 100,
-    borderBottomLeftRadius: 100,
+    borderTopLeftRadius: 200,
+    borderBottomLeftRadius: 500,
     marginTop: -70,
     marginEnd: -10,
     borderRadius: 10,
@@ -189,9 +230,9 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.25,
+    shadowOpacity: 1,
     shadowRadius: 8,
-    elevation: 10,
+    elevation: 7,
   },
   image: {
     width: "100%",
@@ -208,4 +249,20 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   text: { color: "#000", fontWeight: "500" },
+  mainContent: {
+    fontSize: 20,
+    textAlign: "center",
+    margin: 10,
+  },
+  drawerContainer: {
+    flex: 1,
+    backgroundColor: "#FFF",
+    paddingTop: 30,
+    paddingLeft: 10,
+  },
+  drawerItem: {
+    fontSize: 18,
+    fontWeight: "bold",
+    padding: 10,
+  },
 });

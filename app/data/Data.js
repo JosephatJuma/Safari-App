@@ -84,6 +84,20 @@ export const data = [
       "https://reactnativecode.com/wp-content/uploads/2018/02/Default_Image_Thumbnail.png",
     price: 100000,
   },
+  {
+    id: 13,
+    title: "Item 13",
+    image:
+      "https://reactnativecode.com/wp-content/uploads/2018/02/Default_Image_Thumbnail.png",
+    price: 100000,
+  },
+  {
+    id: 14,
+    title: "Item 14",
+    image:
+      "https://reactnativecode.com/wp-content/uploads/2018/02/Default_Image_Thumbnail.png",
+    price: 100000,
+  },
 ];
 export const userData = {
   id: "1234567899876543",
@@ -92,3 +106,23 @@ export const userData = {
   phone: "+256702206985",
   verified: true,
 };
+export const bookings = [
+  {
+    id: "B62345",
+    eventCategory: "trip",
+    trip: true,
+    title: "Explore Kalangala",
+  },
+  {
+    id: "B60345",
+    eventCategory: "trip",
+    trip: true,
+    title: "Visit Sipi falls",
+  },
+  {
+    id: "B62945",
+    eventCategory: "hotel",
+    hotel: true,
+    hotelName: "Nile Cottages",
+  },
+];

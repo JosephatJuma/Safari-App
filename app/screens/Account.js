@@ -16,7 +16,14 @@ import { Feather } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import Navigation from "../components/Navigation";
 import { userData } from "../data/Data";
-const Account = ({ back, toExplore, toHome, toReviews, toBookings }) => {
+const Account = ({
+  back,
+  toExplore,
+  toHome,
+  toReviews,
+  toBookings,
+  logout,
+}) => {
   return (
     <View style={styles.container}>
       <StatusBar style="light" backgroundColor="orange" />
@@ -89,7 +96,7 @@ const Account = ({ back, toExplore, toHome, toReviews, toBookings }) => {
             </View>
             <Octicons name="chevron-right" size={25} color="grey" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.option}>
+          <TouchableOpacity style={styles.option} onPress={logout}>
             <View style={styles.icon}>
               <AntDesign name="logout" size={24} color="grey" />
               <Text style={styles.optionText}>Logout</Text>

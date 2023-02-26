@@ -3,7 +3,7 @@ import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 const Navigation = ({ h, e, r, b, a, isH, isE, isR, isB, isA }) => {
   return (
@@ -26,11 +26,7 @@ const Navigation = ({ h, e, r, b, a, isH, isE, isR, isB, isA }) => {
         </Text>
       </TouchableOpacity>
       <TouchableOpacity style={[styles.item]} onPress={r}>
-        <MaterialCommunityIcons
-          name="star"
-          size={28}
-          color={isR ? "orange" : "grey"}
-        />
+        <FontAwesome5 name="star" size={28} color={isR ? "orange" : "grey"} />
         <Text style={[styles.text, isR ? styles.textCurrent : styles.text1]}>
           Reviews
         </Text>
