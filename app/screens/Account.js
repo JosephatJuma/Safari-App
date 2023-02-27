@@ -39,7 +39,12 @@ const Account = ({
         }
         centerComponent={<Text style={styles.screenName}>Account</Text>}
         rightComponent={
-          <MaterialIcons name="person" size={25} color="#fff" onPress={back} />
+          <MaterialIcons
+            name="logout"
+            size={25}
+            color="#fff"
+            onPress={logout}
+          />
         }
       />
       <ScrollView

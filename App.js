@@ -27,7 +27,16 @@ export default function App() {
     );
   };
   const ExploreScreen = ({ navigation }) => {
-    return <Explore back={() => navigation.goBack()} />;
+    return (
+      <Explore
+        back={() => navigation.goBack()}
+        toAccount={() => navigation.navigate("Account")}
+        toHome={() => navigation.push("Home")}
+        toBookings={() => navigation.push("Bookings")}
+        toReviews={() => navigation.push("Reviews")}
+        toSearch={() => navigation.navigate("Search")}
+      />
+    );
   };
   const ReviewsScreen = ({ navigation }) => {
     return <Reviews back={() => navigation.goBack()} />;
@@ -84,6 +93,7 @@ export default function App() {
     );
   };
   const Stack = createStackNavigator();
+
   return (
     <NavigationContainer>
       <Stack.Navigator

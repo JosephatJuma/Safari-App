@@ -32,11 +32,11 @@ export default function Home({
           source={{ uri: item.image }}
           style={{ width: "100%", height: "80%" }}
         />
-        <Text>Item</Text>
+        <Text style={styles.text}>Item</Text>
+        <Text style={styles.text}>Item</Text>
       </View>
     );
   };
-  const renderCatergories = ({ category }) => {};
 
   const renderItem = ({ item }) => {
     return (
@@ -49,7 +49,7 @@ export default function Home({
             <Ionicons name="heart-outline" size={30} color="orange" />
           </TouchableOpacity>
         </View>
-        <Text style={styles.title}>Desitination name</Text>
+        <Text style={styles.title}>Desitination Title</Text>
         <Text style={styles.title}>UGX {item.price}</Text>
       </View>
     );
@@ -67,12 +67,11 @@ export default function Home({
             <Text
               style={{
                 color: "#fff",
-                fontWeight: "bold",
+                fontWeight: "700",
                 fontSize: 29,
-                textTransform: "capitalize",
               }}
             >
-              MySafari App
+              Safariarea
             </Text>
           </View>
         }
@@ -84,7 +83,11 @@ export default function Home({
         rightComponent={
           <View style={{ display: "flex", flexDirection: "row" }}>
             <TouchableOpacity>
-              <MaterialCommunityIcons name="cart-plus" size={30} color="#fff" />
+              <MaterialCommunityIcons
+                name="cart-variant"
+                size={30}
+                color="#fff"
+              />
             </TouchableOpacity>
             <TouchableOpacity>
               <Ionicons name="heart-outline" size={30} color="#fff" />
@@ -101,7 +104,7 @@ export default function Home({
             <Text style={{ fontWeight: "600", fontSize: 30, color: "orange" }}>
               Get 25%
             </Text>
-            <Text>Discount on your first trip</Text>
+            <Text style={styles.text}>Discount on your first trip</Text>
           </View>
           <View style={styles.addRight}>
             <Image
@@ -127,30 +130,9 @@ export default function Home({
             showsHorizontalScrollIndicator={false}
           />
         </View>
-        <View style={styles.itemsTop}>
-          <Text>Categories</Text>
-        </View>
-
-        <ScrollView
-          horizontal={true}
-          style={{ height: 100, backgroundColor: "#fff" }}
-          showsHorizontalScrollIndicator={false}
-        >
-          {data.map((item) => {
-            return (
-              <View key={item.id} style={{ margin: 15 }}>
-                <Image
-                  source={{ uri: item.image }}
-                  style={{ width: "100%", height: "80%" }}
-                />
-                <Text>Category {item.id}</Text>
-              </View>
-            );
-          })}
-        </ScrollView>
 
         <View style={styles.itemsTop}>
-          <Text>Recentyle Added</Text>
+          <Text style={styles.text}>Recentyle Added</Text>
           <FontAwesome name="sliders" size={40} color="orange" />
         </View>
         <FlatList
@@ -241,14 +223,15 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   title: {
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: "600",
+    color: "#000",
     color: "grey",
   },
   columnWrapper: {
     justifyContent: "space-between",
   },
-  text: { color: "#000", fontWeight: "500" },
+  text: { color: "#000", fontWeight: "600", fontSize: 15, color: "grey" },
   mainContent: {
     fontSize: 20,
     textAlign: "center",
