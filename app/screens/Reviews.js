@@ -9,7 +9,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import Navigation from "../components/Navigation";
 import { ScrollView } from "react-native-gesture-handler";
 import { Header } from "@rneui/base";
-const Reviews = ({ back }) => {
+const Reviews = ({ back, toExplore, toAccount, toHome, toBookings }) => {
   return (
     <View>
       <StatusBar style="light" backgroundColor="orange" />
@@ -24,12 +24,19 @@ const Reviews = ({ back }) => {
           />
         }
         centerComponent={<Text style={styles.screenName}>Rating</Text>}
-        rightComponent={<Ionicons name="star" size={30} color="#fff" />}
       />
-      <ScrollView>
-        <View></View>
+      <ScrollView style={{ minHeight: "80%" }}>
+        <View>
+          <Text>Your ratines will be here</Text>
+        </View>
       </ScrollView>
-      <Navigation isR={true} />
+      <Navigation
+        isR={true}
+        h={toHome}
+        a={toAccount}
+        e={toExplore}
+        b={toBookings}
+      />
     </View>
   );
 };

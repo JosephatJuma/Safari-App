@@ -5,8 +5,11 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
+  RefreshControl,
+  ImageBackground,
+  ActivityIndicator,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -15,8 +18,10 @@ import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import Navigation from "../components/Navigation";
 import { ScrollView } from "react-native-gesture-handler";
-import { Header } from "@rneui/base";
+import { Header, Skeleton, BottomSheet, Chip, Button } from "@rneui/base";
+import { LinearGradient } from "expo-linear-gradient";
 import { data } from "../data/Data";
+import { apiUrl } from "../api/Api";
 const Explore = ({
   back,
   toHome,
@@ -25,40 +30,151 @@ const Explore = ({
   toAccount,
   toSearch,
 }) => {
-  const renderItem = ({ item }) => {
+  const [trips, setTrips] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [errMsg, setErrMsg] = useState("");
+  const [itemIsSlected, setItemIsSlected] = useState(false);
+  const [selectedItem, setSelecttedItem] = useState({});
+
+  const [refreshing, setRefreshing] = React.useState(false);
+  //Fetch trips
+  const fetchData = () => {
+    if (trips.length <= 0) {
+      return fetch(apiUrl.trips)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data !== null) {
+            var values = Object.values(data);
+            setTrips(values);
+            setLoading(false);
+          } else {
+            setLoading(false);
+            setErrMsg("No items found");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          setLoading(false);
+          setErrMsg(error.message);
+        });
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [1]);
+
+  //Refresh
+  const onRefresh = React.useCallback(() => {
+    //setTrips([]);
+    setLoading(true);
+    setRefreshing(true);
+    fetchData();
+    setRefreshing(false);
+  }, []);
+
+  //select object
+  const selectObject = (option) => {
+    setItemIsSlected(true);
+    console.log("==========================");
+    setSelecttedItem(option);
+    console.log(selectedItem);
+    //console.log("selected" + option);
+    //console.log("==========================");
+  };
+  const deselectItem = () => {
+    setItemIsSlected(false);
+  };
+  //Render data
+  const renderSkeleton = ({ item }) => {
     return (
       <View style={[styles.item, styles.boxShadow]}>
+        <View style={{ width: "100%", display: "flex", flexDirection: "row" }}>
+          <TouchableOpacity style={{ width: "80%" }}>
+            <Skeleton
+              animation="wave"
+              width={"100%"}
+              height={100}
+              LinearGradientComponent={LinearGradient}
+            />
+          </TouchableOpacity>
+          <View
+            style={{
+              width: "20%",
+              justifyContent: "space-between",
+              height: 50,
+              margin: 5,
+            }}
+          >
+            <Skeleton
+              animation="wave"
+              width={30}
+              height={20}
+              LinearGradientComponent={LinearGradient}
+            />
+            <Skeleton
+              animation="wave"
+              width={30}
+              height={20}
+              LinearGradientComponent={LinearGradient}
+            />
+          </View>
+        </View>
         <View
           style={{
             width: "100%",
-            display: "flex",
-            flexDirection: "row",
             justifyContent: "space-between",
+            height: 30,
+            marginTop: 5,
           }}
         >
-          <TouchableOpacity style={{ width: "60%" }}>
-            <Image source={{ uri: item.image }} style={styles.image} />
-          </TouchableOpacity>
-          <View>
-            <Text style={styles.title}>Desitination Title</Text>
-            <Text style={styles.title}>UGX {item.price}</Text>
-            <View style={{ flexDirection: "row" }}>
-              <TouchableOpacity>
-                <Ionicons name="heart-outline" size={30} color="orange" />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Ionicons name="md-add-circle-sharp" size={30} color="orange" />
-              </TouchableOpacity>
-            </View>
-          </View>
+          <Skeleton
+            animation="wave"
+            width={"100%"}
+            height={10}
+            LinearGradientComponent={LinearGradient}
+          />
+          <Skeleton
+            animation="wave"
+            width={"100%"}
+            height={10}
+            LinearGradientComponent={LinearGradient}
+          />
         </View>
       </View>
     );
   };
+  //Render data
+  const renderItem = ({ item }) => {
+    return (
+      <View style={[styles.item, styles.boxShadow]}>
+        <View style={{ width: "100%", display: "flex", flexDirection: "row" }}>
+          <TouchableOpacity
+            style={{ width: "80%" }}
+            onPress={() => selectObject(item)}
+          >
+            <Image source={{ uri: item.photoURL }} style={styles.image} />
+          </TouchableOpacity>
+          <View>
+            <TouchableOpacity>
+              <Ionicons name="heart-outline" size={30} color="orange" />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <MaterialIcons name="add-circle" size={30} color="orange" />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.title}>UGX {item.price}</Text>
+      </View>
+    );
+  };
+
   return (
     <View>
       <StatusBar style="light" backgroundColor="orange" />
       <Header
+        //ff5349 another color
         backgroundColor="orange"
         leftComponent={
           <MaterialIcons
@@ -70,7 +186,7 @@ const Explore = ({
         }
         rightComponent={
           <View style={{ display: "flex", flexDirection: "row" }}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={onRefresh}>
               <MaterialIcons name="sync" size={30} color="#fff" />
             </TouchableOpacity>
             <TouchableOpacity>
@@ -85,14 +201,99 @@ const Explore = ({
         }
         centerComponent={<Text style={styles.screenName}>All trips</Text>}
       />
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
-        style={styles.row}
-        onEndReached={() => console.log("end")}
-      />
+
+      {loading ? (
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={data}
+          renderItem={renderSkeleton}
+          keyExtractor={(item) => item.id.toString()}
+          style={styles.row}
+          onEndReached={() => console.log("end")}
+          numColumns={2}
+        />
+      ) : (
+        <FlatList
+          showsVerticalScrollIndicator={true}
+          data={trips}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id.toString()}
+          style={{ maxHeight: "80%", minHeight: "80%" }}
+          //onEndReached={() => console.log("end")}
+          numColumns={2}
+          // initialNumToRender={4}
+          // maxToRenderPerBatch={6}
+          windowSize={3}
+          indicatorStyle={{ backgroundColor: "red" }}
+          removeClippedSubviews={true}
+          onEndReachedThreshold={0.5}
+          //ListFooterComponentStyle={<Text>All</Text>}
+          ListEmptyComponent={<Text style={styles.text}>{errMsg}</Text>}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              colors={["orange", "grey", "black"]}
+              size="large"
+              title="Relaoding"
+            />
+          }
+        />
+      )}
+      {/* {show && <ActivityIndicator color="orange" size={30} />} */}
+      <BottomSheet
+        isVisible={itemIsSlected}
+        onBackdropPress={deselectItem}
+        backdropStyle={{
+          backgroundColor: "transparent",
+        }}
+      >
+        <View
+          style={{
+            backgroundColor: "orange",
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              padding: 10,
+            }}
+          >
+            <Text style={[{ fontSize: 22, fontWeight: "600", color: "#fff" }]}>
+              {selectedItem.title}
+            </Text>
+            <TouchableOpacity onPress={deselectItem}>
+              <MaterialIcons name="cancel" size={35} color="#fff" />
+            </TouchableOpacity>
+          </View>
+          <ImageBackground
+            source={{ url: selectedItem.photoURL }}
+            style={{ width: "100%", height: 100 }}
+          />
+        </View>
+
+        <Chip
+          title="Account created"
+          buttonStyle={styles.chip}
+          containerStyle={styles.chipCont}
+          onAccessibilityEscape={deselectItem}
+        >
+          <Text style={[styles.text, { fontSize: 15, fontWeight: "600" }]}>
+            {selectedItem.description}
+          </Text>
+
+          <Button
+            icon={<MaterialCommunityIcons name="cart" color="#fff" size={30} />}
+            title="Book now"
+            containerStyle={styles.btnCont}
+            buttonStyle={styles.btn}
+            titleStyle={{ fontSize: 20, fontWeight: "700" }}
+          />
+        </Chip>
+      </BottomSheet>
       <Navigation
         isE={true}
         h={toHome}
@@ -112,12 +313,15 @@ const styles = StyleSheet.create({
     maxHeight: "80%",
   },
   item: {
-    width: "98%",
+    width: "50%",
+    height: 180,
     backgroundColor: "#fff",
-    alignSelf: "center",
+    //borderRadius: 8,
     padding: 16,
-    margin: 2,
-    //borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    marginEnd: 1,
+    marginTop: 2,
   },
   boxShadow: {
     shadowColor: "#000",
@@ -131,8 +335,8 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "100%",
-    height: 150,
-    borderRadius: 15,
+    height: 100,
+    borderRadius: 0,
     marginBottom: 16,
   },
   title: {
@@ -141,4 +345,34 @@ const styles = StyleSheet.create({
     color: "#000",
     color: "grey",
   },
+  columnWrapper: {
+    justifyContent: "space-between",
+  },
+  text: {
+    color: "#000",
+    fontWeight: "500",
+    fontSize: 30,
+    color: "grey",
+    alignSelf: "center",
+    //marginTop: 200,
+  },
+  chipCont: {
+    marginVertical: 0,
+    height: 200,
+    width: "100%",
+    alignSelf: "center",
+    //borderTopLeftRadius: 10,
+    //borderTopRightRadius: 10,
+    borderRadius: 0,
+    //borderWidth: 1,
+    borderColor: "grey",
+  },
+  chip: {
+    borderRadius: 0,
+    backgroundColor: "#fff",
+    height: "100%",
+    flexDirection: "column",
+  },
+  btnCont: { width: "80%", height: 50, borderRadius: 100, margin: 5 },
+  btn: { backgroundColor: "orange", height: "100%" },
 });

@@ -18,7 +18,7 @@ export default function App() {
   const HomeScreen = ({ navigation }) => {
     return (
       <Home
-        toExplore={() => navigation.navigate("Explore")}
+        toExplore={() => navigation.push("Explore")}
         toAccount={() => navigation.push("Account")}
         toBookings={() => navigation.push("Bookings")}
         toReviews={() => navigation.push("Reviews")}
@@ -31,7 +31,7 @@ export default function App() {
       <Explore
         back={() => navigation.goBack()}
         toAccount={() => navigation.navigate("Account")}
-        toHome={() => navigation.push("Home")}
+        toHome={() => navigation.popToTop()}
         toBookings={() => navigation.push("Bookings")}
         toReviews={() => navigation.push("Reviews")}
         toSearch={() => navigation.navigate("Search")}
@@ -39,15 +39,26 @@ export default function App() {
     );
   };
   const ReviewsScreen = ({ navigation }) => {
-    return <Reviews back={() => navigation.goBack()} />;
+    return (
+      <Reviews
+        back={() => navigation.goBack()}
+        toExplore={() => navigation.navigate("Explore")}
+        toAccount={() => navigation.push("Account")}
+        toBookings={() => navigation.push("Bookings")}
+        toHome={() => navigation.popToTop()}
+      />
+    );
   };
   const BookingScreen = ({ navigation }) => {
+    const navigateToAccount = () => {
+      return navigation.navigate("Account");
+    };
     return (
       <Bookings
         back={() => navigation.goBack()}
         toExplore={() => navigation.navigate("Explore")}
-        toHome={() => navigation.push("Home")}
-        toAccount={() => navigation.push("Account")}
+        toHome={() => navigation.popToTop()}
+        toAccount={navigateToAccount}
         toReviews={() => navigation.push("Reviews")}
       />
     );
@@ -57,7 +68,7 @@ export default function App() {
       <Account
         back={() => navigation.goBack()}
         toExplore={() => navigation.navigate("Explore")}
-        toHome={() => navigation.push("Home")}
+        toHome={() => navigation.popToTop()}
         toBookings={() => navigation.push("Bookings")}
         toReviews={() => navigation.push("Reviews")}
         logout={() => navigation.navigate("Login")}
@@ -68,18 +79,19 @@ export default function App() {
     return <Search back={() => navigation.goBack()} />;
   };
   const SignupScreen = ({ navigation }) => {
+    const navigateToLogin = () => {
+      return navigation.navigate("Login");
+    };
     const handleSignup = (email, password) => {
       console.log(email, password);
       alert("Sign here");
     };
-    return (
-      <Signup
-        login={() => navigation.push("Login")}
-        signupFunction={handleSignup}
-      />
-    );
+    return <Signup login={navigateToLogin} signupFunction={handleSignup} />;
   };
   const LoginScreen = ({ navigation }) => {
+    const navigateToSignup = () => {
+      return navigation.navigate("Signup");
+    };
     const handleLogin = (email, password) => {
       console.log(email, password);
       navigation.push("Account");
@@ -88,7 +100,7 @@ export default function App() {
       <Login
         back={() => navigation.goBack()}
         loginFunction={handleLogin}
-        signup={() => navigation.push("Signup")}
+        signup={navigateToSignup}
       />
     );
   };
@@ -149,8 +161,6 @@ export default function App() {
           component={LoginScreen}
           options={{
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-            gestureEnabled: true,
-            gestureDirection: "horizontal",
           }}
         />
         <Stack.Screen
@@ -158,8 +168,6 @@ export default function App() {
           component={SignupScreen}
           options={{
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-            gestureEnabled: true,
-            gestureDirection: "horizontal",
           }}
         />
       </Stack.Navigator>

@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "center",
     borderTopWidth: 0.5,
-    borderColor: "lightgrey",
+    borderColor: "grey",
   },
   item: {
     width: "18%",

@@ -27,14 +27,17 @@ export default function Home({
 }) {
   const renderRecommendations = ({ item }) => {
     return (
-      <View key={item.id} style={{ margin: 5, width: 80, height: 80 }}>
+      <TouchableOpacity
+        key={item.id}
+        style={{ margin: 5, width: 80, height: 80 }}
+      >
         <Image
           source={{ uri: item.image }}
           style={{ width: "100%", height: "80%" }}
         />
         <Text style={styles.text}>Item</Text>
         <Text style={styles.text}>Item</Text>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -71,7 +74,7 @@ export default function Home({
                 fontSize: 29,
               }}
             >
-              Safariarea
+              Safari-area
             </Text>
           </View>
         }
@@ -236,16 +239,5 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: "center",
     margin: 10,
-  },
-  drawerContainer: {
-    flex: 1,
-    backgroundColor: "#FFF",
-    paddingTop: 30,
-    paddingLeft: 10,
-  },
-  drawerItem: {
-    fontSize: 18,
-    fontWeight: "bold",
-    padding: 10,
   },
 });

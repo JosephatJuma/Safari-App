@@ -29,6 +29,7 @@ const Search = ({ back }) => {
               inputStyle={styles.input}
               placeholder="Looking for any thing?"
               cursorColor="orange"
+              keyboardType="web-search"
               value={searchTerm}
               onChangeText={setSearchTerm}
               leftIcon={
@@ -59,8 +60,8 @@ export default Search;
 const styles = StyleSheet.create({
   inputContainer: {
     backgroundColor: "#fff",
-    height: 50,
-    borderRadius: 10,
+    height: 45,
+    borderRadius: 50,
     width: "80%",
     alignSelf: "center",
   },
