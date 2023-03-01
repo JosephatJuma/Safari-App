@@ -17,7 +17,7 @@ import Navigation from "../components/Navigation";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-
+import { LinearGradient } from "expo-linear-gradient";
 export default function Home({
   toExplore,
   toAccount,
@@ -60,10 +60,11 @@ export default function Home({
 
   return (
     <View style={styles.container}>
-      <StatusBar style="light" backgroundColor="orange" />
+      <StatusBar style="light" backgroundColor="transparent" />
       <Header
-        //ff5349
-        backgroundColor="orange"
+        ViewComponent={LinearGradient}
+        linearGradientProps={styles.linear}
+        backgroundColor="transparent"
         height={100}
         centerComponent={
           <View style={{ marginLeft: -30 }}>
@@ -74,7 +75,8 @@ export default function Home({
                 fontSize: 29,
               }}
             >
-              Safari-area
+              {/* Safari-area */}
+              Tuzunge
             </Text>
           </View>
         }
@@ -161,6 +163,11 @@ export default function Home({
   );
 }
 const styles = StyleSheet.create({
+  linear: {
+    colors: ["orange", "orange", "#ff5349"],
+    start: { x: 0, y: 0.5 },
+    end: { x: 1, y: 0.5 },
+  },
   container: {
     flex: 1,
     backgroundColor: "#F5F5F5",

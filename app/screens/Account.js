@@ -4,6 +4,7 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  TouchableHighlight,
 } from "react-native";
 import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
@@ -261,11 +262,11 @@ const styles = StyleSheet.create({
   },
   chipCont: {
     marginVertical: 0,
-    height: 350,
+    height: 310,
     width: "100%",
     alignSelf: "center",
-    //borderTopLeftRadius: 10,
-    //borderTopRightRadius: 10,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
     borderRadius: 0,
     //borderWidth: 1,
     borderColor: "grey",
