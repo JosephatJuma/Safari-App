@@ -5,6 +5,7 @@ import {
   Animated,
   ScrollView,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import React, { useState, useRef } from "react";
 import { StatusBar } from "expo-status-bar";
@@ -13,7 +14,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 
-const Login = ({ loginFunction, signup }) => {
+const Login = ({ loginFunction, signup, validating }) => {
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,6 +41,7 @@ const Login = ({ loginFunction, signup }) => {
           }}
         />
         <Input
+          disabled={validating}
           inputContainerStyle={styles.noBorder}
           containerStyle={[styles.inputContainer, styles.boxShadow]}
           placeholder="Enter email address"
@@ -54,6 +56,7 @@ const Login = ({ loginFunction, signup }) => {
           onChangeText={setEmail}
         />
         <Input
+          disabled={validating}
           secureTextEntry={!show}
           placeholder="Enter your password"
           passwordRules={"dhdh"}
@@ -72,15 +75,23 @@ const Login = ({ loginFunction, signup }) => {
           onChangeText={setPassword}
         />
         <Button
+          disabled={validating}
           containerStyle={[styles.buttonContainer]}
           buttonStyle={{ height: "100%", backgroundColor: "#000" }}
-          title="Sign in"
+          title={
+            validating ? (
+              <ActivityIndicator size={35} color="#fff" />
+            ) : (
+              "Sign in"
+            )
+          }
           titleStyle={{ color: "#fff", fontSize: 25 }}
           onPress={() => loginFunction(email, password)}
         />
         <Text>Forgot password</Text>
         <Text>OR</Text>
         <Button
+          disabled={validating}
           containerStyle={[styles.buttonContainer]}
           buttonStyle={{ height: "100%", backgroundColor: "orange" }}
           title="Sign Up"

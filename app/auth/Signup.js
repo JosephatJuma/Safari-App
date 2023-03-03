@@ -120,8 +120,9 @@ const Signup = ({ signupFunction, login }) => {
     setDisable(!disableForm);
 
     axios
-      .post("http://192.168.88.198:10000/user/create", user)
+      .post(apiUrl.register, user)
       .then((response) => {
+        console.log(apiUrl.register);
         console.log(response.data);
         if (response.data.status === false) {
           Alert.alert(

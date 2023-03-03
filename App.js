@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import { StyleSheet, Alert } from "react-native";
 import Home from "./app/screens/Home";
 import Explore from "./app/screens/Explore";
 import Reviews from "./app/screens/Reviews";
@@ -13,8 +13,23 @@ import {
   CardStyleInterpolators,
 } from "@react-navigation/stack";
 import { useState } from "react";
-
+//Firbase
+import { app } from "./firebase/firebaseConfig";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+  signOut,
+  signInWithPhoneNumber,
+} from "firebase/auth";
 export default function App() {
+  //variables
+  //setSignedIn(true);
+  //SetLogging(false);
+  const [signedIn, setSignedIn] = useState(false);
+  const [logging, SetLogging] = useState(false);
+  const [user, setUser] = useState({});
   const HomeScreen = ({ navigation }) => {
     return (
       <Home
@@ -93,11 +108,39 @@ export default function App() {
       return navigation.navigate("Signup");
     };
     const handleLogin = (email, password) => {
-      console.log(email, password);
-      navigation.push("Account");
+      SetLogging(true);
+      return new Promise((resolve, reject) => {
+        const auth = getAuth();
+        signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            // Signed in
+            const user = userCredential.user;
+            console.log(user);
+            setUser({
+              userID: user.uid,
+              name: user.displayName,
+              phoneNumber: user.phoneNumber,
+              email: user.email,
+              verified: user.emailVerified,
+            });
+          })
+          .then(() => {
+            SetLogging(false);
+            setSignedIn(true);
+            navigation.popToTop();
+          })
+          .catch((error) => {
+            Alert.alert("Login Error!", error.code);
+            SetLogging(false);
+            console.log(error.message);
+            SetLogging(false);
+          });
+        resolve();
+      });
     };
     return (
       <Login
+        validating={logging}
         back={() => navigation.goBack()}
         loginFunction={handleLogin}
         signup={navigateToSignup}
