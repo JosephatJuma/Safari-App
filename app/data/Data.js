@@ -41,34 +41,6 @@ export const data = [
       "https://reactnativecode.com/wp-content/uploads/2018/02/Default_Image_Thumbnail.png",
     price: 100000,
   },
-  {
-    id: 7,
-    title: "Item 7",
-    image:
-      "https://reactnativecode.com/wp-content/uploads/2018/02/Default_Image_Thumbnail.png",
-    price: 100000,
-  },
-  // {
-  //   id: 8,
-  //   title: "Item 8",
-  //   image:
-  //     "https://reactnativecode.com/wp-content/uploads/2018/02/Default_Image_Thumbnail.png",
-  //   price: 100000,
-  // },
-  // {
-  //   id: 9,
-  //   title: "Item 9",
-  //   image:
-  //     "https://reactnativecode.com/wp-content/uploads/2018/02/Default_Image_Thumbnail.png",
-  //   price: 100000,
-  // },
-  // {
-  //   id: 10,
-  //   title: "Item 10",
-  //   image:
-  //     "https://reactnativecode.com/wp-content/uploads/2018/02/Default_Image_Thumbnail.png",
-  //   price: 100000,
-  // },
 ];
 export const userData = {
   id: "1234567899876543",

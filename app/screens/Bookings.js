@@ -10,12 +10,15 @@ import Navigation from "../components/Navigation";
 import { ScrollView } from "react-native-gesture-handler";
 import { Header } from "@rneui/base";
 import { bookings } from "../data/Data";
+import { LinearGradient } from "expo-linear-gradient";
 const Bookings = ({ back, toExplore, toHome, toReviews, toAccount }) => {
   return (
     <View style={styles.container}>
-      <StatusBar style="light" backgroundColor="orange" />
+      <StatusBar style="light" backgroundColor="transparent" />
       <Header
-        backgroundColor="orange"
+        ViewComponent={LinearGradient}
+        linearGradientProps={styles.linear}
+        backgroundColor="transparent"
         leftComponent={
           <MaterialIcons
             name="arrow-back-ios"
@@ -86,6 +89,11 @@ const Bookings = ({ back, toExplore, toHome, toReviews, toAccount }) => {
 export default Bookings;
 
 const styles = StyleSheet.create({
+  linear: {
+    colors: ["orange", "orange", "#ff5349"],
+    start: { x: 0, y: 0.5 },
+    end: { x: 1, y: 0.5 },
+  },
   container: {
     flex: 1,
     backgroundColor: "#F5F5F5",

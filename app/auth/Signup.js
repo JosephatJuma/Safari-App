@@ -22,13 +22,13 @@ import { apiUrl } from "../api/Api";
 const nameREGEX =
   /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/;
 const passGEX =
-  /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])([a-zA-Z0-9@$!%*?&]{8,})$/;
+  /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@$#!%*?&])([a-zA-Z0-9@$#!%*?&]{8,16})$/;
 const emailREGEX =
   /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
 const phoneREGEX =
   /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
 
-const Signup = ({ signupFunction, login }) => {
+const Signup = ({ login }) => {
   //validations
   const [isValidEmail, setValidEmail] = useState(false);
   const [isStrongPassword, setStrongPassword] = useState(false);
@@ -168,8 +168,8 @@ const Signup = ({ signupFunction, login }) => {
           style={{
             width: "100%",
             height: 300,
-            //borderBottomRightRadius: 100,
-            borderBottomLeftRadius: 140,
+            borderBottomRightRadius: 100,
+            borderBottomLeftRadius: 100,
           }}
         />
         <BottomSheet isVisible={sent}>
@@ -226,7 +226,7 @@ const Signup = ({ signupFunction, login }) => {
           inputContainerStyle={styles.noBorder}
           containerStyle={[styles.inputContainer, styles.boxShadow]}
           placeholder="Phone Number"
-          leftIcon={<Ionicons name="call" size={24} color="grey" />}
+          leftIcon={<FontAwesome name="phone" size={24} color="grey" />}
           value={phone}
           onChangeText={setPhone}
           onChange={validatePhone}
@@ -239,7 +239,9 @@ const Signup = ({ signupFunction, login }) => {
           placeholder="Create Password"
           inputContainerStyle={styles.noBorder}
           containerStyle={[styles.inputContainer, styles.boxShadow]}
-          leftIcon={<FontAwesome name="lock" size={24} color="grey" />}
+          leftIcon={
+            <MaterialCommunityIcons name="lock" size={24} color="grey" />
+          }
           rightIcon={
             <Ionicons
               name={show ? "ios-eye-off-outline" : "ios-eye"}
@@ -275,9 +277,9 @@ const Signup = ({ signupFunction, login }) => {
         <Text>OR</Text>
         <Button
           containerStyle={[styles.buttonContainer]}
-          buttonStyle={{ height: "100%", backgroundColor: "orange" }}
+          buttonStyle={{ height: "100%", backgroundColor: "transparent" }}
           title="Sign in"
-          titleStyle={{ color: "#fff", fontSize: 25 }}
+          titleStyle={{ color: "orange", fontSize: 25 }}
           onPress={login}
           disabled={disableForm}
         />
@@ -315,7 +317,7 @@ const styles = StyleSheet.create({
     margin: 10,
     width: "90%",
     borderWidth: 1,
-    borderRadius: 12,
+    borderRadius: 8,
     height: 52,
     borderColor: "#000",
   },

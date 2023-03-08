@@ -7,6 +7,9 @@ import Account from "./app/screens/Account";
 import Search from "./app/screens/Search";
 import Login from "./app/auth/Login";
 import Signup from "./app/auth/Signup";
+import Help from "./more/Help";
+import Info from "./more/Info";
+import Notifications from "./more/Notifications";
 import { NavigationContainer } from "@react-navigation/native";
 import {
   createStackNavigator,
@@ -17,16 +20,11 @@ import { useState } from "react";
 import { app } from "./firebase/firebaseConfig";
 import {
   getAuth,
-  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
-  signOut,
-  signInWithPhoneNumber,
 } from "firebase/auth";
 export default function App() {
   //variables
-  //setSignedIn(true);
-  //SetLogging(false);
   const [signedIn, setSignedIn] = useState(false);
   const [logging, SetLogging] = useState(false);
   const [user, setUser] = useState({});
@@ -38,6 +36,7 @@ export default function App() {
         toBookings={() => navigation.push("Bookings")}
         toReviews={() => navigation.push("Reviews")}
         toSearch={() => navigation.push("Search")}
+        nots={() => navigation.push("Notifications")}
       />
     );
   };
@@ -57,7 +56,6 @@ export default function App() {
     return (
       <Reviews
         back={() => navigation.goBack()}
-        toExplore={() => navigation.navigate("Explore")}
         toAccount={() => navigation.push("Account")}
         toBookings={() => navigation.push("Bookings")}
         toHome={() => navigation.popToTop()}
@@ -71,7 +69,6 @@ export default function App() {
     return (
       <Bookings
         back={() => navigation.goBack()}
-        toExplore={() => navigation.navigate("Explore")}
         toHome={() => navigation.popToTop()}
         toAccount={navigateToAccount}
         toReviews={() => navigation.push("Reviews")}
@@ -79,14 +76,30 @@ export default function App() {
     );
   };
   const AccountScreen = ({ navigation }) => {
+    const logout = () => {
+      const auth = getAuth();
+      setTimeout(() => {
+        auth
+          .signOut()
+          .then(() => {
+            setSignedIn(false);
+            setUser({});
+            navigation.push("Login");
+          })
+          .catch((error) => {
+            Alert.alert("Sign Out Error!", error.message);
+          });
+      }, 10);
+    };
     return (
       <Account
         back={() => navigation.goBack()}
-        toExplore={() => navigation.navigate("Explore")}
         toHome={() => navigation.popToTop()}
         toBookings={() => navigation.push("Bookings")}
         toReviews={() => navigation.push("Reviews")}
-        logout={() => navigation.navigate("Login")}
+        logout={logout}
+        help={() => navigation.push("Help")}
+        info={() => navigation.push("Info")}
       />
     );
   };
@@ -97,47 +110,49 @@ export default function App() {
     const navigateToLogin = () => {
       return navigation.navigate("Login");
     };
-    const handleSignup = (email, password) => {
-      console.log(email, password);
-      alert("Sign here");
-    };
-    return <Signup login={navigateToLogin} signupFunction={handleSignup} />;
+
+    return <Signup login={navigateToLogin} />;
   };
   const LoginScreen = ({ navigation }) => {
     const navigateToSignup = () => {
       return navigation.navigate("Signup");
     };
     const handleLogin = (email, password) => {
+      if (!email) {
+        Alert.alert("Warning!", "Email can't be empty!");
+        return;
+      } else if (!password) {
+        Alert.alert("Warning!", "Password muist be given!");
+        return;
+      }
       SetLogging(true);
-      return new Promise((resolve, reject) => {
-        const auth = getAuth();
-        signInWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
-            // Signed in
-            const user = userCredential.user;
-            console.log(user);
-            setUser({
-              userID: user.uid,
-              name: user.displayName,
-              phoneNumber: user.phoneNumber,
-              email: user.email,
-              verified: user.emailVerified,
-            });
-          })
-          .then(() => {
-            SetLogging(false);
-            setSignedIn(true);
-            navigation.popToTop();
-          })
-          .catch((error) => {
-            Alert.alert("Login Error!", error.code);
-            SetLogging(false);
-            console.log(error.message);
-            SetLogging(false);
+      const auth = getAuth();
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log(user);
+          setUser({
+            userID: user.uid,
+            name: user.displayName,
+            phoneNumber: user.phoneNumber,
+            email: user.email,
+            verified: user.emailVerified,
           });
-        resolve();
-      });
+        })
+        .then(() => {
+          SetLogging(false);
+          setSignedIn(true);
+          navigation.popToTop();
+        })
+        .catch((error) => {
+          Alert.alert("Login Error!", error.code);
+          SetLogging(false);
+          console.log(error.message);
+          SetLogging(false);
+        });
     };
+
     return (
       <Login
         validating={logging}
@@ -146,6 +161,16 @@ export default function App() {
         signup={navigateToSignup}
       />
     );
+  };
+  //More Screens
+  const HelpScreen = ({ navigation }) => {
+    return <Help back={() => navigation.goBack()} />;
+  };
+  const InfoScreen = ({ navigation }) => {
+    return <Info back={() => navigation.goBack()} />;
+  };
+  const NotificationsScreen = ({ navigation }) => {
+    return <Notifications back={() => navigation.goBack()} />;
   };
   const Stack = createStackNavigator();
 
@@ -211,6 +236,24 @@ export default function App() {
           component={SignupScreen}
           options={{
             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <Stack.Screen
+          name="Help"
+          component={HelpScreen}
+          options={styles.screenOptions}
+        />
+        <Stack.Screen
+          name="Info"
+          component={InfoScreen}
+          options={styles.screenOptions}
+        />
+        <Stack.Screen
+          name="Notifications"
+          component={NotificationsScreen}
+          options={{
+            cardStyleInterpolator:
+              CardStyleInterpolators.forRevealFromBottomAndroid,
           }}
         />
       </Stack.Navigator>

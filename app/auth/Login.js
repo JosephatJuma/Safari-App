@@ -80,7 +80,7 @@ const Login = ({ loginFunction, signup, validating }) => {
           buttonStyle={{ height: "100%", backgroundColor: "#000" }}
           title={
             validating ? (
-              <ActivityIndicator size={35} color="#fff" />
+              <ActivityIndicator size={35} color="orange" />
             ) : (
               "Sign in"
             )
@@ -93,9 +93,9 @@ const Login = ({ loginFunction, signup, validating }) => {
         <Button
           disabled={validating}
           containerStyle={[styles.buttonContainer]}
-          buttonStyle={{ height: "100%", backgroundColor: "orange" }}
+          buttonStyle={{ height: "100%", backgroundColor: "transparent" }}
           title="Sign Up"
-          titleStyle={{ color: "#fff", fontSize: 25 }}
+          titleStyle={{ color: "orange", fontSize: 25 }}
           onPress={signup}
         />
       </ScrollView>
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     margin: 10,
     width: "90%",
     borderWidth: 1,
-    borderRadius: 12,
+    borderRadius: 8,
     height: 52,
     borderColor: "#000",
   },

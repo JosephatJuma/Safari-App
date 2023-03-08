@@ -25,10 +25,10 @@ const Navigation = ({ h, e, r, b, a, isH, isE, isR, isB, isA }) => {
           Home
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.item} onPress={e}>
-        <AntDesign name="rocket1" size={28} color={isE ? "orange" : "grey"} />
-        <Text style={[styles.text, isE ? styles.textCurrent : styles.text1]}>
-          Explore
+      <TouchableOpacity style={styles.item} onPress={b}>
+        <AntDesign name="book" size={28} color={isB ? "orange" : "grey"} />
+        <Text style={[styles.text, isB ? styles.textCurrent : styles.text1]}>
+          Bookings
         </Text>
       </TouchableOpacity>
       <TouchableOpacity style={[styles.item]} onPress={r}>
@@ -37,12 +37,7 @@ const Navigation = ({ h, e, r, b, a, isH, isE, isR, isB, isA }) => {
           Reviews
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.item} onPress={b}>
-        <AntDesign name="book" size={28} color={isB ? "orange" : "grey"} />
-        <Text style={[styles.text, isB ? styles.textCurrent : styles.text1]}>
-          Bookings
-        </Text>
-      </TouchableOpacity>
+
       <TouchableOpacity style={styles.item} onPress={a}>
         <Feather name="user" size={28} color={isA ? "orange" : "grey"} />
         <Text style={[styles.text, isA ? styles.textCurrent : styles.text1]}>
@@ -70,7 +65,7 @@ const styles = StyleSheet.create({
     borderColor: "grey",
   },
   item: {
-    width: "18%",
+    width: "25%",
     alignContent: "center",
     alignItems: "center",
     height: "90%",

@@ -35,7 +35,6 @@ const Explore = ({
   const [errMsg, setErrMsg] = useState("");
   const [itemIsSlected, setItemIsSlected] = useState(false);
   const [selectedItem, setSelecttedItem] = useState({});
-
   const [refreshing, setRefreshing] = React.useState(false);
   //Fetch trips
   const fetchData = () => {
@@ -53,7 +52,6 @@ const Explore = ({
           }
         })
         .catch((error) => {
-          console.log(error);
           setLoading(false);
           setErrMsg(error.message);
         });
@@ -66,7 +64,6 @@ const Explore = ({
 
   //Refresh
   const onRefresh = React.useCallback(() => {
-    //setTrips([]);
     setLoading(true);
     setRefreshing(true);
     fetchData();
@@ -76,20 +73,16 @@ const Explore = ({
   //select object
   const selectObject = (option) => {
     setItemIsSlected(true);
-    console.log("==========================");
     setSelecttedItem(option);
-    console.log(selectedItem);
-    //console.log("selected" + option);
-    //console.log("==========================");
   };
   const deselectItem = () => {
     setItemIsSlected(false);
   };
-  //Render data
+  //Render Skeleton
   const renderSkeleton = ({ item }) => {
     return (
       <View style={[styles.item, styles.boxShadow]}>
-        <View style={{ width: "100%", display: "flex", flexDirection: "row" }}>
+        <View style={styles.skeleton}>
           <TouchableOpacity style={{ width: "80%" }}>
             <Skeleton
               animation="wave"
@@ -98,14 +91,7 @@ const Explore = ({
               LinearGradientComponent={LinearGradient}
             />
           </TouchableOpacity>
-          <View
-            style={{
-              width: "20%",
-              justifyContent: "space-between",
-              height: 50,
-              margin: 5,
-            }}
-          >
+          <View style={styles.skeletonIcons}>
             <Skeleton
               animation="wave"
               width={30}
@@ -120,18 +106,11 @@ const Explore = ({
             />
           </View>
         </View>
-        <View
-          style={{
-            width: "100%",
-            justifyContent: "space-between",
-            height: 30,
-            marginTop: 5,
-          }}
-        >
+        <View style={styles.skeletonText}>
           <Skeleton
             animation="wave"
             width={"100%"}
-            height={10}
+            height={20}
             LinearGradientComponent={LinearGradient}
           />
           <Skeleton
@@ -172,10 +151,11 @@ const Explore = ({
 
   return (
     <View>
-      <StatusBar style="light" backgroundColor="orange" />
+      <StatusBar style="light" backgroundColor="transparent" />
       <Header
-        //ff5349 another color
-        backgroundColor="orange"
+        ViewComponent={LinearGradient}
+        linearGradientProps={styles.linear}
+        backgroundColor="transparent"
         leftComponent={
           <MaterialIcons
             name="arrow-back-ios"
@@ -209,7 +189,6 @@ const Explore = ({
           renderItem={renderSkeleton}
           keyExtractor={(item) => item.id.toString()}
           style={styles.row}
-          onEndReached={() => console.log("end")}
           numColumns={2}
         />
       ) : (
@@ -219,28 +198,31 @@ const Explore = ({
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
           style={{ maxHeight: "80%", minHeight: "80%" }}
-          //onEndReached={() => console.log("end")}
           numColumns={2}
-          // initialNumToRender={4}
-          // maxToRenderPerBatch={6}
-          windowSize={3}
+          initialNumToRender={5}
+          maxToRenderPerBatch={5}
+          onEndReachedThreshold={5}
+          windowSize={5}
           indicatorStyle={{ backgroundColor: "red" }}
           removeClippedSubviews={true}
-          onEndReachedThreshold={0.5}
-          //ListFooterComponentStyle={<Text>All</Text>}
           ListEmptyComponent={<Text style={styles.text}>{errMsg}</Text>}
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
               onRefresh={onRefresh}
-              colors={["orange", "grey", "black"]}
+              colors={["orange", "#ff5349", "grey"]}
               size="large"
               title="Relaoding"
             />
           }
+          ListFooterComponent={
+            <View style={[styles.listFooter, styles.boxShadow]}>
+              <Text style={styles.title}>Yoy have seen all the trips</Text>
+            </View>
+          }
         />
       )}
-      {/* {show && <ActivityIndicator color="orange" size={30} />} */}
+
       <BottomSheet
         isVisible={itemIsSlected}
         onBackdropPress={deselectItem}
@@ -248,20 +230,8 @@ const Explore = ({
           backgroundColor: "transparent",
         }}
       >
-        <View
-          style={{
-            backgroundColor: "orange",
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              padding: 10,
-            }}
-          >
+        <View style={styles.slectedItemView}>
+          <View style={styles.viewTop}>
             <Text style={[{ fontSize: 22, fontWeight: "600", color: "#fff" }]}>
               {selectedItem.title}
             </Text>
@@ -274,7 +244,6 @@ const Explore = ({
             style={{ width: "100%", height: 100 }}
           />
         </View>
-
         <Chip
           title="Account created"
           buttonStyle={styles.chip}
@@ -286,6 +255,8 @@ const Explore = ({
           </Text>
 
           <Button
+            ViewComponent={LinearGradient}
+            linearGradientProps={styles.linear}
             icon={<MaterialCommunityIcons name="cart" color="#fff" size={30} />}
             title="Book now"
             containerStyle={styles.btnCont}
@@ -308,9 +279,27 @@ const Explore = ({
 export default Explore;
 
 const styles = StyleSheet.create({
+  linear: {
+    colors: ["orange", "orange", "#ff5349"],
+    start: { x: 0, y: 0.5 },
+    end: { x: 1, y: 0.5 },
+  },
   screenName: { color: "#fff", fontSize: 22, fontWeight: "600" },
   row: {
     maxHeight: "80%",
+  },
+  skeleton: { width: "100%", display: "flex", flexDirection: "row" },
+  skeletonIcons: {
+    width: "20%",
+    justifyContent: "space-between",
+    height: 50,
+    margin: 5,
+  },
+  skeletonText: {
+    width: "100%",
+    justifyContent: "space-between",
+    height: 40,
+    marginTop: 5,
   },
   item: {
     width: "50%",
@@ -320,8 +309,7 @@ const styles = StyleSheet.create({
     padding: 16,
     alignItems: "center",
     justifyContent: "center",
-    marginEnd: 1,
-    marginTop: 2,
+    margin: 1,
   },
   boxShadow: {
     shadowColor: "#000",
@@ -354,17 +342,30 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: "grey",
     alignSelf: "center",
-    //marginTop: 200,
+  },
+  listFooter: {
+    backgroundColor: "#fff",
+    margin: 2,
+    alignContent: "center",
+    alignItems: "center",
+    height: 40,
+  },
+  slectedItemView: {
+    backgroundColor: "orange",
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+  },
+  viewTop: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 10,
   },
   chipCont: {
     marginVertical: 0,
     height: 200,
     width: "100%",
     alignSelf: "center",
-    //borderTopLeftRadius: 10,
-    //borderTopRightRadius: 10,
     borderRadius: 0,
-    //borderWidth: 1,
     borderColor: "grey",
   },
   chip: {

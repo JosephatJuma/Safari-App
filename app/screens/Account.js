@@ -4,9 +4,9 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  TouchableHighlight,
+  Linking,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { StatusBar } from "expo-status-bar";
 import { Header, Chip, BottomSheet, Button } from "@rneui/base";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -25,11 +25,15 @@ const Account = ({
   toReviews,
   toBookings,
   logout,
+  help,
+  info,
+  logging,
 }) => {
   const [showLogoutAlert, setShowLogoutAlert] = useState(false);
+
   const logoutFunction = () => {
-    setShowLogoutAlert(false);
     logout();
+    setShowLogoutAlert(false);
   };
   const displayLogoutAlert = () => {
     setShowLogoutAlert(!showLogoutAlert);
@@ -100,14 +104,14 @@ const Account = ({
             </View>
             <Octicons name="chevron-right" size={25} color="grey" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.option}>
+          <TouchableOpacity style={styles.option} onPress={help}>
             <View style={styles.icon}>
               <Feather name="help-circle" size={24} color="orange" />
               <Text style={styles.optionText}>Get Help</Text>
             </View>
             <Octicons name="chevron-right" size={25} color="grey" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.option}>
+          <TouchableOpacity style={styles.option} onPress={info}>
             <View style={styles.icon}>
               <AntDesign name="infocirlceo" size={24} color="orange" />
               <Text style={styles.optionText}>More Info</Text>
@@ -138,7 +142,7 @@ const Account = ({
         >
           <MaterialIcons name="logout" size={100} color="orange" />
           <Text style={[styles.text, { fontSize: 20, fontWeight: "600" }]}>
-            Are you sure yount to logout?
+            Are you sure you want to logout?
           </Text>
           <Button
             containerStyle={styles.btnCont}
@@ -232,10 +236,16 @@ const styles = StyleSheet.create({
   icon: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-around",
     width: "50%",
+    alignContent: "center",
+    alignItems: "center",
   },
-  optionText: { color: "grey", fontSize: 18, fontWeight: "500" },
+  optionText: {
+    color: "grey",
+    fontSize: 18,
+    fontWeight: "500",
+    marginLeft: 10,
+  },
   boxShadow: {
     shadowColor: "#000",
     shadowOffset: {
