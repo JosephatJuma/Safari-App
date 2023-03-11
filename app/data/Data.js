@@ -55,23 +55,35 @@ export const bookings = [
     eventCategory: "trip",
     trip: true,
     title: "Explore Kalangala",
+    image:
+      "https://reactnativecode.com/wp-content/uploads/2018/02/Default_Image_Thumbnail.png",
+    price: 100000,
   },
   {
     id: "B60345",
     eventCategory: "trip",
     trip: true,
     title: "Visit Sipi falls",
+    image:
+      "https://reactnativecode.com/wp-content/uploads/2018/02/Default_Image_Thumbnail.png",
+    price: 100000,
   },
   {
     id: "B69345",
     eventCategory: "trip",
     trip: true,
     title: "Visit Sipi falls",
+    image:
+      "https://reactnativecode.com/wp-content/uploads/2018/02/Default_Image_Thumbnail.png",
+    price: 100000,
   },
   {
-    id: "B62945",
-    eventCategory: "hotel",
-    hotel: true,
-    hotelName: "Nile Cottages",
+    id: "B99345",
+    eventCategory: "trip",
+    trip: true,
+    title: "Visit Sipi falls",
+    image:
+      "https://reactnativecode.com/wp-content/uploads/2018/02/Default_Image_Thumbnail.png",
+    price: 100000,
   },
 ];

@@ -28,7 +28,7 @@ const Reviews = ({ back, toExplore, toAccount, toHome, toBookings }) => {
         }
         centerComponent={<Text style={styles.screenName}>Rating</Text>}
       />
-      <ScrollView style={{ minHeight: "80%" }}>
+      <ScrollView style={{ minHeight: "80.5%" }}>
         <View>
           <Text>Your ratines will be here</Text>
         </View>

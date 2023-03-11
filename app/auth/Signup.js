@@ -17,8 +17,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import axios from "axios";
 import { apiUrl } from "../api/Api";
-//Regexs
-
+//Regular Expression
 const nameREGEX =
   /^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/;
 const passGEX =
@@ -53,37 +52,34 @@ const Signup = ({ login }) => {
   const [uid, setUid] = useState("Jose@2000");
 
   const validateName = () => {
-    //const valid = nameREGEX.test(name);
-    //console.log(valid);
-    setValidName(nameREGEX.test(name));
-    console.log(isValidName);
-    isValidName === false
-      ? setNameError("Name is not correct!")
-      : setNameError("");
+    const valid = nameREGEX.test(name);
+    setValidName(valid);
+    valid === false ? setNameError("Name is not correct!") : setNameError("");
+    if (valid === false) return;
   };
   const validateEmail = () => {
     const valid = emailREGEX.test(email);
-    console.log(valid);
     setValidEmail(valid);
     valid === false ? setEmailError("Email Not Correct!") : setEmailError("");
+    if (valid === false) return;
   };
   const validatePhone = () => {
     const valid = phoneREGEX.test(phone);
-    console.log(valid);
     setValidPhone(valid);
     valid === false
       ? setPhoneErro("The Phone Number is not valid!")
       : setPhoneErro("");
+    if (valid === false) return;
   };
   const validatePassword = () => {
     const valid = passGEX.test(password);
-    console.log(valid);
     setStrongPassword(valid);
     valid === false
       ? setPasswordError(
-          "Password must be atleast eight characters long, with 1 uppercase letter, lowercase letter, 1 number and 1 speacial character !"
+          "Password must a combination of uppercase, lowercase letters, numbers & speacial characters!"
         )
       : setPasswordError("");
+    if (valid === false) return;
   };
 
   //create account then
@@ -101,7 +97,6 @@ const Signup = ({ login }) => {
       return;
     }
     if (!isValidName || !isValidEmail || !isValidPhone || !isStrongPassword) {
-      ("use-strict");
       Alert.alert(
         "Invalid enteries!",
         "Please check your form and correct some fields!",
@@ -109,7 +104,6 @@ const Signup = ({ login }) => {
       );
       return;
     }
-
     const user = {
       email: email,
       name: name,
@@ -118,7 +112,6 @@ const Signup = ({ login }) => {
     };
     setLoading(!loading);
     setDisable(!disableForm);
-
     axios
       .post(apiUrl.register, user)
       .then((response) => {
@@ -133,7 +126,6 @@ const Signup = ({ login }) => {
           );
           setLoading(false);
           setDisable(false);
-
           return;
         }
         setUid(response.data.uid);
@@ -153,10 +145,8 @@ const Signup = ({ login }) => {
   return (
     <View syle={styles.container}>
       <StatusBar style="light" backgroundColor="orange" />
-
       <ScrollView
         contentContainerStyle={{
-          //marginTop: 100,
           alignContent: "center",
           alignItems: "center",
           alignSelf: "center",
@@ -227,6 +217,7 @@ const Signup = ({ login }) => {
           containerStyle={[styles.inputContainer, styles.boxShadow]}
           placeholder="Phone Number"
           leftIcon={<FontAwesome name="phone" size={24} color="grey" />}
+          maxLength={13}
           value={phone}
           onChangeText={setPhone}
           onChange={validatePhone}
@@ -314,7 +305,7 @@ const styles = StyleSheet.create({
     height: 53,
   },
   buttonContainer: {
-    margin: 10,
+    margin: 5,
     width: "90%",
     borderWidth: 1,
     borderRadius: 8,

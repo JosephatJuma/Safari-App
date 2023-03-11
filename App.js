@@ -9,6 +9,7 @@ import Login from "./app/auth/Login";
 import Signup from "./app/auth/Signup";
 import Help from "./more/Help";
 import Info from "./more/Info";
+import Cart from "./app/screens/Cart";
 import Notifications from "./more/Notifications";
 import { NavigationContainer } from "@react-navigation/native";
 import {
@@ -28,15 +29,24 @@ export default function App() {
   const [signedIn, setSignedIn] = useState(false);
   const [logging, SetLogging] = useState(false);
   const [user, setUser] = useState({});
+  const [cartItems, setCartItems] = useState([]);
+
   const HomeScreen = ({ navigation }) => {
+    const addToCart = (item) => {
+      setCartItems([item]);
+      navigation.navigate("Cart");
+    };
     return (
       <Home
+        numberOfItemsOnCart={cartItems.length}
         toExplore={() => navigation.push("Explore")}
         toAccount={() => navigation.push("Account")}
         toBookings={() => navigation.push("Bookings")}
         toReviews={() => navigation.push("Reviews")}
         toSearch={() => navigation.push("Search")}
         nots={() => navigation.push("Notifications")}
+        cart={() => navigation.push("Cart")}
+        addItem={addToCart}
       />
     );
   };
@@ -172,6 +182,18 @@ export default function App() {
   const NotificationsScreen = ({ navigation }) => {
     return <Notifications back={() => navigation.goBack()} />;
   };
+  const CartScreen = ({ navigation }) => {
+    const removeFromCart = () => {
+      setCartItems([]);
+    };
+    return (
+      <Cart
+        back={() => navigation.goBack()}
+        items={cartItems}
+        removeItem={removeFromCart}
+      />
+    );
+  };
   const Stack = createStackNavigator();
 
   return (
@@ -246,6 +268,11 @@ export default function App() {
         <Stack.Screen
           name="Info"
           component={InfoScreen}
+          options={styles.screenOptions}
+        />
+        <Stack.Screen
+          name="Cart"
+          component={CartScreen}
           options={styles.screenOptions}
         />
         <Stack.Screen

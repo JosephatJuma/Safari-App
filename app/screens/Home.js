@@ -18,6 +18,7 @@ import {
   Skeleton,
   BottomSheet,
   Chip,
+  Badge,
 } from "@rneui/base";
 import { data } from "../data/Data";
 import Navigation from "../components/Navigation";
@@ -27,6 +28,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 
 import { LinearGradient } from "expo-linear-gradient";
 export default function Home({
@@ -35,6 +37,9 @@ export default function Home({
   toBookings,
   toSearch,
   nots,
+  cart,
+  addItem,
+  numberOfItemsOnCart,
 }) {
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -80,8 +85,8 @@ export default function Home({
 
   //select object
   const selectObject = (option) => {
-    setItemIsSlected(true);
     setSelecttedItem(option);
+    setItemIsSlected(true);
   };
   const deselectItem = () => {
     setItemIsSlected(false);
@@ -147,6 +152,32 @@ export default function Home({
       </TouchableOpacity>
     );
   };
+  const renderSkeletonForRecommend = ({ item }) => {
+    return (
+      <View
+        key={item.id}
+        style={{
+          margin: 5,
+          width: 80,
+          height: 80,
+          justifyContent: "space-evenly",
+        }}
+      >
+        <Skeleton
+          animation="wave"
+          width={"100%"}
+          height={"70%"}
+          LinearGradientComponent={LinearGradient}
+        />
+        <Skeleton
+          animation="wave"
+          width={"100%"}
+          height={"15%"}
+          LinearGradientComponent={LinearGradient}
+        />
+      </View>
+    );
+  };
 
   //Render data
   const renderItem = ({ item }) => {
@@ -208,18 +239,34 @@ export default function Home({
         }
         rightComponent={
           <View style={{ display: "flex", flexDirection: "row" }}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={cart}>
               <MaterialCommunityIcons
                 name="cart-variant"
                 size={30}
                 color="#fff"
               />
+              {numberOfItemsOnCart > 0 && (
+                <Badge
+                  badgeStyle={{
+                    top: -32,
+                    position: "absolute",
+                    backgroundColor: "#000",
+                    left: 17,
+                  }}
+                />
+              )}
             </TouchableOpacity>
-            <TouchableOpacity>
-              <Ionicons name="heart-outline" size={30} color="#fff" />
-            </TouchableOpacity>
+
             <TouchableOpacity onPress={nots}>
               <Ionicons name="notifications-outline" size={30} color="#fff" />
+              <Badge
+                badgeStyle={{
+                  top: -32,
+                  position: "absolute",
+                  backgroundColor: "#000",
+                  left: 17,
+                }}
+              />
             </TouchableOpacity>
           </View>
         }
@@ -261,7 +308,9 @@ export default function Home({
           </View>
           <FlatList
             data={data}
-            renderItem={renderRecommendations}
+            renderItem={
+              loading ? renderSkeletonForRecommend : renderRecommendations
+            }
             keyExtractor={(item) => item.id}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
@@ -306,13 +355,65 @@ export default function Home({
               </View>
             }
           />
+          // <View
+          //   style={{
+          //     alignContent: "center",
+          //     justifyContent: "space-evenly",
+          //     flexDirection: "row",
+          //     flexWrap: "wrap",
+          //     width: "100%",
+          //   }}
+          // >
+          //   {trips.map((item) => {
+          //     return (
+          //       <View style={[styles.item, styles.boxShadow]} key={item.id}>
+          //         <View
+          //           style={{
+          //             width: "100%",
+          //             display: "flex",
+          //             flexDirection: "row",
+          //           }}
+          //         >
+          //           <TouchableOpacity
+          //             style={{ width: "80%" }}
+          //             onPress={() => selectObject(item)}
+          //           >
+          //             <Image
+          //               source={{ uri: item.photoURL }}
+          //               style={styles.image}
+          //             />
+          //           </TouchableOpacity>
+          //           <View>
+          //             <TouchableOpacity>
+          //               <Ionicons
+          //                 name="heart-outline"
+          //                 size={30}
+          //                 color="orange"
+          //               />
+          //             </TouchableOpacity>
+          //             <TouchableOpacity>
+          //               <MaterialIcons
+          //                 name="add-circle"
+          //                 size={30}
+          //                 color="orange"
+          //                 onPress={() => selectObject(item)}
+          //               />
+          //             </TouchableOpacity>
+          //           </View>
+          //         </View>
+          //         <Text style={styles.title}>{item.title}</Text>
+          //         <Text style={styles.title}>UGX {item.price}</Text>
+          //       </View>
+          //     );
+          //   })}
+          // </View>
         )}
       </ScrollView>
       <BottomSheet
         isVisible={itemIsSlected}
         onBackdropPress={deselectItem}
-        backdropStyle={{
-          backgroundColor: "transparent",
+        containerStyle={{
+          backgroundColor: "#000000c0",
         }}
       >
         <View style={styles.slectedItemView}>
@@ -321,13 +422,16 @@ export default function Home({
               {selectedItem.title}
             </Text>
             <TouchableOpacity onPress={deselectItem}>
-              <MaterialIcons name="cancel" size={35} color="#fff" />
+              <Feather name="delete" size={30} color="#fff" />
             </TouchableOpacity>
           </View>
           <ImageBackground
             source={{ url: selectedItem.photoURL }}
             style={{ width: "100%", height: 100 }}
-          />
+          >
+            <Text> Start date: {selectedItem.startDate}</Text>
+            <Text> End date: {selectedItem.endDate}</Text>
+          </ImageBackground>
         </View>
         <Chip
           title="Account created"
@@ -347,6 +451,7 @@ export default function Home({
             containerStyle={styles.btnCont}
             buttonStyle={styles.btn}
             titleStyle={{ fontSize: 20, fontWeight: "700" }}
+            onPress={() => addItem(selectedItem)}
           />
         </Chip>
       </BottomSheet>
@@ -425,9 +530,8 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   title: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#000",
+    //fontSize: 15,
+    fontWeight: "500",
     color: "grey",
   },
   columnWrapper: {
@@ -471,7 +575,8 @@ const styles = StyleSheet.create({
   },
   chipCont: {
     marginVertical: 0,
-    height: 200,
+    maxHeight: 200,
+    minHeight: 100,
     width: "100%",
     alignSelf: "center",
     borderRadius: 0,
@@ -480,7 +585,8 @@ const styles = StyleSheet.create({
   chip: {
     borderRadius: 0,
     backgroundColor: "#fff",
-    height: "100%",
+    maxHeight: 200,
+    minHeight: 100,
     flexDirection: "column",
   },
   btnCont: { width: "80%", height: 50, borderRadius: 100, margin: 5 },

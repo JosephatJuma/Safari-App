@@ -11,7 +11,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
 import { Header, BottomSheet, Chip, Input, Button } from "@rneui/base";
 import { LinearGradient } from "expo-linear-gradient";
@@ -85,24 +85,40 @@ const Help = ({ back }) => {
           <Text style={styles.text}>App info</Text>
         </TouchableOpacity>
       </View>
-      <BottomSheet isVisible={showBS} onBackdropPress={showSendMessage}>
-        <Chip containerStyle={styles.chipCont} buttonStyle={styles.chip}>
-          <Input
-            containerStyle={styles.inputCont}
-            placeholder="Type your message here"
-            inputStyle={styles.input}
-            multiline={true}
-            inputContainerStyle={{ borderBottomWidth: 0 }}
-            value={message}
-            onChangeText={setMessage}
-          />
-          <Button
-            containerStyle={styles.btnCont}
-            buttonStyle={styles.btn}
-            title="Send message"
-            titleStyle={{ fontSize: 20, fontWeight: "bold" }}
-            onPress={sendMessage}
-          />
+      <BottomSheet
+        isVisible={showBS}
+        onBackdropPress={showSendMessage}
+        //containerStyle={{ backgroundColor: "#000000c0" }}
+      >
+        <Chip containerStyle={[styles.chipCont]} buttonStyle={[styles.chip]}>
+          <TouchableOpacity
+            onPress={showSendMessage}
+            style={{
+              alignSelf: "flex-end",
+              position: "relative",
+            }}
+          >
+            <Feather name="delete" size={30} color="grey" />
+          </TouchableOpacity>
+          <View style={{ flexDirection: "row", width: "100%" }}>
+            <Input
+              containerStyle={styles.inputCont}
+              placeholder="Type your message here"
+              inputStyle={styles.input}
+              multiline={true}
+              inputContainerStyle={{ borderBottomWidth: 0 }}
+              value={message}
+              onChangeText={setMessage}
+            />
+
+            <Button
+              icon={<MaterialIcons name="send" size={30} color="grey" />}
+              containerStyle={styles.btnCont}
+              buttonStyle={styles.btn}
+              titleStyle={{ fontSize: 20, fontWeight: "bold" }}
+              onPress={sendMessage}
+            />
+          </View>
         </Chip>
       </BottomSheet>
     </View>
@@ -117,6 +133,16 @@ const styles = StyleSheet.create({
     start: { x: 0, y: 0.5 },
     end: { x: 1, y: 0.5 },
   },
+  boxShadow: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 10,
+    shadowRadius: 8,
+    elevation: 4,
+  },
   screenName: { color: "#fff", fontSize: 22, fontWeight: "600" },
   item: {
     width: "100%",
@@ -128,11 +154,11 @@ const styles = StyleSheet.create({
   },
   text: { color: "grey", fontSize: 18, fontWeight: "600", marginLeft: 30 },
   chipCont: {
-    maxHeight: 300,
-    minHeight: 100,
+    minHeight: 200,
+    //maxHeight: 600,
     backgroundColor: "#F5F5F5",
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     borderRadius: 0,
   },
   chip: {
@@ -142,30 +168,31 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   inputCont: {
-    width: "100%",
+    width: "80%",
     alignContent: "center",
     alignItems: "center",
     maxHeight: 200,
     marginBottom: 10,
-    backgroundColor: "#fff",
+    marginRight: 5,
+    backgroundColor: "#F5F5F5",
     borderRadius: 10,
-    borderColor: "orange",
-    borderWidth: 1,
+    borderColor: "grey",
+    borderWidth: 0.5,
     minHeight: 50,
   },
   input: {
-    color: "orange",
+    color: "grey",
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: "500",
   },
   btnCont: {
-    width: "80%",
-    height: 50,
+    width: "20%",
+    height: 60,
     borderRadius: 8,
   },
   btn: {
     width: "100%",
     height: "100%",
-    backgroundColor: "orange",
+    backgroundColor: "#fff",
   },
 });

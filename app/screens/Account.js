@@ -72,7 +72,6 @@ const Account = ({
         <View style={[styles.accountDetails, styles.boxShadow]}>
           <FontAwesome5 name="user" size={100} color="orange" />
           <View>
-            <Text style={styles.text}>{userData.id}</Text>
             <Text style={styles.text}>{userData.phone}</Text>
             <Text style={styles.text}>{userData.name}</Text>
             <Text style={styles.text}>{userData.email}</Text>
@@ -88,42 +87,42 @@ const Account = ({
               />
               <Text style={styles.optionText}>Edit Profile</Text>
             </View>
-            <Octicons name="chevron-right" size={25} color="grey" />
+            <Octicons name="chevron-right" size={25} color="#ff5349" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.option}>
             <View style={styles.icon}>
               <AntDesign name="sharealt" size={24} color="orange" />
               <Text style={styles.optionText}>Share app</Text>
             </View>
-            <Octicons name="chevron-right" size={25} color="grey" />
+            <Octicons name="chevron-right" size={25} color="#ff5349" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.option}>
             <View style={styles.icon}>
               <AntDesign name="staro" size={24} color="orange" />
               <Text style={styles.optionText}>Rate app</Text>
             </View>
-            <Octicons name="chevron-right" size={25} color="grey" />
+            <Octicons name="chevron-right" size={25} color="#ff5349" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.option} onPress={help}>
             <View style={styles.icon}>
               <Feather name="help-circle" size={24} color="orange" />
               <Text style={styles.optionText}>Get Help</Text>
             </View>
-            <Octicons name="chevron-right" size={25} color="grey" />
+            <Octicons name="chevron-right" size={25} color="#ff5349" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.option} onPress={info}>
             <View style={styles.icon}>
               <AntDesign name="infocirlceo" size={24} color="orange" />
               <Text style={styles.optionText}>More Info</Text>
             </View>
-            <Octicons name="chevron-right" size={25} color="grey" />
+            <Octicons name="chevron-right" size={25} color="#ff5349" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.option} onPress={displayLogoutAlert}>
             <View style={styles.icon}>
               <AntDesign name="logout" size={24} color="orange" />
               <Text style={styles.optionText}>Logout</Text>
             </View>
-            <Octicons name="chevron-right" size={25} color="grey" />
+            <Octicons name="chevron-right" size={25} color="#ff5349" />
           </TouchableOpacity>
         </View>
         <View style={[styles.version]}>
