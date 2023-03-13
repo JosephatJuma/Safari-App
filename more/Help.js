@@ -39,7 +39,7 @@ const Help = ({ back }) => {
     setShowBS(!showBS);
   };
   const sendMessage = () => {
-    console.log(message);
+    setMessage("");
   };
   return (
     <View>
@@ -102,6 +102,7 @@ const Help = ({ back }) => {
           </TouchableOpacity>
           <View style={{ flexDirection: "row", width: "100%" }}>
             <Input
+              autoFocus={showBS}
               containerStyle={styles.inputCont}
               placeholder="Type your message here"
               inputStyle={styles.input}
@@ -109,6 +110,7 @@ const Help = ({ back }) => {
               inputContainerStyle={{ borderBottomWidth: 0 }}
               value={message}
               onChangeText={setMessage}
+              cursorColor="grey"
             />
 
             <Button
@@ -152,13 +154,13 @@ const styles = StyleSheet.create({
     borderColor: "grey",
     height: 60,
   },
-  text: { color: "grey", fontSize: 18, fontWeight: "600", marginLeft: 30 },
+  text: { color: "grey", fontSize: 18, fontWeight: "500", marginLeft: 30 },
   chipCont: {
     minHeight: 200,
     //maxHeight: 600,
     backgroundColor: "#F5F5F5",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
     borderRadius: 0,
   },
   chip: {

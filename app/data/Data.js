@@ -58,16 +58,9 @@ export const bookings = [
     image:
       "https://reactnativecode.com/wp-content/uploads/2018/02/Default_Image_Thumbnail.png",
     price: 100000,
+    confirmed: true,
   },
-  {
-    id: "B60345",
-    eventCategory: "trip",
-    trip: true,
-    title: "Visit Sipi falls",
-    image:
-      "https://reactnativecode.com/wp-content/uploads/2018/02/Default_Image_Thumbnail.png",
-    price: 100000,
-  },
+
   {
     id: "B69345",
     eventCategory: "trip",
@@ -76,6 +69,7 @@ export const bookings = [
     image:
       "https://reactnativecode.com/wp-content/uploads/2018/02/Default_Image_Thumbnail.png",
     price: 100000,
+    confirmed: true,
   },
   {
     id: "B99345",
@@ -85,5 +79,16 @@ export const bookings = [
     image:
       "https://reactnativecode.com/wp-content/uploads/2018/02/Default_Image_Thumbnail.png",
     price: 100000,
+    confirmed: false,
+  },
+  {
+    id: "B993125",
+    eventCategory: "trip",
+    trip: true,
+    title: "Visit Sipi falls",
+    image:
+      "https://reactnativecode.com/wp-content/uploads/2018/02/Default_Image_Thumbnail.png",
+    price: 100000,
+    confirmed: false,
   },
 ];

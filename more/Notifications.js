@@ -41,12 +41,7 @@ const Notifications = ({ back }) => {
         linearGradientProps={styles.linear}
         backgroundColor="transparent"
         leftComponent={
-          <MaterialIcons
-            name="arrow-back-ios"
-            size={25}
-            color="#fff"
-            onPress={back}
-          />
+          <MaterialIcons name="cancel" size={25} color="#fff" onPress={back} />
         }
         centerComponent={<Text style={styles.screenName}>Notifications</Text>}
       />

@@ -1,21 +1,20 @@
-import { StyleSheet, Text, View, DrawerLayoutAndroid } from "react-native";
-import React, { useState } from "react";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import React, { useState, useRef, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import { MaterialIcons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-import Navigation from "../components/Navigation";
-import { ScrollView } from "react-native-gesture-handler";
 import { Header, Input } from "@rneui/base";
-import { TouchableOpacity } from "react-native";
+
 const Search = ({ back }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const Cancel = () => {
     setSearchTerm("");
   };
 
+  const searchRef = useRef(null);
+  useEffect(() => {
+    searchRef.current.focus();
+  }, []);
   return (
     <View>
       <StatusBar style="light" backgroundColor="orange" />
@@ -24,11 +23,14 @@ const Search = ({ back }) => {
         centerComponent={
           <View style={{ width: "200%" }}>
             <Input
+              ref={searchRef}
+              autoFocus={true}
               containerStyle={styles.inputContainer}
               inputContainerStyle={{ borderBottomWidth: 0 }}
               inputStyle={styles.input}
               placeholder="Looking for any thing?"
-              cursorColor="orange"
+              placeholderTextColor="#fff"
+              cursorColor="white"
               keyboardType="web-search"
               value={searchTerm}
               onChangeText={setSearchTerm}
@@ -36,14 +38,14 @@ const Search = ({ back }) => {
                 <Ionicons
                   name="arrow-back"
                   size={30}
-                  color="orange"
+                  color="white"
                   onPress={back}
                 />
               }
               rightIcon={
                 searchTerm && (
                   <TouchableOpacity onPress={Cancel}>
-                    <MaterialIcons name="cancel" size={20} color="orange" />
+                    <MaterialIcons name="cancel" size={20} color="#fff" />
                   </TouchableOpacity>
                 )
               }
@@ -59,12 +61,10 @@ export default Search;
 
 const styles = StyleSheet.create({
   inputContainer: {
-    backgroundColor: "#fff",
+    backgroundColor: "orange",
     height: 45,
-    borderRadius: 50,
-    width: "80%",
+    width: "90%",
     alignSelf: "center",
   },
-  input: { color: "orange", fontWeight: "900" },
-  screenName: { color: "#fff", fontSize: 22, fontWeight: "600" },
+  input: { color: "#fff", fontWeight: "900" },
 });

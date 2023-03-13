@@ -39,12 +39,12 @@ const Cart = ({ back, items, removeItem }) => {
                   key={item.id}
                 >
                   <View style={styles.cardTop}>
-                    <Card.Title>{item.title}</Card.Title>
+                    <Card.Title style={styles.text}>{item.title}</Card.Title>
                     <TouchableOpacity>
                       <Feather
                         name="delete"
                         size={30}
-                        color="#000"
+                        color="#ff5349"
                         onPress={showCancelBookingAlert}
                       />
                     </TouchableOpacity>
@@ -52,13 +52,18 @@ const Cart = ({ back, items, removeItem }) => {
                   <Card.Divider></Card.Divider>
                   <Card.Image
                     source={{ uri: item.photoURL }}
-                    style={{ width: "100%", height: 300 }}
+                    style={{ width: "100%", height: 250 }}
                   />
-                  <Card.FeaturedSubtitle style={{ color: "#000" }}>
+                  <Card.FeaturedSubtitle style={styles.text}>
                     UGX {item.price}
                   </Card.FeaturedSubtitle>
                   {/* <Text>{item.description}</Text> */}
-                  <Button title="Pay now" buttonStyle={styles.button} />
+                  <Button
+                    title="Pay now"
+                    buttonStyle={styles.button}
+                    ViewComponent={LinearGradient}
+                    linearGradientProps={styles.linear}
+                  />
                 </Card>
               );
             })
@@ -131,26 +136,27 @@ const styles = StyleSheet.create({
     elevation: 7,
   },
   itemCard: {
-    width: "99%",
+    width: "98%",
     alignSelf: "center",
     marginBottom: 10,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: "grey",
-    padding: 10,
+    borderColor: "orange",
+    padding: 2,
   },
   cardTop: {
     justifyContent: "space-between",
     flexDirection: "row",
+    padding: 10,
   },
   dialog: {
     backgroundColor: "#fff",
-    width: "96%",
-    height: 200,
+    width: "95%",
+    height: 160,
     alignContent: "center",
     alignItems: "center",
-    borderRadius: 10,
-    justifyContent: "space-evenly",
+    borderRadius: 15,
+    justifyContent: "space-between",
   },
   btns: {
     backgroundColor: "#fff",
@@ -167,15 +173,23 @@ const styles = StyleSheet.create({
   btn: {
     width: "100%",
     height: "100%",
-    backgroundColor: "#fff",
+    backgroundColor: "#F5F5F5",
   },
-  title: { color: "grey", fontSize: 20 },
+  title: { color: "grey", fontSize: 18 },
+  text: {
+    color: "#ff5349",
+    fontWeight: "700",
+    fontSize: 18,
+  },
   button: {
-    backgroundColor: "#000",
+    backgroundColor: "orange",
     width: "100%",
     height: 60,
     borderWidth: 0.5,
     borderColor: "grey",
     borderRadius: 0,
+    alignSelf: "center",
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
   },
 });

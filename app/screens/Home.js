@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   RefreshControl,
   ImageBackground,
+  ActivityIndicator,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import {
@@ -62,11 +63,12 @@ export default function Home({
           } else {
             setLoading(false);
             setRefreshing(false);
-            setErrMsg("No items found");
+            setErrMsg("There are no upcoming trips apparently");
           }
         })
         .catch((error) => {
           setLoading(false);
+          setRefreshing(false);
           setErrMsg(error.message);
         });
     }
@@ -78,7 +80,7 @@ export default function Home({
 
   //Refresh
   const onRefresh = React.useCallback(() => {
-    //setLoading(true);
+    setErrMsg("Refreshing");
     setRefreshing(true);
     fetchData();
   }, []);
@@ -102,6 +104,7 @@ export default function Home({
               animation="wave"
               width={"100%"}
               height={100}
+              style={{ backgroundColor: "lightgrey" }}
               LinearGradientComponent={LinearGradient}
             />
           </View>
@@ -141,14 +144,17 @@ export default function Home({
     return (
       <TouchableOpacity
         key={item.id}
-        style={{ margin: 5, width: 80, height: 80 }}
+        style={{
+          margin: 5,
+          width: 120,
+          height: 160,
+          alignContent: "center",
+          alignItems: "center",
+        }}
+        onPress={() => selectObject(item)}
       >
-        <Image
-          source={{ uri: item.image }}
-          style={{ width: "100%", height: "80%" }}
-        />
-        <Text style={styles.text}>Item</Text>
-        <Text style={styles.text}>Item</Text>
+        <Image source={{ uri: item.photoURL }} style={styles.image} />
+        <Text style={styles.title}>{item.title}</Text>
       </TouchableOpacity>
     );
   };
@@ -220,16 +226,7 @@ export default function Home({
         height={100}
         centerComponent={
           <View style={{ marginLeft: -30 }}>
-            <Text
-              style={{
-                color: "#fff",
-                fontWeight: "700",
-                fontSize: 29,
-              }}
-            >
-              {/* Safari-area */}
-              Tuzunge
-            </Text>
+            <Text style={styles.name}>Tuzunge</Text>
           </View>
         }
         leftComponent={
@@ -245,28 +242,11 @@ export default function Home({
                 size={30}
                 color="#fff"
               />
-              {numberOfItemsOnCart > 0 && (
-                <Badge
-                  badgeStyle={{
-                    top: -32,
-                    position: "absolute",
-                    backgroundColor: "#000",
-                    left: 17,
-                  }}
-                />
-              )}
+              {numberOfItemsOnCart > 0 && <Badge badgeStyle={styles.badge} />}
             </TouchableOpacity>
-
             <TouchableOpacity onPress={nots}>
               <Ionicons name="notifications-outline" size={30} color="#fff" />
-              <Badge
-                badgeStyle={{
-                  top: -32,
-                  position: "absolute",
-                  backgroundColor: "#000",
-                  left: 17,
-                }}
-              />
+              <Badge badgeStyle={styles.badge} />
             </TouchableOpacity>
           </View>
         }
@@ -284,7 +264,7 @@ export default function Home({
         }
       >
         <View style={[styles.add, styles.boxShadow]}>
-          <View>
+          <View style={{ padding: 5 }}>
             <Text style={{ fontWeight: "600", fontSize: 30, color: "orange" }}>
               Get 25%
             </Text>
@@ -297,7 +277,14 @@ export default function Home({
             />
           </View>
         </View>
-        <View style={{ backgroundColor: "#fff", padding: 10 }}>
+        <View
+          style={{
+            backgroundColor: "#fff",
+            padding: 0,
+            borderBottomWidth: 1,
+            borderColor: "lightgrey",
+          }}
+        >
           <View style={styles.itemsTop}>
             <Text style={styles.text}>Recomended for you</Text>
             <MaterialCommunityIcons
@@ -307,13 +294,15 @@ export default function Home({
             />
           </View>
           <FlatList
-            data={data}
+            data={loading ? data : trips}
             renderItem={
               loading ? renderSkeletonForRecommend : renderRecommendations
             }
             keyExtractor={(item) => item.id}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
+            decelerationRate="fast"
+            snapToInterval={10}
           />
         </View>
 
@@ -340,7 +329,6 @@ export default function Home({
             data={trips}
             renderItem={renderItem}
             keyExtractor={(item) => item.id.toString()}
-            //style={{ maxHeight: "80%", minHeight: "80%" }}
             numColumns={2}
             initialNumToRender={5}
             maxToRenderPerBatch={5}
@@ -348,11 +336,29 @@ export default function Home({
             windowSize={5}
             indicatorStyle={{ backgroundColor: "red" }}
             removeClippedSubviews={true}
-            ListEmptyComponent={<Text style={styles.text}>{errMsg}</Text>}
-            ListFooterComponent={
-              <View style={[styles.listFooter, styles.boxShadow]}>
-                <Text style={styles.title}>You have seen all the trips</Text>
+            ListEmptyComponent={
+              <View
+                style={[styles.listFooter, styles.boxShadow, { height: 250 }]}
+              >
+                <View style={styles.error}>
+                  <MaterialIcons name="error-outline" size={28} color="grey" />
+                  <Text style={styles.text}>{errMsg}</Text>
+                </View>
+                <TouchableOpacity onPress={onRefresh}>
+                  {refreshing ? (
+                    <ActivityIndicator size={80} color="orange" />
+                  ) : (
+                    <FontAwesome name="refresh" size={80} color="orange" />
+                  )}
+                </TouchableOpacity>
               </View>
+            }
+            ListFooterComponent={
+              trips.length > 0 && (
+                <View style={[styles.listFooter, styles.boxShadow]}>
+                  <Text style={styles.title}>You have seen all the trips</Text>
+                </View>
+              )
             }
           />
           // <View
@@ -425,13 +431,11 @@ export default function Home({
               <Feather name="delete" size={30} color="#fff" />
             </TouchableOpacity>
           </View>
-          <ImageBackground
-            source={{ url: selectedItem.photoURL }}
-            style={{ width: "100%", height: 100 }}
-          >
-            <Text> Start date: {selectedItem.startDate}</Text>
-            <Text> End date: {selectedItem.endDate}</Text>
-          </ImageBackground>
+          <Image
+            source={require("../assets/images/login.jpg")}
+            //source={{ url: selectedItem.photo }}
+            style={{ width: "100%", height: 200 }}
+          ></Image>
         </View>
         <Chip
           title="Account created"
@@ -439,9 +443,24 @@ export default function Home({
           containerStyle={styles.chipCont}
           onAccessibilityEscape={deselectItem}
         >
-          <Text style={[styles.text, { fontSize: 15, fontWeight: "600" }]}>
-            {selectedItem.description}
-          </Text>
+          <View style={styles.desc}>
+            <Ionicons name="ios-information-circle" size={24} color="orange" />
+            <Text style={[styles.text]}>{selectedItem.description}</Text>
+          </View>
+          <View style={styles.desc}>
+            <Ionicons name="md-location" size={24} color="orange" />
+            <Text style={styles.text}>{selectedItem.destination}</Text>
+          </View>
+          <View style={styles.desc}>
+            <Ionicons name="pricetags" size={24} color="orange" />
+            <Text style={styles.text}>UGX {selectedItem.price}</Text>
+          </View>
+          <View style={styles.desc}>
+            <Ionicons name="ios-calendar" size={24} color="orange" />
+            <Text style={styles.text}>
+              {selectedItem.startDate} - {selectedItem.endDate}
+            </Text>
+          </View>
 
           <Button
             ViewComponent={LinearGradient}
@@ -467,33 +486,46 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "#F5F5F5",
+    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
+  },
+  name: {
+    color: "#fff",
+    fontWeight: "700",
+    fontSize: 29,
+  },
+  badge: {
+    top: -32,
+    position: "absolute",
+    backgroundColor: "#000",
+    left: 17,
   },
   add: {
     width: "90%",
     backgroundColor: "#fff",
     height: 100,
     borderRadius: 10,
-    padding: 10,
     alignSelf: "center",
     marginBottom: 10,
     borderWidth: 0.5,
     borderColor: "lightgrey",
     margin: 5,
+    flexDirection: "row",
+    alignContent: "center",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   addRight: {
     width: "40%",
     alignSelf: "flex-end",
     backgroundColor: "orange",
-    height: "125%",
+    height: "100%",
     borderTopLeftRadius: 200,
     borderBottomLeftRadius: 500,
-    marginTop: -70,
-    marginEnd: -10,
-    borderRadius: 10,
+    borderTopRightRadius: 80,
+    borderBottomRightRadius: 80,
   },
   itemsTop: {
     backgroundColor: "#fff",
@@ -506,7 +538,6 @@ const styles = StyleSheet.create({
     width: "50%",
     height: 180,
     backgroundColor: "#fff",
-    //borderRadius: 8,
     padding: 16,
     alignItems: "center",
     justifyContent: "center",
@@ -525,7 +556,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "100%",
-    height: 100,
+    height: 110,
     borderRadius: 0,
     marginBottom: 16,
   },
@@ -537,7 +568,14 @@ const styles = StyleSheet.create({
   columnWrapper: {
     justifyContent: "space-between",
   },
-  text: { color: "#000", fontWeight: "600", fontSize: 15, color: "grey" },
+  text: {
+    color: "#000",
+    fontWeight: "600",
+    fontSize: 15,
+    color: "grey",
+    textAlignVertical: "center",
+    textAlign: "auto",
+  },
   mainContent: {
     fontSize: 20,
     textAlign: "center",
@@ -563,6 +601,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: 40,
   },
+  error: {
+    flexDirection: "row",
+    alignContent: "center",
+    alignItems: "center",
+  },
   slectedItemView: {
     backgroundColor: "orange",
     borderTopLeftRadius: 15,
@@ -575,8 +618,8 @@ const styles = StyleSheet.create({
   },
   chipCont: {
     marginVertical: 0,
-    maxHeight: 200,
-    minHeight: 100,
+    maxHeight: 400,
+    minHeight: 200,
     width: "100%",
     alignSelf: "center",
     borderRadius: 0,
@@ -585,10 +628,18 @@ const styles = StyleSheet.create({
   chip: {
     borderRadius: 0,
     backgroundColor: "#fff",
-    maxHeight: 200,
-    minHeight: 100,
+    maxHeight: 400,
+    minHeight: 200,
     flexDirection: "column",
   },
-  btnCont: { width: "80%", height: 50, borderRadius: 100, margin: 5 },
+  desc: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignContent: "center",
+    width: "90%",
+    alignSelf: "flex-start",
+    padding: 2,
+  },
+  btnCont: { width: "70%", height: 50, borderRadius: 10, margin: 5 },
   btn: { backgroundColor: "orange", height: "100%" },
 });

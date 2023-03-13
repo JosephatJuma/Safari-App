@@ -7,6 +7,7 @@ import Account from "./app/screens/Account";
 import Search from "./app/screens/Search";
 import Login from "./app/auth/Login";
 import Signup from "./app/auth/Signup";
+import GetStarted from "./app/auth/GetStarted";
 import Help from "./more/Help";
 import Info from "./more/Info";
 import Cart from "./app/screens/Cart";
@@ -94,7 +95,7 @@ export default function App() {
           .then(() => {
             setSignedIn(false);
             setUser({});
-            navigation.push("Login");
+            navigation.push("Get Started");
           })
           .catch((error) => {
             Alert.alert("Sign Out Error!", error.message);
@@ -115,6 +116,15 @@ export default function App() {
   };
   const SearchScreen = ({ navigation }) => {
     return <Search back={() => navigation.goBack()} />;
+  };
+  const GetStartedScreen = ({ navigation }) => {
+    return (
+      <GetStarted
+        toLogin={() => navigation.navigate("Login")}
+        toSignUp={() => navigation.navigate("Signup")}
+        toHome={() => navigation.navigate("Home")}
+      />
+    );
   };
   const SignupScreen = ({ navigation }) => {
     const navigateToLogin = () => {
@@ -241,9 +251,16 @@ export default function App() {
           component={SearchScreen}
           options={{
             cardStyleInterpolator:
-              CardStyleInterpolators.forModalPresentationIOS,
+              CardStyleInterpolators.forRevealFromBottomAndroid,
             gestureEnabled: true,
             gestureDirection: "vertical",
+          }}
+        />
+        <Stack.Screen
+          name="Get Started"
+          component={GetStartedScreen}
+          options={{
+            cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
           }}
         />
         <Stack.Screen
@@ -279,8 +296,9 @@ export default function App() {
           name="Notifications"
           component={NotificationsScreen}
           options={{
-            cardStyleInterpolator:
-              CardStyleInterpolators.forRevealFromBottomAndroid,
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+            gestureDirection: "horizontal-inverted",
+            gestureEnabled: true,
           }}
         />
       </Stack.Navigator>

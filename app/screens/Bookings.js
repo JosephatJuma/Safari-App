@@ -1,4 +1,11 @@
-import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Image,
+  TouchableHighlightComponent,
+} from "react-native";
 import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -8,13 +15,18 @@ import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import Navigation from "../components/Navigation";
 import { ScrollView } from "react-native-gesture-handler";
-import { Card, Header } from "@rneui/base";
+import { Card, Header, Chip } from "@rneui/base";
+
 import { bookings } from "../data/Data";
 import { LinearGradient } from "expo-linear-gradient";
 const Bookings = ({ back, toExplore, toHome, toReviews, toAccount }) => {
   return (
     <View style={styles.container}>
-      <StatusBar style="light" backgroundColor="transparent" />
+      <StatusBar
+        backgroundColor="transparent"
+        barStyle="light-content"
+        style="light"
+      />
       <Header
         ViewComponent={LinearGradient}
         linearGradientProps={styles.linear}
@@ -34,42 +46,77 @@ const Bookings = ({ back, toExplore, toHome, toReviews, toAccount }) => {
       />
       <ScrollView
         style={{ width: "100%" }}
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={{ alignContent: "center", alignItems: "center" }}
       >
         <View style={[styles.bookings]}>
           {bookings.map((booking) => {
             return (
-              <TouchableOpacity
-                style={[styles.booking, styles.boxShadow]}
+              <Card
+                containerStyle={[styles.booking, styles.boxShadow]}
                 key={booking.id}
               >
                 <View
                   style={{
-                    alignItems: "center",
+                    width: "100%",
+                    padding: 10,
                     flexDirection: "row",
-                    justifyContent: "space-evenly",
+                    justifyContent: "space-between",
                   }}
                 >
-                  <Image
-                    style={{ width: "40%", height: 80 }}
-                    resizeMode="contain"
-                    source={{
-                      uri: booking.image,
-                    }}
-                  />
-                  <Card
+                  <View>
+                    <Text style={styles.text}>25th Feb 2023</Text>
+                    <Image
+                      style={[styles.image]}
+                      source={{
+                        uri: booking.image,
+                      }}
+                    />
+                  </View>
+                  <Chip
+                    title={booking.confirmed ? "Confirmed" : "Pending"}
+                    icon={
+                      booking.confirmed ? (
+                        <MaterialIcons name="check" color="#fff" size={20} />
+                      ) : (
+                        <MaterialIcons name="pending" color="#fff" size={20} />
+                      )
+                    }
                     containerStyle={{
-                      width: "60%",
-                      marginBottom: 5,
-                      borderWidth: 0,
+                      marginVertical: 15,
+                      borderRadius: 10,
                     }}
-                  >
-                    <Text style={styles.text}>{booking.id}</Text>
-                    <Text style={styles.text}>{booking.title}</Text>
-                    <Text style={styles.text}>{booking.price}</Text>
-                  </Card>
+                    buttonStyle={[
+                      booking.confirmed
+                        ? { backgroundColor: "orange" }
+                        : { backgroundColor: "grey" },
+                      { borderRadius: 10 },
+                    ]}
+                  />
                 </View>
-              </TouchableOpacity>
+                <Card.Divider></Card.Divider>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    padding: 10,
+                  }}
+                >
+                  <Text style={styles.text}>{booking.title}</Text>
+                </View>
+
+                <Card.Divider></Card.Divider>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    padding: 10,
+                  }}
+                >
+                  <Text style={styles.text}>Total</Text>
+                  <Text style={styles.text}>UGX {booking.price}</Text>
+                </View>
+              </Card>
             );
           })}
         </View>
@@ -95,21 +142,28 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "#F5F5F5",
+    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
   },
   screenName: { color: "#fff", fontSize: 22, fontWeight: "600" },
   bookings: {
-    backgroundColor: "#fff",
     width: "98%",
+    alignContent: "center",
+    alignItems: "center",
   },
 
   booking: {
-    alignItems: "center",
-    marginBottom: 2,
+    width: "100%",
     backgroundColor: "#fff",
+    borderRadius: 20,
+    alignContent: "center",
+    height: 200,
+    padding: 0,
+    borderWidth: 1,
+    margin: 5,
+    borderColor: "lightgrey",
   },
   boxShadow: {
     shadowColor: "#000",
@@ -117,9 +171,17 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    elevation: 10,
+    shadowOpacity: 1,
+    shadowRadius: 10,
+    elevation: 11,
   },
-  text: { color: "grey", fontSize: 15, fontWeight: "500" },
+  image: {
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: "grey",
+  },
+  textArea: {},
+  text: { color: "grey", fontSize: 15, fontWeight: "900" },
 });
