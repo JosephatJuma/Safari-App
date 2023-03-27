@@ -1,9 +1,9 @@
-const port = "http://192.168.249.198:10000"; //192.168.249.198
+const port = "http://192.168.1.3:10000"; //192.168.1.5
 export const apiUrl = {
   trips: `${port}/all/trips`,
   getBookings: "",
   book: "",
-  register: `${port}/user/create`,
+  register: `${port}/register`,
 };
 
 //expo doctor --fix-dependencies

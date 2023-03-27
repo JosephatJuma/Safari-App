@@ -1,16 +1,65 @@
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Linking,
+} from "react-native";
 import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { Header, Card, Button, Dialog } from "@rneui/base";
-import { TouchableOpacity } from "react-native";
-
+import {
+  FlutterwaveButton,
+  PayWithFlutterwave,
+  FlutterwaveInit,
+} from "flutterwave-react-native";
+import Flutterwave from "flutterwave-react-native";
 const Cart = ({ back, items, removeItem }) => {
   const [showDialogue, setShowDialogue] = useState(false);
   const showCancelBookingAlert = () => {
     setShowDialogue(!showDialogue);
+  };
+  const makePayment = async (price) => {
+    const flutterwaveConfig = {
+      tx_ref: generateRef(11),
+      authorization: "FLWPUBK_TEST-9b20b51419bb0e23f960a0d675a78c75-X",
+      amount: price,
+      currency: "UGX",
+      customer: {
+        name: "Juma Josephat",
+        phonenumber: "+256702206985",
+        email: "jumajosephat61@gmail.com",
+      },
+      payment_options: "mobile money",
+      redirect_url:
+        "https://ravemodal-dev.herokuapp.com/captcha/verify/85199:9e323b300f53a7d6962199dd9a84c700",
+      customizations: { description: "paying for trip", logo: "" },
+    };
+
+    try {
+      const paymentResponse = await FlutterwaveInit(flutterwaveConfig);
+      console.log(paymentResponse);
+      Linking.openURL(paymentResponse);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const generateRef = (length) => {
+    var a =
+      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".split(
+        ""
+      );
+    var b = [];
+    for (var i = 0; i < length; i++) {
+      var j = (Math.random() * (a.length - 1)).toFixed(0);
+      b[i] = a[j];
+    }
+    return b.join("");
   };
   return (
     <View>
@@ -41,7 +90,7 @@ const Cart = ({ back, items, removeItem }) => {
                   <View style={styles.cardTop}>
                     <Card.Title style={styles.text}>{item.title}</Card.Title>
                     <TouchableOpacity>
-                      <Feather
+                      <MaterialIcons
                         name="delete"
                         size={30}
                         color="#ff5349"
@@ -57,12 +106,9 @@ const Cart = ({ back, items, removeItem }) => {
                   <Card.FeaturedSubtitle style={styles.text}>
                     UGX {item.price}
                   </Card.FeaturedSubtitle>
-                  {/* <Text>{item.description}</Text> */}
-                  <Button
-                    title="Pay now"
-                    buttonStyle={styles.button}
-                    ViewComponent={LinearGradient}
-                    linearGradientProps={styles.linear}
+                  <FlutterwaveButton
+                    style={styles.button}
+                    onPress={() => makePayment(item.price)}
                   />
                 </Card>
               );

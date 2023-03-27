@@ -587,14 +587,14 @@ const styles = StyleSheet.create({
   title: {
     //fontSize: 15,
     fontWeight: "500",
-    color: "grey",
+    color: "#ff5349",
   },
   columnWrapper: {
     justifyContent: "space-between",
   },
   text: {
     color: "#000",
-    fontWeight: "600",
+    fontWeight: "800",
     fontSize: 15,
     color: "grey",
     textAlignVertical: "center",

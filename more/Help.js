@@ -111,14 +111,14 @@ const Help = ({ back }) => {
               value={message}
               onChangeText={setMessage}
               cursorColor="grey"
-            />
-
-            <Button
-              icon={<MaterialIcons name="send" size={30} color="grey" />}
-              containerStyle={styles.btnCont}
-              buttonStyle={styles.btn}
-              titleStyle={{ fontSize: 20, fontWeight: "bold" }}
-              onPress={sendMessage}
+              rightIcon={
+                <MaterialIcons
+                  name="send"
+                  size={30}
+                  color="grey"
+                  onPress={sendMessage}
+                />
+              }
             />
           </View>
         </Chip>
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   inputCont: {
-    width: "80%",
+    width: "100%",
     alignContent: "center",
     alignItems: "center",
     maxHeight: 200,

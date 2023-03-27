@@ -15,7 +15,7 @@ const Navigation = ({ h, e, r, b, a, isH, isE, isR, isB, isA }) => {
   return (
     <View style={styles.nav}>
       <TouchableHighlight
-        style={styles.item}
+        style={isH ? styles.currentItem : styles.item}
         onPress={h}
         underlayColor="#F5F5F5"
       >
@@ -23,49 +23,41 @@ const Navigation = ({ h, e, r, b, a, isH, isE, isR, isB, isA }) => {
           <Ionicons
             name="ios-home-outline"
             size={28}
-            color={isH ? "orange" : "grey"}
+            color={isH ? "#fff" : "grey"}
           />
 
-          <Text style={[styles.text, isH ? styles.textCurrent : styles.text1]}>
-            Home
-          </Text>
+          {!isH && <Text style={[styles.text, styles.text1]}>Home</Text>}
         </View>
       </TouchableHighlight>
       <TouchableHighlight
-        style={styles.item}
+        style={isB ? styles.currentItem : styles.item}
         onPress={b}
         underlayColor="#F5F5F5"
       >
         <View style={styles.itemItem}>
-          <AntDesign name="book" size={28} color={isB ? "orange" : "grey"} />
-          <Text style={[styles.text, isB ? styles.textCurrent : styles.text1]}>
-            Bookings
-          </Text>
+          <AntDesign name="book" size={28} color={isB ? "#fff" : "grey"} />
+          {!isB && <Text style={[styles.text, styles.text1]}>Bookings</Text>}
         </View>
       </TouchableHighlight>
       <TouchableHighlight
-        style={[styles.item]}
+        style={isR ? styles.currentItem : styles.item}
         onPress={r}
         underlayColor="#F5F5F5"
       >
         <View style={styles.itemItem}>
-          <FontAwesome5 name="star" size={28} color={isR ? "orange" : "grey"} />
-          <Text style={[styles.text, isR ? styles.textCurrent : styles.text1]}>
-            Reviews
-          </Text>
+          <FontAwesome5 name="star" size={28} color={isR ? "#fff" : "grey"} />
+          {!isR && <Text style={[styles.text, styles.text1]}>Reviews</Text>}
         </View>
       </TouchableHighlight>
 
       <TouchableHighlight
-        style={[styles.item]}
+        style={isA ? styles.currentItem : styles.item}
         onPress={a}
         underlayColor="#F5F5F5"
       >
         <View style={styles.itemItem}>
-          <Feather name="user" size={28} color={isA ? "orange" : "grey"} />
-          <Text style={[styles.text, isA ? styles.textCurrent : styles.text1]}>
-            Account
-          </Text>
+          <Feather name="user" size={28} color={isA ? "#fff" : "grey"} />
+          {!isA && <Text style={[styles.text, styles.text1]}>Account</Text>}
         </View>
       </TouchableHighlight>
     </View>
@@ -85,8 +77,8 @@ const styles = StyleSheet.create({
     alignContent: "center",
     alignItems: "center",
     alignSelf: "center",
-    borderTopWidth: 0.4,
-    borderColor: "grey",
+    borderWidth: 0.3,
+    borderColor: "lightgrey",
   },
   item: {
     width: "25%",
@@ -103,7 +95,17 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  text: { fontSize: 12, fontWeight: "900" },
-  textCurrent: { color: "orange" },
+  currentItem: {
+    width: "15%",
+    alignContent: "center",
+    alignItems: "center",
+    height: "90%",
+    justifyContent: "space-evenly",
+    backgroundColor: "orange",
+    borderRadius: 100,
+    marginBottom: 30,
+  },
+  text: { fontSize: 12, fontWeight: "bold", letterSpacing: -0.6 },
+  textCurrent: { color: "#fff" },
   text1: { color: "grey" },
 });
