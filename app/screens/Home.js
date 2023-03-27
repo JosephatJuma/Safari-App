@@ -15,11 +15,11 @@ import React, { useState, useEffect } from "react";
 import {
   Button,
   Header,
-  Input,
   Skeleton,
   BottomSheet,
   Chip,
   Badge,
+  SpeedDial,
 } from "@rneui/base";
 import { data } from "../data/Data";
 import Navigation from "../components/Navigation";
@@ -48,7 +48,7 @@ export default function Home({
   const [itemIsSlected, setItemIsSlected] = useState(false);
   const [selectedItem, setSelecttedItem] = useState({});
   const [refreshing, setRefreshing] = React.useState(false);
-
+  const [open, setOpen] = React.useState(false);
   //Fetch trips
   const fetchData = () => {
     if (trips.length <= 0) {
@@ -310,6 +310,29 @@ export default function Home({
           <Text style={styles.text}>Upcomming destinations</Text>
           <TouchableOpacity>
             <FontAwesome name="sliders" size={40} color="orange" />
+            {/* <SpeedDial
+              isOpen={open}
+              icon={{
+                name: "sliders",
+                color: "#fff",
+                type: "font-awesome",
+              }}
+              openIcon={{ name: "close", color: "#fff" }}
+              onOpen={() => setOpen(!open)}
+              onClose={() => setOpen(!open)}
+              style={{ width: 300, marginLeft: -280, alignSelf: "center" }}
+              overlayColor="transparent"
+              color="orange"
+              size="small"
+            >
+              <SpeedDial.Action
+                icon={{ name: "hotel", color: "#fff" }}
+                title="Hotel rooms"
+                onPress={() => console.log("Add Something")}
+                style={{ height: 100 }}
+                color="orange"
+              />
+            </SpeedDial> */}
           </TouchableOpacity>
         </View>
         {loading ? (
@@ -474,6 +497,7 @@ export default function Home({
           />
         </Chip>
       </BottomSheet>
+
       <Navigation a={toAccount} isH={true} b={toBookings} r={toReviews} />
     </View>
   );

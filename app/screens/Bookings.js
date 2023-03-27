@@ -9,17 +9,17 @@ import {
 import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { MaterialIcons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
 import Navigation from "../components/Navigation";
 import { ScrollView } from "react-native-gesture-handler";
 import { Card, Header, Chip } from "@rneui/base";
-
+import { Rating, AirbnbRating } from "react-native-ratings";
 import { bookings } from "../data/Data";
 import { LinearGradient } from "expo-linear-gradient";
 const Bookings = ({ back, toExplore, toHome, toReviews, toAccount }) => {
+  const ratingCompleted = (rating) => {
+    console.log("Rating is: " + rating);
+  };
   return (
     <View style={styles.container}>
       <StatusBar
@@ -66,12 +66,14 @@ const Bookings = ({ back, toExplore, toHome, toReviews, toAccount }) => {
                 >
                   <View>
                     <Text style={styles.text}>25th Feb 2023</Text>
-                    <Image
-                      style={[styles.image]}
-                      source={{
-                        uri: booking.image,
-                      }}
-                    />
+                    <TouchableOpacity>
+                      <Image
+                        style={[styles.image]}
+                        source={{
+                          uri: booking.image,
+                        }}
+                      />
+                    </TouchableOpacity>
                   </View>
                   <Chip
                     title={booking.confirmed ? "Confirmed" : "Pending"}
@@ -89,7 +91,7 @@ const Bookings = ({ back, toExplore, toHome, toReviews, toAccount }) => {
                     buttonStyle={[
                       booking.confirmed
                         ? { backgroundColor: "orange" }
-                        : { backgroundColor: "grey" },
+                        : { backgroundColor: "#ff5349" },
                       { borderRadius: 10 },
                     ]}
                   />
@@ -157,13 +159,14 @@ const styles = StyleSheet.create({
   booking: {
     width: "100%",
     backgroundColor: "#fff",
-    borderRadius: 20,
+    borderRadius: 5,
     alignContent: "center",
-    height: 200,
+    //height: 200,
+    borderWidth: 0.4,
     padding: 0,
-    borderWidth: 1,
-    margin: 5,
-    borderColor: "lightgrey",
+    marginBottom: 2,
+    margin: 0,
+    borderColor: "grey",
   },
   boxShadow: {
     shadowColor: "#000",
@@ -173,14 +176,14 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 1,
     shadowRadius: 10,
-    elevation: 11,
+    elevation: 4,
   },
   image: {
-    width: 50,
+    width: 70,
     height: 50,
-    borderRadius: 50,
+    borderRadius: 10,
     borderWidth: 1,
-    borderColor: "grey",
+    borderColor: "#ff5349",
   },
   textArea: {},
   text: { color: "grey", fontSize: 15, fontWeight: "900" },
