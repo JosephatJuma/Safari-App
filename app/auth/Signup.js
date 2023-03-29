@@ -1,19 +1,10 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Animated,
-  ScrollView,
-  Image,
-  Alert,
-  ActivityIndicator,
-} from "react-native";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { Image, Alert, ActivityIndicator } from "react-native";
 import React, { useState, useRef } from "react";
 import { StatusBar } from "expo-status-bar";
 import { Input, Button, FAB, Chip, BottomSheet } from "@rneui/base";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import axios from "axios";
 import { apiUrl } from "../api/Api";

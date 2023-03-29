@@ -1,23 +1,14 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Linking,
-} from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import { ScrollView, TouchableOpacity } from "react-native";
 import React, { useState, useRef } from "react";
 import { StatusBar } from "expo-status-bar";
 import { Header, Chip, BottomSheet, Button } from "@rneui/base";
 import { MaterialIcons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Octicons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
+import { Octicons, FontAwesome5, AntDesign } from "@expo/vector-icons";
 import Navigation from "../components/Navigation";
 import { LinearGradient } from "expo-linear-gradient";
-import { userData } from "../data/Data";
+
 const Account = ({
   back,
   toExplore,

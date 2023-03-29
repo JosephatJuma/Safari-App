@@ -1,15 +1,8 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableHighlight,
-  RefreshControl,
-} from "react-native";
+import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
+import { Image, TouchableHighlight, RefreshControl } from "react-native";
 import React, { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
-import { MaterialIcons } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
+import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import Navigation from "../components/Navigation";
 import { ScrollView } from "react-native-gesture-handler";
 import { Skeleton, Header, Chip, Button } from "@rneui/base";
@@ -69,16 +62,15 @@ const Bookings = ({
       setLoading(false);
     }
   };
-  //Fecht
+  //Fechting
   useEffect(() => {
     fetchBookings();
-  }, [1]);
+  }, []);
 
   //Refresh
   const onRefresh = React.useCallback(() => {
     setBookings([]);
     setErrMsg("Refreshing");
-    setBookings(true);
     fetchBookings();
   }, []);
   const ratingCompleted = (rating) => {
@@ -198,7 +190,6 @@ const Bookings = ({
                         booking.confirmed
                           ? { backgroundColor: "orange" }
                           : { backgroundColor: "#ff5349" },
-                        6,
                       ]}
                     />
                   </View>
@@ -226,6 +217,7 @@ const Bookings = ({
               style={{ width: 300, height: 300 }}
               source={require("../assets/images/booking.png")}
             />
+
             <Text
               style={{
                 textAlign: "center",
@@ -236,6 +228,7 @@ const Bookings = ({
             >
               {errMsg}
             </Text>
+
             {!userID && (
               <Button
                 title="Login"

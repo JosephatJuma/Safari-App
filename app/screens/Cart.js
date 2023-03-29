@@ -12,12 +12,8 @@ import { StatusBar } from "expo-status-bar";
 import { MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { Header, Card, Button, Dialog } from "@rneui/base";
-import {
-  FlutterwaveButton,
-  PayWithFlutterwave,
-  FlutterwaveInit,
-} from "flutterwave-react-native";
-import Flutterwave from "flutterwave-react-native";
+import { FlutterwaveButton, FlutterwaveInit } from "flutterwave-react-native";
+
 const Cart = ({ back, items, removeItem, user }) => {
   const [showDialogue, setShowDialogue] = useState(false);
   const showCancelBookingAlert = () => {
@@ -27,9 +23,9 @@ const Cart = ({ back, items, removeItem, user }) => {
     const flutterwaveConfig = {
       tx_ref: generateRef(10),
       authorization: "FLWPUBK_TEST-9b20b51419bb0e23f960a0d675a78c75-X",
+      //FLWSECK-019c7aede86c7e57cbd57a33d12e5268-X
       amount: price,
       currency: "UGX",
-      phonenumber: "+256702206985",
       customer: {
         name: user.name,
         phone_number: user.phoneNumber,
@@ -42,10 +38,9 @@ const Cart = ({ back, items, removeItem, user }) => {
 
     try {
       const paymentResponse = await FlutterwaveInit(flutterwaveConfig);
-      console.log(paymentResponse);
       Linking.openURL(paymentResponse);
     } catch (error) {
-      console.log(error.message);
+      alert(error.message);
     }
   };
 

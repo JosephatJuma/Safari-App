@@ -8,7 +8,6 @@ import { BottomSheet, Chip, Badge } from "@rneui/base";
 import { data } from "../data/Data";
 import Navigation from "../components/Navigation";
 import { apiUrl } from "../api/Api";
-//icons
 import { Ionicons, FontAwesome, Feather } from "@expo/vector-icons";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import axios from "axios";

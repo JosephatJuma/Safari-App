@@ -1,19 +1,10 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Animated,
-  ScrollView,
-  Image,
-  ActivityIndicator,
-} from "react-native";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { Image, ActivityIndicator } from "react-native";
 import React, { useState, useRef } from "react";
 import { StatusBar } from "expo-status-bar";
 import { Input, Button } from "@rneui/base";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
-
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
 const Login = ({ loginFunction, signup, validating, forgot }) => {
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState("");
@@ -86,6 +77,7 @@ const Login = ({ loginFunction, signup, validating, forgot }) => {
           }
           titleStyle={{ color: "#fff", fontSize: 25 }}
           onPress={() => loginFunction(email, password)}
+          disabledStyle={{ backgroundColor: "#000000c0" }}
         />
         <Text onPress={forgot}>Forgot password</Text>
         <Text>OR</Text>
