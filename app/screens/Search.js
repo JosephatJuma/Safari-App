@@ -4,9 +4,12 @@ import { StatusBar } from "expo-status-bar";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { Header, Input } from "@rneui/base";
-
+import { apiUrl } from "../api/Api";
+import axios from "axios";
 const Search = ({ back }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [errMsg, setErrMsg] = useState("");
+  const [trips, setTrips] = useState([]);
   const Cancel = () => {
     setSearchTerm("");
   };
@@ -15,9 +18,36 @@ const Search = ({ back }) => {
   useEffect(() => {
     searchRef.current.focus();
   }, []);
+
+  const searchForTrip = () => {
+    const querry = { searchTerm: searchTerm };
+    axios
+      .post(apiUrl.search, querry)
+      .then((response) => {
+        const data = response.data;
+        if (data != null) {
+          let values = Object.values(data);
+          for (var index = 0; index < values.length; index++) {
+            const trip = values[index];
+            setTrips((prev) => [...prev, trip]);
+          }
+          setErrMsg("");
+        } else {
+          setErrMsg("No results found");
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        setErrMsg(error.message);
+        setLoading(false);
+      });
+  };
+  useEffect(() => {
+    searchForTrip();
+  }, [searchTerm]);
   return (
     <View>
-      <StatusBar style="light" backgroundColor="orange" />
+      <StatusBar style="light" />
       <Header
         backgroundColor="orange"
         centerComponent={
@@ -53,6 +83,7 @@ const Search = ({ back }) => {
           </View>
         }
       />
+      <Text>{errMsg}</Text>
     </View>
   );
 };

@@ -49,7 +49,7 @@ const Signup = ({ login }) => {
   const [loading, setLoading] = useState(false);
   const [disableForm, setDisable] = useState(false);
   const [sent, setSent] = useState(false);
-  const [uid, setUid] = useState("Jose@2000");
+  const [uid, setUid] = useState("");
 
   const validateName = () => {
     const valid = nameREGEX.test(name);

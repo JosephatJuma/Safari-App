@@ -32,12 +32,11 @@ const Login = ({ loginFunction, signup, validating }) => {
         }}
       >
         <Image
-          source={require("../assets/login.jpg")}
+          source={require("../assets/images/login.png")}
           style={{
-            width: "100%",
-            height: 350,
-            borderBottomRightRadius: 200,
-            borderBottomLeftRadius: 500,
+            width: 300,
+            height: 300,
+            marginTop: 50,
           }}
         />
         <Input

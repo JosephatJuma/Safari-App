@@ -32,7 +32,7 @@ const Bookings = ({
   const [loading, setLoading] = useState(true);
   const fetchBookings = () => {
     if (!userID) {
-      setErrMsg("You are not signed in");
+      setErrMsg("You need to signed in to be able to see your bookings");
       setLoading(false);
       return;
     }
@@ -183,11 +183,9 @@ const Bookings = ({
                       <Text style={styles.text}>{booking.trip.title}</Text>
                     </View>
                     <Chip
-                      title={
-                        booking.confirmed === true ? "Confirmed" : "Pending"
-                      }
+                      title={booking.confirmed ? "Confirmed" : "Pending"}
                       icon={
-                        booking.confirmed === true ? (
+                        booking.confirmed ? (
                           <MaterialIcons name="check" color="#fff" size={20} />
                         ) : (
                           <MaterialIcons
