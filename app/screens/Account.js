@@ -27,7 +27,7 @@ const Account = ({
   logout,
   help,
   info,
-  logging,
+  user,
 }) => {
   const [showLogoutAlert, setShowLogoutAlert] = useState(false);
 
@@ -72,9 +72,9 @@ const Account = ({
         <View style={[styles.accountDetails, styles.boxShadow]}>
           <FontAwesome5 name="user" size={100} color="orange" />
           <View>
-            <Text style={styles.text}>{userData.phone}</Text>
-            <Text style={styles.text}>{userData.name}</Text>
-            <Text style={styles.text}>{userData.email}</Text>
+            <Text style={styles.text}>{user.phoneNumber}</Text>
+            <Text style={styles.text}>{user.name}</Text>
+            <Text style={styles.text}>{user.email}</Text>
           </View>
         </View>
         <View style={[styles.options]}>

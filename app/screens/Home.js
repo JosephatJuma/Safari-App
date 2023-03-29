@@ -41,6 +41,7 @@ export default function Home({
   cart,
   addItem,
   numberOfItemsOnCart,
+  notifications,
 }) {
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -48,7 +49,7 @@ export default function Home({
   const [itemIsSlected, setItemIsSlected] = useState(false);
   const [selectedItem, setSelecttedItem] = useState({});
   const [refreshing, setRefreshing] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
+
   //Fetch trips
   const fetchData = () => {
     if (trips.length <= 0) {
@@ -104,7 +105,6 @@ export default function Home({
               animation="wave"
               width={"100%"}
               height={100}
-              style={{ backgroundColor: "lightgrey" }}
               LinearGradientComponent={LinearGradient}
             />
           </View>
@@ -246,7 +246,7 @@ export default function Home({
             </TouchableOpacity>
             <TouchableOpacity onPress={nots}>
               <Ionicons name="notifications-outline" size={30} color="#fff" />
-              <Badge badgeStyle={styles.badge} />
+              {notifications > 0 && <Badge badgeStyle={styles.badge} />}
             </TouchableOpacity>
           </View>
         }
@@ -310,29 +310,6 @@ export default function Home({
           <Text style={styles.text}>Upcomming destinations</Text>
           <TouchableOpacity>
             <FontAwesome name="sliders" size={40} color="orange" />
-            {/* <SpeedDial
-              isOpen={open}
-              icon={{
-                name: "sliders",
-                color: "#fff",
-                type: "font-awesome",
-              }}
-              openIcon={{ name: "close", color: "#fff" }}
-              onOpen={() => setOpen(!open)}
-              onClose={() => setOpen(!open)}
-              style={{ width: 300, marginLeft: -280, alignSelf: "center" }}
-              overlayColor="transparent"
-              color="orange"
-              size="small"
-            >
-              <SpeedDial.Action
-                icon={{ name: "hotel", color: "#fff" }}
-                title="Hotel rooms"
-                onPress={() => console.log("Add Something")}
-                style={{ height: 100 }}
-                color="orange"
-              />
-            </SpeedDial> */}
           </TouchableOpacity>
         </View>
         {loading ? (

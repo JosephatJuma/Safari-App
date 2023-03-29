@@ -18,7 +18,7 @@ import {
   FlutterwaveInit,
 } from "flutterwave-react-native";
 import Flutterwave from "flutterwave-react-native";
-const Cart = ({ back, items, removeItem }) => {
+const Cart = ({ back, items, removeItem, user }) => {
   const [showDialogue, setShowDialogue] = useState(false);
   const showCancelBookingAlert = () => {
     setShowDialogue(!showDialogue);
@@ -31,13 +31,12 @@ const Cart = ({ back, items, removeItem }) => {
       currency: "UGX",
       phonenumber: "+256702206985",
       customer: {
-        name: "Juma Josephat",
-        phonenumber: "+256702206985",
-        email: "jumajosephat61@gmail.com",
+        name: user.name,
+        phone_number: user.phoneNumber,
+        email: user.email,
       },
       payment_options: "mobile money",
-      redirect_url:
-        "https://ravemodal-dev.herokuapp.com/captcha/verify/85199:9e323b300f53a7d6962199dd9a84c700",
+      redirect_url: "https://ravemodal-dev.herokuapp.com/captcha/verify",
       customizations: { description: "paying for trip", logo: "" },
     };
 

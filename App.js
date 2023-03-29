@@ -25,17 +25,47 @@ import {
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
 } from "firebase/auth";
+import axios from "axios";
+import { apiUrl } from "./app/api/Api";
 export default function App() {
   //variables
   const [signedIn, setSignedIn] = useState(false);
   const [logging, SetLogging] = useState(false);
   const [user, setUser] = useState({});
   const [cartItems, setCartItems] = useState([]);
-
   const HomeScreen = ({ navigation }) => {
     const addToCart = (item) => {
       setCartItems([item]);
-      navigation.navigate("Cart");
+      //make a booking
+      console.log(item);
+      const booking = { item, userID: user.userID, confirmed: false };
+      setTimeout(() => {
+        axios
+          .post(apiUrl.book, booking)
+          .then((response) => {
+            console.log(response.data);
+            if (response.data.status === false) {
+              Alert.alert(
+                "Booking unsuccessful!",
+                response.data.message,
+                [
+                  {
+                    text: "I get it",
+                  },
+                ],
+                {
+                  cancelable: true,
+                }
+              );
+              return;
+            }
+            navigation.navigate("Cart");
+          })
+          .catch((error) => {
+            alert(error);
+            console.log(error);
+          });
+      }, 2000);
     };
     return (
       <Home
@@ -83,6 +113,7 @@ export default function App() {
         toHome={() => navigation.popToTop()}
         toAccount={navigateToAccount}
         toReviews={() => navigation.push("Reviews")}
+        userID={user.userID}
       />
     );
   };
@@ -111,6 +142,7 @@ export default function App() {
         logout={logout}
         help={() => navigation.push("Help")}
         info={() => navigation.push("Info")}
+        user={user}
       />
     );
   };
@@ -151,7 +183,6 @@ export default function App() {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          console.log(user);
           setUser({
             userID: user.uid,
             name: user.displayName,
@@ -167,8 +198,6 @@ export default function App() {
         })
         .catch((error) => {
           Alert.alert("Login Error!", error.code);
-          SetLogging(false);
-          console.log(error.message);
           SetLogging(false);
         });
     };
@@ -201,6 +230,7 @@ export default function App() {
         back={() => navigation.goBack()}
         items={cartItems}
         removeItem={removeFromCart}
+        user={user}
       />
     );
   };
