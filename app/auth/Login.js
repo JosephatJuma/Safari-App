@@ -77,7 +77,7 @@ const Login = ({ loginFunction, signup, validating }) => {
         <Button
           disabled={validating}
           containerStyle={[styles.buttonContainer]}
-          buttonStyle={{ height: "100%", backgroundColor: "#000" }}
+          buttonStyle={{ height: "100%", backgroundColor: "#ff5349" }}
           title={
             validating ? (
               <ActivityIndicator size={35} color="orange" />

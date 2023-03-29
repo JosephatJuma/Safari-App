@@ -249,7 +249,7 @@ const Signup = ({ login }) => {
         />
         <Button
           containerStyle={[styles.buttonContainer]}
-          buttonStyle={{ height: "100%", backgroundColor: "#000" }}
+          buttonStyle={{ height: "100%", backgroundColor: "#ff5349" }}
           title={
             loading ? (
               <>
@@ -262,7 +262,7 @@ const Signup = ({ login }) => {
           titleStyle={{ color: "#fff", fontSize: 25 }}
           onPress={handleSignUp}
           disabled={disableForm}
-          disabledStyle={{ backgroundColor: "#00000c0" }}
+          disabledStyle={{ backgroundColor: "#ff5349c0" }}
         />
 
         <Text>OR</Text>
