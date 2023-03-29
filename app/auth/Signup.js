@@ -76,7 +76,7 @@ const Signup = ({ login }) => {
     setStrongPassword(valid);
     valid === false
       ? setPasswordError(
-          "Password must a combination of uppercase, lowercase letters, numbers & speacial characters!"
+          "Password must have uppercase, lowercase letters, numbers & speacial characters!"
         )
       : setPasswordError("");
     if (valid === false) return;
@@ -157,7 +157,7 @@ const Signup = ({ login }) => {
           source={require("../assets/login.jpg")}
           style={{
             width: "100%",
-            height: 300,
+            height: 250,
             borderBottomRightRadius: 100,
             borderBottomLeftRadius: 100,
           }}
@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
     height: 53,
   },
   buttonContainer: {
-    margin: 5,
+    marginTop: 25,
     width: "90%",
     borderWidth: 1,
     borderRadius: 8,

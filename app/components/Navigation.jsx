@@ -17,7 +17,7 @@ const Navigation = ({ h, e, r, b, a, isH, isE, isR, isB, isA }) => {
       <TouchableHighlight
         style={isH ? styles.currentItem : styles.item}
         onPress={h}
-        underlayColor="#F5F5F5"
+        underlayColor="#DBE9FA"
       >
         <View style={styles.itemItem}>
           <Ionicons
@@ -32,7 +32,7 @@ const Navigation = ({ h, e, r, b, a, isH, isE, isR, isB, isA }) => {
       <TouchableHighlight
         style={isB ? styles.currentItem : styles.item}
         onPress={b}
-        underlayColor="#F5F5F5"
+        underlayColor="#DBE9FA"
       >
         <View style={styles.itemItem}>
           <AntDesign name="book" size={28} color={isB ? "#fff" : "grey"} />
@@ -42,7 +42,7 @@ const Navigation = ({ h, e, r, b, a, isH, isE, isR, isB, isA }) => {
       <TouchableHighlight
         style={isR ? styles.currentItem : styles.item}
         onPress={r}
-        underlayColor="#F5F5F5"
+        underlayColor="#DBE9FA"
       >
         <View style={styles.itemItem}>
           <FontAwesome5 name="star" size={28} color={isR ? "#fff" : "grey"} />
@@ -53,7 +53,7 @@ const Navigation = ({ h, e, r, b, a, isH, isE, isR, isB, isA }) => {
       <TouchableHighlight
         style={isA ? styles.currentItem : styles.item}
         onPress={a}
-        underlayColor="#F5F5F5"
+        underlayColor="#DBE9FA"
       >
         <View style={styles.itemItem}>
           <Feather name="user" size={28} color={isA ? "#fff" : "grey"} />

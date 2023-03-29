@@ -41,7 +41,7 @@ export default function App() {
       <Home
         numberOfItemsOnCart={cartItems.length}
         toExplore={() => navigation.push("Explore")}
-        toAccount={() => navigation.push("Account")}
+        toAccount={() => navigation.push(signedIn ? "Account" : "Login")}
         toBookings={() => navigation.push("Bookings")}
         toReviews={() => navigation.push("Reviews")}
         toSearch={() => navigation.push("Search")}
@@ -55,7 +55,7 @@ export default function App() {
     return (
       <Explore
         back={() => navigation.goBack()}
-        toAccount={() => navigation.navigate("Account")}
+        toAccount={() => navigation.push(signedIn ? "Account" : "Login")}
         toHome={() => navigation.popToTop()}
         toBookings={() => navigation.push("Bookings")}
         toReviews={() => navigation.push("Reviews")}
@@ -67,7 +67,7 @@ export default function App() {
     return (
       <Reviews
         back={() => navigation.goBack()}
-        toAccount={() => navigation.push("Account")}
+        toAccount={() => navigation.push(signedIn ? "Account" : "Login")}
         toBookings={() => navigation.push("Bookings")}
         toHome={() => navigation.popToTop()}
       />
@@ -75,7 +75,7 @@ export default function App() {
   };
   const BookingScreen = ({ navigation }) => {
     const navigateToAccount = () => {
-      return navigation.navigate("Account");
+      return navigation.navigate(signedIn ? "Account" : "Login");
     };
     return (
       <Bookings
@@ -295,11 +295,7 @@ export default function App() {
         <Stack.Screen
           name="Notifications"
           component={NotificationsScreen}
-          options={{
-            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-            gestureDirection: "horizontal-inverted",
-            gestureEnabled: true,
-          }}
+          options={styles.screenOptions}
         />
       </Stack.Navigator>
     </NavigationContainer>

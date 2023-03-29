@@ -4,7 +4,7 @@ import {
   TouchableOpacity,
   View,
   Image,
-  TouchableHighlightComponent,
+  TouchableHighlight,
 } from "react-native";
 import React from "react";
 import { StatusBar } from "expo-status-bar";
@@ -40,40 +40,29 @@ const Bookings = ({ back, toExplore, toHome, toReviews, toAccount }) => {
           />
         }
         centerComponent={<Text style={styles.screenName}>My Bookings</Text>}
-        rightComponent={
-          <Ionicons name="ios-briefcase-outline" size={30} color="#fff" />
-        }
       />
       <ScrollView
         style={{ width: "100%" }}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ alignContent: "center", alignItems: "center" }}
       >
-        <View style={[styles.bookings]}>
-          {bookings.map((booking) => {
-            return (
-              <Card
-                containerStyle={[styles.booking, styles.boxShadow]}
-                key={booking.id}
-              >
-                <View
-                  style={{
-                    width: "100%",
-                    padding: 10,
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                >
+        {bookings.map((booking) => {
+          return (
+            <TouchableHighlight
+              style={[styles.booking, styles.boxShadow]}
+              key={booking.id}
+              underlayColor="#DBE9FA"
+              onPress={() => console.log("yes")}
+            >
+              <View>
+                <View style={styles.details}>
+                  <Image
+                    style={[styles.image]}
+                    source={require("../assets/images/booking.png")}
+                  />
                   <View>
                     <Text style={styles.text}>25th Feb 2023</Text>
-                    <TouchableOpacity>
-                      <Image
-                        style={[styles.image]}
-                        source={{
-                          uri: booking.image,
-                        }}
-                      />
-                    </TouchableOpacity>
+                    <Text style={styles.text}>{booking.title}</Text>
                   </View>
                   <Chip
                     title={booking.confirmed ? "Confirmed" : "Pending"}
@@ -84,44 +73,23 @@ const Bookings = ({ back, toExplore, toHome, toReviews, toAccount }) => {
                         <MaterialIcons name="pending" color="#fff" size={20} />
                       )
                     }
-                    containerStyle={{
-                      marginVertical: 15,
-                      borderRadius: 10,
-                    }}
                     buttonStyle={[
                       booking.confirmed
                         ? { backgroundColor: "orange" }
                         : { backgroundColor: "#ff5349" },
-                      { borderRadius: 10 },
+                      6,
                     ]}
                   />
                 </View>
-                <Card.Divider></Card.Divider>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    padding: 10,
-                  }}
-                >
-                  <Text style={styles.text}>{booking.title}</Text>
-                </View>
 
-                <Card.Divider></Card.Divider>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    padding: 10,
-                  }}
-                >
+                <View style={styles.amount}>
                   <Text style={styles.text}>Total</Text>
                   <Text style={styles.text}>UGX {booking.price}</Text>
                 </View>
-              </Card>
-            );
-          })}
-        </View>
+              </View>
+            </TouchableHighlight>
+          );
+        })}
       </ScrollView>
       <Navigation
         isB={true}
@@ -144,47 +112,37 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#F5F5F5",
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
   },
   screenName: { color: "#fff", fontSize: 22, fontWeight: "600" },
-  bookings: {
-    width: "98%",
-    alignContent: "center",
-    alignItems: "center",
-  },
-
   booking: {
-    width: "100%",
     backgroundColor: "#fff",
-    borderRadius: 5,
+    width: "100%",
     alignContent: "center",
-    //height: 200,
-    borderWidth: 0.4,
-    padding: 0,
-    marginBottom: 2,
-    margin: 0,
-    borderColor: "grey",
+    justifyContent: "space-evenly",
   },
   boxShadow: {
     shadowColor: "#000",
     shadowOffset: {
-      width: 0,
-      height: 2,
+      width: 2,
+      height: 20,
     },
     shadowOpacity: 1,
-    shadowRadius: 10,
-    elevation: 4,
+    shadowRadius: 0,
+    elevation: 5,
   },
-  image: {
-    width: 70,
-    height: 50,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#ff5349",
+  image: { width: 70, height: 70 },
+  details: {
+    width: "100%",
+    padding: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignContent: "center",
+    alignItems: "center",
   },
-  textArea: {},
-  text: { color: "grey", fontSize: 15, fontWeight: "900" },
+  amount: { flexDirection: "row", justifyContent: "space-between", padding: 5 },
+  text: { color: "grey", fontSize: 15, fontWeight: "500" },
 });

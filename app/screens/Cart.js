@@ -5,11 +5,11 @@ import {
   ScrollView,
   TouchableOpacity,
   Linking,
+  Image,
 } from "react-native";
 import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { Header, Card, Button, Dialog } from "@rneui/base";
 import {
@@ -25,10 +25,11 @@ const Cart = ({ back, items, removeItem }) => {
   };
   const makePayment = async (price) => {
     const flutterwaveConfig = {
-      tx_ref: generateRef(11),
+      tx_ref: generateRef(10),
       authorization: "FLWPUBK_TEST-9b20b51419bb0e23f960a0d675a78c75-X",
       amount: price,
       currency: "UGX",
+      phonenumber: "+256702206985",
       customer: {
         name: "Juma Josephat",
         phonenumber: "+256702206985",
@@ -70,8 +71,8 @@ const Cart = ({ back, items, removeItem }) => {
         backgroundColor="transparent"
         leftComponent={
           <MaterialIcons
-            name="arrow-back-ios"
-            size={25}
+            name="arrow-back"
+            size={30}
             color="#fff"
             onPress={back}
           />
@@ -114,20 +115,38 @@ const Cart = ({ back, items, removeItem }) => {
               );
             })
           ) : (
-            <Card
-              containerStyle={[
-                styles.boxShadow,
-                styles.itemCard,
-                { alignContent: "center", alignItems: "center" },
-              ]}
+            <View
+              style={{
+                width: "96%",
+                alignSelf: "center",
+                alignContent: "center",
+                alignItems: "center",
+                height: 600,
+                justifyContent: "space-evenly",
+              }}
             >
-              <MaterialIcons
-                name="remove-shopping-cart"
-                size={100}
-                color="orange"
+              <Image
+                source={require("../assets/images/cart.png")}
+                style={{ height: 300, width: 300 }}
               />
-              <Text style={styles.title}>Empty cart</Text>
-            </Card>
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 20,
+                  color: "#ff5349",
+                  fontWeight: "700",
+                }}
+              >
+                You haven't added any thing to cart, go to Home and start
+                booking
+              </Text>
+              <Button
+                title="Back"
+                containerStyle={{ width: "70%", height: 50 }}
+                buttonStyle={{ backgroundColor: "#ff5349", height: "100%" }}
+                onPress={back}
+              />
+            </View>
           )}
         </View>
         <Dialog
