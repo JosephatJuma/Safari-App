@@ -1,45 +1,28 @@
 import { StatusBar } from "expo-status-bar";
-import {
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-  ScrollView,
-  Image,
-  TouchableOpacity,
-  RefreshControl,
-  ImageBackground,
-  ActivityIndicator,
-} from "react-native";
+import { View, Text, FlatList, StyleSheet } from "react-native";
+import { Image, TouchableOpacity, RefreshControl } from "react-native";
+import { Alert, ActivityIndicator, ScrollView } from "react-native";
 import React, { useState, useEffect } from "react";
-import {
-  Button,
-  Header,
-  Skeleton,
-  BottomSheet,
-  Chip,
-  Badge,
-  SpeedDial,
-} from "@rneui/base";
+import { Button, Header, Skeleton } from "@rneui/base";
+import { BottomSheet, Chip, Badge } from "@rneui/base";
 import { data } from "../data/Data";
 import Navigation from "../components/Navigation";
 import { apiUrl } from "../api/Api";
 //icons
-import { Ionicons } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
-
+import { Ionicons, FontAwesome, Feather } from "@expo/vector-icons";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import axios from "axios";
 import { LinearGradient } from "expo-linear-gradient";
 export default function Home({
+  user,
+  loggedIn,
   toAccount,
   toReviews,
   toBookings,
   toSearch,
   nots,
   cart,
-  addItem,
+  addToCart,
   numberOfItemsOnCart,
   notifications,
 }) {
@@ -49,7 +32,7 @@ export default function Home({
   const [itemIsSlected, setItemIsSlected] = useState(false);
   const [selectedItem, setSelecttedItem] = useState({});
   const [refreshing, setRefreshing] = React.useState(false);
-
+  const [booking, setBooking] = useState(false);
   //Fetch trips
   const fetchData = () => {
     if (trips.length <= 0) {
@@ -93,6 +76,54 @@ export default function Home({
   };
   const deselectItem = () => {
     setItemIsSlected(false);
+  };
+  const loginFirst = () => {
+    setItemIsSlected(false);
+    setSelecttedItem([]);
+    toAccount();
+  };
+  const bookingInProgress = () => {
+    if (loggedIn === false) {
+      Alert.alert(
+        "Need to sign in:",
+        "You must login to make a booking",
+        [{ text: "Login", onPress: () => loginFirst() }, { text: "Not now" }],
+        { cancelable: true }
+      );
+      return;
+    }
+    setBooking(true);
+    const booking = {
+      item: selectedItem,
+      userID: user.userID,
+      confirmed: false,
+    };
+    setTimeout(() => {
+      axios
+        .post(apiUrl.book, booking)
+        .then((response) => {
+          //console.log(response.data);
+          if (response.data.status === false) {
+            Alert.alert(
+              "Booking unsuccessful!",
+              response.data.message,
+              [{ text: "I get it" }],
+              { cancelable: true }
+            );
+            setBooking(false);
+            return;
+          }
+          setItemIsSlected(false);
+          Alert.alert("Success:", "Booking completed ");
+          setBooking(false);
+          () => addToCart(selectedItem);
+        })
+        .catch((error) => {
+          Alert.alert("Failure:", error.message);
+          console.log(error);
+          setBooking(false);
+        });
+    }, 2000);
   };
 
   //Render Skeleton
@@ -437,42 +468,60 @@ export default function Home({
             style={{ width: "100%", height: 200 }}
           ></Image>
         </View>
-        <Chip
-          title="Account created"
-          buttonStyle={styles.chip}
-          containerStyle={styles.chipCont}
-          onAccessibilityEscape={deselectItem}
-        >
-          <View style={styles.desc}>
-            <Ionicons name="ios-information-circle" size={24} color="orange" />
-            <Text style={[styles.text]}>{selectedItem.description}</Text>
-          </View>
-          <View style={styles.desc}>
-            <Ionicons name="md-location" size={24} color="orange" />
-            <Text style={styles.text}>{selectedItem.destination}</Text>
-          </View>
-          <View style={styles.desc}>
-            <Ionicons name="pricetags" size={24} color="orange" />
-            <Text style={styles.text}>UGX {selectedItem.price}</Text>
-          </View>
-          <View style={styles.desc}>
-            <Ionicons name="ios-calendar" size={24} color="orange" />
-            <Text style={styles.text}>
-              {selectedItem.startDate} - {selectedItem.endDate}
+        {booking ? (
+          <Chip
+            title="Account created"
+            buttonStyle={styles.chip}
+            containerStyle={styles.chipCont}
+            onAccessibilityEscape={deselectItem}
+          >
+            <ActivityIndicator size={50} color="orange" />
+            <Text style={{ fontSize: 20, color: "orange" }}>
+              Booking in progress....
             </Text>
-          </View>
+          </Chip>
+        ) : (
+          <Chip
+            title="Account created"
+            buttonStyle={styles.chip}
+            containerStyle={styles.chipCont}
+            onAccessibilityEscape={deselectItem}
+          >
+            <View style={styles.desc}>
+              <Ionicons
+                name="ios-information-circle"
+                size={24}
+                color="orange"
+              />
+              <Text style={[styles.text]}>{selectedItem.description}</Text>
+            </View>
+            <View style={styles.desc}>
+              <Ionicons name="md-location" size={24} color="orange" />
+              <Text style={styles.text}>{selectedItem.destination}</Text>
+            </View>
+            <View style={styles.desc}>
+              <Ionicons name="pricetags" size={24} color="orange" />
+              <Text style={styles.text}>UGX {selectedItem.price}</Text>
+            </View>
+            <View style={styles.desc}>
+              <Ionicons name="ios-calendar" size={24} color="orange" />
+              <Text style={styles.text}>
+                {selectedItem.startDate} - {selectedItem.endDate}
+              </Text>
+            </View>
 
-          <Button
-            ViewComponent={LinearGradient}
-            linearGradientProps={styles.linear}
-            icon={<MaterialCommunityIcons name="cart" color="#fff" size={30} />}
-            title="Book now"
-            containerStyle={styles.btnCont}
-            buttonStyle={styles.btn}
-            titleStyle={{ fontSize: 20, fontWeight: "700" }}
-            onPress={() => addItem(selectedItem)}
-          />
-        </Chip>
+            <Button
+              icon={
+                <MaterialCommunityIcons name="cart" color="#fff" size={30} />
+              }
+              title="Book now"
+              containerStyle={styles.btnCont}
+              buttonStyle={styles.btn}
+              titleStyle={{ fontSize: 20, fontWeight: "700" }}
+              onPress={bookingInProgress}
+            />
+          </Chip>
+        )}
       </BottomSheet>
 
       <Navigation a={toAccount} isH={true} b={toBookings} r={toReviews} />
@@ -641,6 +690,6 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     padding: 2,
   },
-  btnCont: { width: "70%", height: 50, borderRadius: 10, margin: 5 },
-  btn: { backgroundColor: "orange", height: "100%" },
+  btnCont: { width: "70%", height: 50, margin: 5 },
+  btn: { backgroundColor: "#ff5349", height: "100%" },
 });

@@ -46,6 +46,7 @@ const Bookings = ({
               const data = response.data;
               if (data != null) {
                 let values = Object.values(data);
+
                 for (var index = 0; index < values.length; index++) {
                   const booking = values[index];
                   setBookings((prev) => [...prev, booking]);
@@ -177,9 +178,7 @@ const Bookings = ({
                       source={require("../assets/images/booking.png")}
                     />
                     <View>
-                      <Text style={styles.text}>
-                        {booking.trip.bookingDate}
-                      </Text>
+                      <Text style={styles.text}>{booking.bookingDate}</Text>
                       <Text style={styles.text}>{booking.trip.title}</Text>
                     </View>
                     <Chip

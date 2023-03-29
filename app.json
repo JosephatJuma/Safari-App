@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "MySafari",
-    "slug": "MySafari",
+    "name": "Tuzunge",
+    "slug": "Tuzunge",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./app/assets/icon.png",
@@ -11,9 +11,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },

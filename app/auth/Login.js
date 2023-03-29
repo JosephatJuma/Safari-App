@@ -14,7 +14,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 
-const Login = ({ loginFunction, signup, validating }) => {
+const Login = ({ loginFunction, signup, validating, forgot }) => {
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -87,7 +87,7 @@ const Login = ({ loginFunction, signup, validating }) => {
           titleStyle={{ color: "#fff", fontSize: 25 }}
           onPress={() => loginFunction(email, password)}
         />
-        <Text>Forgot password</Text>
+        <Text onPress={forgot}>Forgot password</Text>
         <Text>OR</Text>
         <Button
           disabled={validating}

@@ -1,12 +1,12 @@
 import { StyleSheet, Alert } from "react-native";
 import Home from "./app/screens/Home";
-import Explore from "./app/screens/Explore";
 import Reviews from "./app/screens/Reviews";
 import Bookings from "./app/screens/Bookings";
 import Account from "./app/screens/Account";
 import Search from "./app/screens/Search";
 import Login from "./app/auth/Login";
 import Signup from "./app/auth/Signup";
+import Forgot from "./app/auth/Forgot";
 import GetStarted from "./app/auth/GetStarted";
 import Help from "./more/Help";
 import Info from "./more/Info";
@@ -25,51 +25,26 @@ import {
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
 } from "firebase/auth";
-import axios from "axios";
-import { apiUrl } from "./app/api/Api";
 export default function App() {
   //variables
   const [signedIn, setSignedIn] = useState(false);
   const [logging, SetLogging] = useState(false);
   const [user, setUser] = useState({});
   const [cartItems, setCartItems] = useState([]);
+
+  //forgot password
+  const [sendingEmail, setSending] = useState(false);
+  const [emailSent, setSent] = useState(false);
+
   const HomeScreen = ({ navigation }) => {
     const addToCart = (item) => {
-      setCartItems([item]);
-      //make a booking
+      //setCartItems(item); //add to cart
+      navigation.naviagte("Cart");
       console.log(item);
-      const booking = { item, userID: user.userID, confirmed: false };
-      setTimeout(() => {
-        axios
-          .post(apiUrl.book, booking)
-          .then((response) => {
-            console.log(response.data);
-            if (response.data.status === false) {
-              Alert.alert(
-                "Booking unsuccessful!",
-                response.data.message,
-                [
-                  {
-                    text: "I get it",
-                  },
-                ],
-                {
-                  cancelable: true,
-                }
-              );
-              return;
-            }
-            navigation.navigate("Cart");
-          })
-          .catch((error) => {
-            alert(error);
-            console.log(error);
-          });
-      }, 2000);
     };
     return (
       <Home
-        numberOfItemsOnCart={cartItems.length}
+        //numberOfItemsOnCart={cartItems.length}
         toExplore={() => navigation.push("Explore")}
         toAccount={() => navigation.push(signedIn ? "Account" : "Login")}
         toBookings={() => navigation.push("Bookings")}
@@ -77,22 +52,13 @@ export default function App() {
         toSearch={() => navigation.push("Search")}
         nots={() => navigation.push("Notifications")}
         cart={() => navigation.push("Cart")}
-        addItem={addToCart}
+        addToCart={() => addToCart()}
+        user={user}
+        loggedIn={signedIn}
       />
     );
   };
-  const ExploreScreen = ({ navigation }) => {
-    return (
-      <Explore
-        back={() => navigation.goBack()}
-        toAccount={() => navigation.push(signedIn ? "Account" : "Login")}
-        toHome={() => navigation.popToTop()}
-        toBookings={() => navigation.push("Bookings")}
-        toReviews={() => navigation.push("Reviews")}
-        toSearch={() => navigation.navigate("Search")}
-      />
-    );
-  };
+
   const ReviewsScreen = ({ navigation }) => {
     return (
       <Reviews
@@ -208,6 +174,41 @@ export default function App() {
         back={() => navigation.goBack()}
         loginFunction={handleLogin}
         signup={navigateToSignup}
+        forgot={() => navigation.push("Forgot")}
+      />
+    );
+  };
+  const ForgotPasswordScreen = ({ navigation }) => {
+    const resetPassword = (email) => {
+      setSending(true);
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          //check with firebase
+          const auth = getAuth();
+          sendPasswordResetEmail(auth, email)
+            .then(() => {
+              setSending(false);
+              setSent(true);
+            })
+            .catch((error) => {
+              Alert.alert("Login Error!", error.message);
+              setSending(false);
+            });
+          resolve();
+        }, 100);
+      });
+    };
+    const resend = () => {
+      setSent(false);
+    };
+
+    return (
+      <Forgot
+        reset={resetPassword}
+        sending={sendingEmail}
+        sent={emailSent}
+        login={() => navigation.push("Login")}
+        resend={resend}
       />
     );
   };
@@ -257,11 +258,6 @@ export default function App() {
           options={styles.screenOptions}
         />
         <Stack.Screen
-          name="Explore"
-          component={ExploreScreen}
-          options={styles.screenOptions}
-        />
-        <Stack.Screen
           name="Reviews"
           component={ReviewsScreen}
           options={styles.screenOptions}
@@ -301,6 +297,13 @@ export default function App() {
           }}
         />
         <Stack.Screen
+          name="Forgot"
+          component={ForgotPasswordScreen}
+          options={{
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          }}
+        />
+        <Stack.Screen
           name="Signup"
           component={SignupScreen}
           options={{
@@ -335,3 +338,16 @@ export default function App() {
 const styles = StyleSheet.create({
   screenOptions: { gestureEnabled: true, gestureDirection: "horizontal" },
 });
+
+//  const ExploreScreen = ({ navigation }) => {
+//    return (
+//      <Explore
+//        back={() => navigation.goBack()}
+//        toAccount={() => navigation.push(signedIn ? "Account" : "Login")}
+//        toHome={() => navigation.popToTop()}
+//        toBookings={() => navigation.push("Bookings")}
+//        toReviews={() => navigation.push("Reviews")}
+//        toSearch={() => navigation.navigate("Search")}
+//      />
+//    );
+//  };
