@@ -21,7 +21,7 @@ export default function Home({
   toSearch,
   nots,
   cart,
-  addToCart,
+  handleupDateCart,
   numberOfItemsOnCart,
   notifications,
 }) {
@@ -32,6 +32,7 @@ export default function Home({
   const [selectedItem, setSelecttedItem] = useState({});
   const [refreshing, setRefreshing] = React.useState(false);
   const [booking, setBooking] = useState(false);
+
   //Fetch trips
   const fetchData = () => {
     if (trips.length <= 0) {
@@ -81,6 +82,7 @@ export default function Home({
     setSelecttedItem([]);
     toAccount();
   };
+
   const bookingInProgress = () => {
     if (loggedIn === false) {
       Alert.alert(
@@ -113,9 +115,9 @@ export default function Home({
             return;
           }
           setItemIsSlected(false);
-          Alert.alert("Success:", "Booking completed ");
           setBooking(false);
-          () => addToCart(selectedItem);
+          handleupDateCart(selectedItem);
+          cart();
         })
         .catch((error) => {
           Alert.alert("Failure:", error.message);
@@ -587,11 +589,11 @@ const styles = StyleSheet.create({
     width: "50%",
     height: 180,
     backgroundColor: "#fff",
-    padding: 16,
+    padding: 10,
     alignItems: "center",
     justifyContent: "center",
     marginEnd: 1,
-    marginTop: 2,
+    margin: 2,
   },
   boxShadow: {
     shadowColor: "#000",

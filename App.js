@@ -38,13 +38,11 @@ export default function App() {
 
   const HomeScreen = ({ navigation }) => {
     const addToCart = (item) => {
-      //setCartItems(item); //add to cart
-      navigation.naviagte("Cart");
-      console.log(item);
+      setCartItems([item]); //add to cart
     };
     return (
       <Home
-        //numberOfItemsOnCart={cartItems.length}
+        numberOfItemsOnCart={cartItems.length}
         toExplore={() => navigation.push("Explore")}
         toAccount={() => navigation.push(signedIn ? "Account" : "Login")}
         toBookings={() => navigation.push("Bookings")}
@@ -52,7 +50,7 @@ export default function App() {
         toSearch={() => navigation.push("Search")}
         nots={() => navigation.push("Notifications")}
         cart={() => navigation.push("Cart")}
-        addToCart={() => addToCart()}
+        handleupDateCart={addToCart}
         user={user}
         loggedIn={signedIn}
       />

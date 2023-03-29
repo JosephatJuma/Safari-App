@@ -56,6 +56,7 @@ const Cart = ({ back, items, removeItem, user }) => {
     }
     return b.join("");
   };
+
   return (
     <View>
       <StatusBar style="light" backgroundColor="transparent" />
