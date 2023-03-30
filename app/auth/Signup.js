@@ -18,7 +18,7 @@ const emailREGEX =
 const phoneREGEX =
   /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
 
-const Signup = ({ login }) => {
+const Signup = ({ login, nowLogin }) => {
   //validations
   const [isValidEmail, setValidEmail] = useState(false);
   const [isStrongPassword, setStrongPassword] = useState(false);
@@ -31,7 +31,6 @@ const Signup = ({ login }) => {
   const [phone, setPhone] = useState("+256");
   const [password, setPassword] = useState("");
 
-  const [errMsg, setErrMsg] = useState("");
   const [nameError, setNameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -106,8 +105,6 @@ const Signup = ({ login }) => {
     axios
       .post(apiUrl.register, user)
       .then((response) => {
-        console.log(apiUrl.register);
-        console.log(response.data);
         if (response.data.status === false) {
           Alert.alert(
             "Registration Error!",
@@ -130,8 +127,11 @@ const Signup = ({ login }) => {
         });
         setLoading(false);
         setDisable(false);
-        console.log(error);
       });
+  };
+  const handleLogin = () => {
+    setSent(!sent);
+    nowLogin(email, password);
   };
   return (
     <View syle={styles.container}>
@@ -144,34 +144,35 @@ const Signup = ({ login }) => {
           width: "100%",
         }}
       >
-        <Image
-          source={require("../assets/login.jpg")}
+        <View
           style={{
+            height: 200,
             width: "100%",
-            height: 250,
-            borderBottomRightRadius: 100,
-            borderBottomLeftRadius: 100,
+            backgroundColor: "orange",
+            justifyContent: "space-evenly",
+            alignItems: "center",
           }}
-        />
+        >
+          <FontAwesome
+            name="user-circle"
+            size={100}
+            color="#fff"
+            style={{ marginTop: 40 }}
+          />
+        </View>
         <BottomSheet isVisible={sent}>
           <Chip
-            title="Account created"
-            buttonStyle={{
-              borderRadius: 0,
-              backgroundColor: "#000",
-              height: "100%",
-            }}
-            containerStyle={{
-              marginVertical: 15,
-              height: 60,
-              width: "96%",
-              alignSelf: "center",
-              borderRadius: 5,
-            }}
-            onPress={() => setSent(false)}
-            onAccessibilityEscape={() => setSent(false)}
+            buttonStyle={styles.chip}
+            containerStyle={styles.chipCont}
+            onPress={handleLogin}
+            onAccessibilityEscape={handleLogin}
             on
-          />
+          >
+            <Text style={styles.text}>
+              {"Account created with user id " + uid}
+            </Text>
+            <Text style={styles.text}>Click to go login</Text>
+          </Chip>
         </BottomSheet>
         <Input
           inputContainerStyle={styles.noBorder}
@@ -292,14 +293,12 @@ const styles = StyleSheet.create({
     width: "96%",
     borderWidth: 0.5,
     borderColor: "grey",
-    borderRadius: 8,
     height: 53,
   },
   buttonContainer: {
     marginTop: 25,
     width: "90%",
     borderWidth: 1,
-    borderRadius: 8,
     height: 52,
     borderColor: "#000",
   },
@@ -312,5 +311,18 @@ const styles = StyleSheet.create({
     shadowOpacity: 10,
     shadowRadius: 8,
     elevation: 4,
+  },
+  text: { color: "#fff" },
+  chipCont: {
+    marginVertical: 15,
+    height: 60,
+    width: "96%",
+    alignSelf: "center",
+    borderRadius: 5,
+  },
+  chip: {
+    borderRadius: 0,
+    backgroundColor: "#ff5349",
+    height: "100%",
   },
 });

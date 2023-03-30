@@ -6,7 +6,6 @@ import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import Navigation from "../components/Navigation";
 import { ScrollView } from "react-native-gesture-handler";
 import { Skeleton, Header, Chip, Button } from "@rneui/base";
-import { Rating, AirbnbRating } from "react-native-ratings";
 import { books } from "../data/Data";
 import { LinearGradient } from "expo-linear-gradient";
 import { apiUrl } from "../api/Api";
@@ -218,16 +217,7 @@ const Bookings = ({
               source={require("../assets/images/booking.png")}
             />
 
-            <Text
-              style={{
-                textAlign: "center",
-                fontSize: 20,
-                color: "#ff5349",
-                fontWeight: "700",
-              }}
-            >
-              {errMsg}
-            </Text>
+            <Text style={styles.TXT}>{errMsg}</Text>
 
             {!userID && (
               <Button
@@ -293,6 +283,18 @@ const styles = StyleSheet.create({
     alignContent: "center",
     alignItems: "center",
   },
-  amount: { flexDirection: "row", justifyContent: "space-between", padding: 5 },
+  amount: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 5,
+    paddingLeft: 15,
+    paddingRight: 15,
+  },
   text: { color: "grey", fontSize: 15, fontWeight: "500" },
+  TXT: {
+    textAlign: "center",
+    fontSize: 20,
+    color: "#ff5349",
+    fontWeight: "700",
+  },
 });

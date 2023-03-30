@@ -28,7 +28,14 @@ export default function Forgot({ reset, sending, sent, login, resend }) {
             marginTop: 50,
           }}
         />
-        <View>
+        <View
+          style={{
+            width: "96%",
+            alignSelf: "center",
+            alignContent: "center",
+            alignItems: "center",
+          }}
+        >
           <Text style={{ fontSize: 30, fontWeight: "bold", color: "#000" }}>
             Reset password
           </Text>

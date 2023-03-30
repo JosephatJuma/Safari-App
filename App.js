@@ -126,8 +126,33 @@ export default function App() {
     const navigateToLogin = () => {
       return navigation.navigate("Login");
     };
+    const handleLogin = (email, password) => {
+      SetLogging(true);
+      const auth = getAuth();
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          setUser({
+            userID: user.uid,
+            name: user.displayName,
+            phoneNumber: user.phoneNumber,
+            email: user.email,
+            verified: user.emailVerified,
+          });
+        })
+        .then(() => {
+          SetLogging(false);
+          setSignedIn(true);
+          navigation.popToTop();
+        })
+        .catch((error) => {
+          Alert.alert("Login Error!", error.code);
+          SetLogging(false);
+        });
+    };
 
-    return <Signup login={navigateToLogin} />;
+    return <Signup login={navigateToLogin} nowLogin={handleLogin} />;
   };
   const LoginScreen = ({ navigation }) => {
     const navigateToSignup = () => {
@@ -230,6 +255,7 @@ export default function App() {
         items={cartItems}
         removeItem={removeFromCart}
         user={user}
+        loggedIn={signedIn}
       />
     );
   };

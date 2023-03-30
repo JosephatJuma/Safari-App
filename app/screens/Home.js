@@ -12,6 +12,7 @@ import { Ionicons, FontAwesome, Feather } from "@expo/vector-icons";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import axios from "axios";
 import { LinearGradient } from "expo-linear-gradient";
+import { Rating } from "react-native-ratings";
 export default function Home({
   user,
   loggedIn,
@@ -229,9 +230,15 @@ export default function Home({
             <Image source={{ uri: item.photoURL }} style={styles.image} />
           </TouchableOpacity>
           <View>
-            <TouchableOpacity>
-              <Ionicons name="heart-outline" size={30} color="orange" />
-            </TouchableOpacity>
+            <Rating
+              type="heart"
+              ratingCount={1}
+              imageSize={30}
+              onFinishRating={this.ratingCompleted}
+              ratingTextColor="#ff5349"
+              startingValue={0}
+            />
+
             <TouchableOpacity>
               <MaterialIcons
                 name="add-circle"
@@ -244,6 +251,15 @@ export default function Home({
         </View>
         <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.title}>UGX {item.price}</Text>
+        <Rating
+          type="heart"
+          ratingCount={5}
+          imageSize={15}
+          showRating
+          onFinishRating={this.ratingCompleted}
+          ratingTextColor="#ff5349"
+          startingValue={2.5}
+        />
       </View>
     );
   };
@@ -393,58 +409,6 @@ export default function Home({
               )
             }
           />
-          // <View
-          //   style={{
-          //     alignContent: "center",
-          //     justifyContent: "space-evenly",
-          //     flexDirection: "row",
-          //     flexWrap: "wrap",
-          //     width: "100%",
-          //   }}
-          // >
-          //   {trips.map((item) => {
-          //     return (
-          //       <View style={[styles.item, styles.boxShadow]} key={item.id}>
-          //         <View
-          //           style={{
-          //             width: "100%",
-          //             display: "flex",
-          //             flexDirection: "row",
-          //           }}
-          //         >
-          //           <TouchableOpacity
-          //             style={{ width: "80%" }}
-          //             onPress={() => selectObject(item)}
-          //           >
-          //             <Image
-          //               source={{ uri: item.photoURL }}
-          //               style={styles.image}
-          //             />
-          //           </TouchableOpacity>
-          //           <View>
-          //             <TouchableOpacity>
-          //               <Ionicons
-          //                 name="heart-outline"
-          //                 size={30}
-          //                 color="orange"
-          //               />
-          //             </TouchableOpacity>
-          //             <TouchableOpacity>
-          //               <MaterialIcons
-          //                 name="add-circle"
-          //                 size={30}
-          //                 color="orange"
-          //                 onPress={() => selectObject(item)}
-          //               />
-          //             </TouchableOpacity>
-          //           </View>
-          //         </View>
-          //         <Text style={styles.title}>{item.title}</Text>
-          //         <Text style={styles.title}>UGX {item.price}</Text>
-          //       </View>
-          //     );
-          //   })}
-          // </View>
         )}
       </ScrollView>
       <BottomSheet
@@ -510,7 +474,14 @@ export default function Home({
                 {selectedItem.startDate} - {selectedItem.endDate}
               </Text>
             </View>
-
+            <Rating
+              type="heart"
+              ratingCount={5}
+              imageSize={30}
+              showRating
+              onFinishRating={this.ratingCompleted}
+              ratingTextColor="#ff5349"
+            />
             <Button
               icon={
                 <MaterialCommunityIcons name="cart" color="#fff" size={30} />
@@ -587,7 +558,7 @@ const styles = StyleSheet.create({
   },
   item: {
     width: "50%",
-    height: 180,
+    height: 250,
     backgroundColor: "#fff",
     padding: 10,
     alignItems: "center",
@@ -612,9 +583,10 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   title: {
-    //fontSize: 15,
-    fontWeight: "500",
+    fontSize: 15,
+    fontWeight: "600",
     color: "#ff5349",
+    textAlign: "center",
   },
   columnWrapper: {
     justifyContent: "space-between",
@@ -694,3 +666,56 @@ const styles = StyleSheet.create({
   btnCont: { width: "70%", height: 50, margin: 5 },
   btn: { backgroundColor: "#ff5349", height: "100%" },
 });
+
+// <View
+//   style={{
+//     alignContent: "center",
+//     justifyContent: "space-evenly",
+//     flexDirection: "row",
+//     flexWrap: "wrap",
+//     width: "100%",
+//   }}
+// >
+//   {trips.map((item) => {
+//     return (
+//       <View style={[styles.item, styles.boxShadow]} key={item.id}>
+//         <View
+//           style={{
+//             width: "100%",
+//             display: "flex",
+//             flexDirection: "row",
+//           }}
+//         >
+//           <TouchableOpacity
+//             style={{ width: "80%" }}
+//             onPress={() => selectObject(item)}
+//           >
+//             <Image
+//               source={{ uri: item.photoURL }}
+//               style={styles.image}
+//             />
+//           </TouchableOpacity>
+//           <View>
+//             <TouchableOpacity>
+//               <Ionicons
+//                 name="heart-outline"
+//                 size={30}
+//                 color="orange"
+//               />
+//             </TouchableOpacity>
+//             <TouchableOpacity>
+//               <MaterialIcons
+//                 name="add-circle"
+//                 size={30}
+//                 color="orange"
+//                 onPress={() => selectObject(item)}
+//               />
+//             </TouchableOpacity>
+//           </View>
+//         </View>
+//         <Text style={styles.title}>{item.title}</Text>
+//         <Text style={styles.title}>UGX {item.price}</Text>
+//       </View>
+//     );
+//   })}
+// </View>

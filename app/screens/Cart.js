@@ -14,12 +14,16 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Header, Card, Button, Dialog } from "@rneui/base";
 import { FlutterwaveButton, FlutterwaveInit } from "flutterwave-react-native";
 
-const Cart = ({ back, items, removeItem, user }) => {
+const Cart = ({ back, items, removeItem, user, loggedIn }) => {
   const [showDialogue, setShowDialogue] = useState(false);
   const showCancelBookingAlert = () => {
     setShowDialogue(!showDialogue);
   };
   const makePayment = async (price) => {
+    if (loggedIn === false) {
+      alert("You are not logged in!");
+      return;
+    }
     const flutterwaveConfig = {
       tx_ref: generateRef(10),
       authorization: "FLWPUBK_TEST-9b20b51419bb0e23f960a0d675a78c75-X",
