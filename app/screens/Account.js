@@ -1,8 +1,8 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native";
 import React, { useState, useRef } from "react";
 import { StatusBar } from "expo-status-bar";
-import { Header, Chip, BottomSheet, Button } from "@rneui/base";
+import { Header, Chip, BottomSheet, Button, Dialog } from "@rneui/base";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import { Octicons, FontAwesome5, AntDesign } from "@expo/vector-icons";
@@ -19,6 +19,7 @@ const Account = ({
   help,
   info,
   user,
+  loggingOut,
 }) => {
   const [showLogoutAlert, setShowLogoutAlert] = useState(false);
 
@@ -162,6 +163,17 @@ const Account = ({
           />
         </Chip>
       </BottomSheet>
+      <Dialog
+        overlayStyle={{
+          alignContent: "center",
+          alignItems: "center",
+          flexDirection: "row",
+        }}
+        isVisible={loggingOut}
+      >
+        <ActivityIndicator color={"orange"} size={30} />
+        <Text style={styles.text}>Logging out......</Text>
+      </Dialog>
       <Navigation
         isA={true}
         h={toHome}

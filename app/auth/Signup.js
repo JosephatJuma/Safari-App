@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { Image, Alert, ActivityIndicator } from "react-native";
 import React, { useState, useRef } from "react";
 import { StatusBar } from "expo-status-bar";
-import { Input, Button, FAB, Chip, BottomSheet } from "@rneui/base";
+import { Input, Button, Dialog, Chip, BottomSheet } from "@rneui/base";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -18,7 +18,7 @@ const emailREGEX =
 const phoneREGEX =
   /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
 
-const Signup = ({ login, nowLogin }) => {
+const Signup = ({ login, nowLogin, loggingIn }) => {
   //validations
   const [isValidEmail, setValidEmail] = useState(false);
   const [isStrongPassword, setStrongPassword] = useState(false);
@@ -130,7 +130,6 @@ const Signup = ({ login, nowLogin }) => {
       });
   };
   const handleLogin = () => {
-    setSent(!sent);
     nowLogin(email, password);
   };
   return (
@@ -160,18 +159,29 @@ const Signup = ({ login, nowLogin }) => {
             style={{ marginTop: 40 }}
           />
         </View>
-        <BottomSheet isVisible={sent}>
+        <BottomSheet
+          isVisible={sent}
+          backdropStyle={{ backgroundColor: "#000000c0" }}
+        >
           <Chip
             buttonStyle={styles.chip}
             containerStyle={styles.chipCont}
-            onPress={handleLogin}
             onAccessibilityEscape={handleLogin}
             on
           >
-            <Text style={styles.text}>
-              {"Account created with user id " + uid}
+            <MaterialCommunityIcons name="hand-clap" size={50} color="orange" />
+            <Text style={styles.TXT}>
+              Congratulations, Your account was created successfully
             </Text>
-            <Text style={styles.text}>Click to go login</Text>
+            <Button
+              containerStyle={[styles.buttonContainer]}
+              buttonStyle={{ height: "100%", backgroundColor: "#ff5349" }}
+              title="Now Login"
+              titleStyle={{ color: "#fff", fontSize: 25 }}
+              onPress={handleLogin}
+              disabled={disableForm}
+              disabledStyle={{ backgroundColor: "#ff5349c0" }}
+            />
           </Chip>
         </BottomSheet>
         <Input
@@ -266,6 +276,18 @@ const Signup = ({ login, nowLogin }) => {
           onPress={login}
           disabled={disableForm}
         />
+
+        <Dialog
+          overlayStyle={{
+            alignContent: "center",
+            alignItems: "center",
+            flexDirection: "row",
+          }}
+          isVisible={loggingIn}
+        >
+          <ActivityIndicator color={"orange"} size={30} />
+          <Text style={styles.text}>Logging in......</Text>
+        </Dialog>
       </ScrollView>
     </View>
   );
@@ -312,17 +334,25 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 4,
   },
-  text: { color: "#fff" },
+  text: { color: "orange" },
+  TXT: {
+    color: "orange",
+    fontSize: 20,
+    fontWeight: "600",
+    textAlign: "center",
+  },
   chipCont: {
-    marginVertical: 15,
-    height: 60,
-    width: "96%",
-    alignSelf: "center",
+    marginVertical: 0,
+    height: 300,
+    width: "100%",
     borderRadius: 5,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
   },
   chip: {
     borderRadius: 0,
-    backgroundColor: "#ff5349",
+    backgroundColor: "#F5F5F5",
     height: "100%",
+    flexDirection: "column",
   },
 });

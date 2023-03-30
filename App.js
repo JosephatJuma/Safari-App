@@ -83,6 +83,7 @@ export default function App() {
   };
   const AccountScreen = ({ navigation }) => {
     const logout = () => {
+      SetLogging(true);
       const auth = getAuth();
       setTimeout(() => {
         auth
@@ -90,10 +91,12 @@ export default function App() {
           .then(() => {
             setSignedIn(false);
             setUser({});
+            SetLogging(false);
             navigation.push("Get Started");
           })
           .catch((error) => {
             Alert.alert("Sign Out Error!", error.message);
+            SetLogging(false);
           });
       }, 10);
     };
@@ -107,6 +110,7 @@ export default function App() {
         help={() => navigation.push("Help")}
         info={() => navigation.push("Info")}
         user={user}
+        loggingOut={logging}
       />
     );
   };
@@ -152,7 +156,13 @@ export default function App() {
         });
     };
 
-    return <Signup login={navigateToLogin} nowLogin={handleLogin} />;
+    return (
+      <Signup
+        login={navigateToLogin}
+        nowLogin={handleLogin}
+        loggingIn={logging}
+      />
+    );
   };
   const LoginScreen = ({ navigation }) => {
     const navigateToSignup = () => {
