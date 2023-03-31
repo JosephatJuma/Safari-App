@@ -155,7 +155,7 @@ const Cart = ({ back, items, removeItem, user, loggedIn }) => {
           overlayStyle={styles.dialog}
         >
           <Dialog.Title
-            title="Do you want to cancel booking?"
+            title="Do you want to remove this item from the cart?"
             titleStyle={styles.title}
           />
           <View style={styles.btns}>
@@ -215,11 +215,11 @@ const styles = StyleSheet.create({
   },
   dialog: {
     backgroundColor: "#fff",
-    width: "95%",
-    height: 160,
+    width: "90%",
+    height: 200,
     alignContent: "center",
     alignItems: "center",
-    borderRadius: 15,
+    borderRadius: 8,
     justifyContent: "space-between",
   },
   btns: {

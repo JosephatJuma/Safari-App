@@ -427,11 +427,11 @@ export default function Home({
               <Feather name="delete" size={30} color="#fff" />
             </TouchableOpacity>
           </View>
-          <Image
-            source={require("../assets/images/login.jpg")}
-            //source={{ url: selectedItem.photo }}
+          {/* <Image
+            //source={require("../assets/images/login.jpg")}
+            source={{ url: selectedItem.photoURL }}
             style={{ width: "100%", height: 200 }}
-          ></Image>
+          /> */}
         </View>
         {booking ? (
           <Chip

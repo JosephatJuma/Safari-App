@@ -5,7 +5,7 @@ import { StatusBar } from "expo-status-bar";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import Navigation from "../components/Navigation";
 import { ScrollView } from "react-native-gesture-handler";
-import { Skeleton, Header, Chip, Button } from "@rneui/base";
+import { Skeleton, Header, Chip, Button, BottomSheet } from "@rneui/base";
 import { books } from "../data/Data";
 import { LinearGradient } from "expo-linear-gradient";
 import { apiUrl } from "../api/Api";
@@ -22,6 +22,8 @@ const Bookings = ({
   const [bookings, setBookings] = useState([]);
   const [errMsg, setErrMsg] = useState("");
   const [loading, setLoading] = useState(true);
+  const [selectedItem, setSelecttedItem] = useState(null);
+  const [itemIsSlected, setItemIsSlected] = useState(false);
   const fetchBookings = () => {
     if (!userID) {
       setErrMsg("You need to signed in to be able to see your bookings");
@@ -72,8 +74,13 @@ const Bookings = ({
     setErrMsg("Refreshing");
     fetchBookings();
   }, []);
-  const ratingCompleted = (rating) => {
-    console.log("Rating is: " + rating);
+  //select object
+  const selectObject = (option) => {
+    setSelecttedItem(option);
+    setItemIsSlected(true);
+  };
+  const deselectItem = () => {
+    setItemIsSlected(false);
   };
   return (
     <View style={styles.container}>
@@ -160,7 +167,7 @@ const Bookings = ({
                 style={[styles.booking, styles.boxShadow]}
                 key={booking.id}
                 underlayColor="#DBE9FA"
-                onPress={() => console.log("yes")}
+                onPress={() => selectObject(booking)}
               >
                 <View>
                   <View style={styles.details}>
@@ -229,7 +236,83 @@ const Bookings = ({
             )}
           </View>
         )}
+        {selectedItem !== null && (
+          <BottomSheet
+            isVisible={itemIsSlected}
+            backdropStyle={{ backgroundColor: "#000000c0", height: "100%" }}
+            onBackdropPress={deselectItem}
+          >
+            <Chip
+              containerStyle={{
+                width: "100%",
+                borderRadius: 0,
+                height: "100%",
+              }}
+              buttonStyle={{
+                backgroundColor: "#fff",
+                width: "100%",
+                borderRadius: 0,
+                height: "100%",
+                flexDirection: "column",
+                borderTopLeftRadius: 15,
+                borderTopRightRadius: 15,
+              }}
+            >
+              <View style={styles.amount}>
+                <Text style={styles.text}>Booking Details</Text>
+                <MaterialIcons
+                  name="cancel-presentation"
+                  size={30}
+                  color="orange"
+                  onPress={deselectItem}
+                />
+              </View>
+              <Image
+                source={require("../assets/images/booking.png")}
+                style={{ width: 200, height: 200 }}
+              />
+              <View
+                style={{
+                  width: "95%",
+                  borderWidth: 1,
+                  height: 200,
+                  borderRadius: 10,
+                  borderColor: "grey",
+                  justifyContent: "space-evenly",
+                  margin: 10,
+                }}
+              >
+                <View style={styles.amount}>
+                  <Text style={styles.text}>Trip Title:</Text>
+                  <Text style={styles.text}> {selectedItem.trip.title}</Text>
+                </View>
+                <View style={styles.amount}>
+                  <Text style={styles.text}>Amount:</Text>
+                  <Text style={styles.text}> {selectedItem.trip.price}</Text>
+                </View>
+                <View style={styles.amount}>
+                  <Text style={styles.text}>Booking Date:</Text>
+                  <Text style={styles.text}> {selectedItem.bookingDate}</Text>
+                </View>
+                <View style={styles.amount}>
+                  <Text style={styles.text}>Payment Status:</Text>
+                  <Text style={styles.text}>
+                    {selectedItem.confirmed ? "Paid" : "Null"}
+                  </Text>
+                </View>
+                {!selectedItem.confirmed && (
+                  <Button
+                    title="You havent paid, pay now"
+                    containerStyle={{ height: 50 }}
+                    buttonStyle={{ height: "100%" }}
+                  />
+                )}
+              </View>
+            </Chip>
+          </BottomSheet>
+        )}
       </ScrollView>
+
       <Navigation
         isB={true}
         h={toHome}
@@ -289,6 +372,7 @@ const styles = StyleSheet.create({
     padding: 5,
     paddingLeft: 15,
     paddingRight: 15,
+    width: "100%",
   },
   text: { color: "grey", fontSize: 15, fontWeight: "500" },
   TXT: {
