@@ -1,4 +1,4 @@
-const port = "http://192.168.117.45:10000"; //192.168.1.5 192.168.117.45
+const port = "http://192.168.45.198:10000"; //10.7.2.108  192.168.117.45 10.7.2.108
 export const apiUrl = {
   trips: `${port}/all/trips`,
   getBookings: `${port}/user/all/bookings`,

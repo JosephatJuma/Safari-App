@@ -274,10 +274,8 @@ const Bookings = ({
               <View
                 style={{
                   width: "95%",
-                  borderWidth: 1,
                   height: 200,
                   borderRadius: 10,
-                  borderColor: "grey",
                   justifyContent: "space-evenly",
                   margin: 10,
                 }}
@@ -297,14 +295,14 @@ const Bookings = ({
                 <View style={styles.amount}>
                   <Text style={styles.text}>Payment Status:</Text>
                   <Text style={styles.text}>
-                    {selectedItem.confirmed ? "Paid" : "Null"}
+                    {selectedItem.confirmed ? "Paid" : "Pending"}
                   </Text>
                 </View>
                 {!selectedItem.confirmed && (
                   <Button
                     title="You havent paid, pay now"
-                    containerStyle={{ height: 50 }}
-                    buttonStyle={{ height: "100%" }}
+                    containerStyle={styles.btnCont}
+                    buttonStyle={styles.btn}
                   />
                 )}
               </View>
@@ -374,11 +372,13 @@ const styles = StyleSheet.create({
     paddingRight: 15,
     width: "100%",
   },
-  text: { color: "grey", fontSize: 15, fontWeight: "500" },
+  text: { color: "grey", fontSize: 15, fontWeight: "600" },
   TXT: {
     textAlign: "center",
     fontSize: 20,
     color: "#ff5349",
     fontWeight: "700",
   },
+  btnCont: { width: "100%", height: 50, margin: 5, alignSelf: "center" },
+  btn: { backgroundColor: "#ff5349", height: "100%" },
 });

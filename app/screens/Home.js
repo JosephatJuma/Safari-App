@@ -274,7 +274,7 @@ export default function Home({
         height={100}
         centerComponent={
           <View style={{ marginLeft: -30 }}>
-            <Text style={styles.name}>Tuzunge</Text>
+            <Text style={styles.name}>Zunguka</Text>
           </View>
         }
         leftComponent={

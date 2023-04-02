@@ -38,7 +38,7 @@ export default function App() {
 
   const HomeScreen = ({ navigation }) => {
     const addToCart = (item) => {
-      setCartItems([item]); //add to cart
+      setCartItems((items) => [...items, item]); //add to cart
     };
     return (
       <Home
