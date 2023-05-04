@@ -273,7 +273,7 @@ const Bookings = ({
               />
               <View
                 style={{
-                  width: "95%",
+                  width: "100%",
                   height: 200,
                   borderRadius: 10,
                   justifyContent: "space-evenly",

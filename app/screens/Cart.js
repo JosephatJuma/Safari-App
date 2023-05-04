@@ -62,7 +62,7 @@ const Cart = ({ back, items, removeItem, user, loggedIn }) => {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <StatusBar style="light" backgroundColor="transparent" />
       <Header
         ViewComponent={LinearGradient}
@@ -78,7 +78,10 @@ const Cart = ({ back, items, removeItem, user, loggedIn }) => {
         }
         centerComponent={<Text style={styles.screenName}>Cart</Text>}
       />
-      <ScrollView style={{ minHeight: "80%" }}>
+      <ScrollView
+        style={{ minHeight: "80%", width: "100%" }}
+        showsVerticalScrollIndicator={false}
+      >
         <View>
           {items.length > 0 ? (
             items.map((item) => {
@@ -187,6 +190,13 @@ const styles = StyleSheet.create({
     colors: ["orange", "orange", "#ff5349"],
     start: { x: 0, y: 0.5 },
     end: { x: 1, y: 0.5 },
+  },
+  container: {
+    flex: 1,
+    backgroundColor: "#F5F5F5",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
   },
   screenName: { color: "#fff", fontSize: 22, fontWeight: "600" },
   boxShadow: {

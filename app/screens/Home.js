@@ -3,7 +3,7 @@ import { View, Text, FlatList, StyleSheet } from "react-native";
 import { Image, TouchableOpacity, RefreshControl } from "react-native";
 import { Alert, ActivityIndicator, ScrollView } from "react-native";
 import React, { useState, useEffect } from "react";
-import { Button, Header, Skeleton } from "@rneui/base";
+import { Header } from "@rneui/base";
 import { BottomSheet, Chip, Badge } from "@rneui/base";
 import { data } from "../data/Data";
 import Navigation from "../components/Navigation";
@@ -13,6 +13,13 @@ import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import axios from "axios";
 import { LinearGradient } from "expo-linear-gradient";
 import { Rating } from "react-native-ratings";
+import {
+  NativeBaseProvider,
+  Skeleton,
+  Actionsheet,
+  Heading,
+  Button,
+} from "native-base";
 export default function Home({
   user,
   loggedIn,
@@ -134,41 +141,16 @@ export default function Home({
       <View style={[styles.item, styles.boxShadow]}>
         <View style={styles.skeleton}>
           <View style={{ width: "80%" }}>
-            <Skeleton
-              animation="wave"
-              width={"100%"}
-              height={100}
-              LinearGradientComponent={LinearGradient}
-            />
+            <Skeleton width={"100%"} height={100} />
           </View>
           <View style={styles.skeletonIcons}>
-            <Skeleton
-              animation="wave"
-              width={30}
-              height={20}
-              LinearGradientComponent={LinearGradient}
-            />
-            <Skeleton
-              animation="wave"
-              width={30}
-              height={20}
-              LinearGradientComponent={LinearGradient}
-            />
+            <Skeleton width={30} height={20} />
+            <Skeleton width={30} height={20} />
           </View>
         </View>
         <View style={styles.skeletonText}>
-          <Skeleton
-            animation="wave"
-            width={"100%"}
-            height={20}
-            LinearGradientComponent={LinearGradient}
-          />
-          <Skeleton
-            animation="wave"
-            width={"100%"}
-            height={10}
-            LinearGradientComponent={LinearGradient}
-          />
+          <Skeleton width={"100%"} height={20} />
+          <Skeleton width={"100%"} height={10} />
         </View>
       </View>
     );
@@ -202,18 +184,8 @@ export default function Home({
           justifyContent: "space-evenly",
         }}
       >
-        <Skeleton
-          animation="wave"
-          width={"100%"}
-          height={"70%"}
-          LinearGradientComponent={LinearGradient}
-        />
-        <Skeleton
-          animation="wave"
-          width={"100%"}
-          height={"15%"}
-          LinearGradientComponent={LinearGradient}
-        />
+        <Skeleton width={"100%"} height={"70%"} />
+        <Skeleton width={"100%"} height={"15%"} />
       </View>
     );
   };
@@ -265,239 +237,236 @@ export default function Home({
   };
 
   return (
-    <View style={styles.container}>
-      <StatusBar style="light" backgroundColor="transparent" />
-      <Header
-        ViewComponent={LinearGradient}
-        linearGradientProps={styles.linear}
-        backgroundColor="transparent"
-        height={100}
-        centerComponent={
-          <View style={{ marginLeft: -30 }}>
-            <Text style={styles.name}>Zunguka</Text>
-          </View>
-        }
-        leftComponent={
-          <TouchableOpacity onPress={toSearch}>
-            <Ionicons name="search" size={30} color="#fff" />
-          </TouchableOpacity>
-        }
-        rightComponent={
-          <View style={{ display: "flex", flexDirection: "row" }}>
-            <TouchableOpacity onPress={cart}>
-              <MaterialCommunityIcons
-                name="cart-variant"
-                size={30}
-                color="#fff"
-              />
-              {numberOfItemsOnCart > 0 && <Badge badgeStyle={styles.badge} />}
+    <NativeBaseProvider>
+      <View style={styles.container}>
+        <StatusBar style="light" backgroundColor="transparent" />
+        <Header
+          ViewComponent={LinearGradient}
+          linearGradientProps={styles.linear}
+          backgroundColor="transparent"
+          height={100}
+          centerComponent={
+            <View style={{ marginLeft: -30 }}>
+              <Text style={styles.name}>Zunguka</Text>
+            </View>
+          }
+          leftComponent={
+            <TouchableOpacity onPress={toSearch}>
+              <Ionicons name="search" size={30} color="#fff" />
             </TouchableOpacity>
-            <TouchableOpacity onPress={nots}>
-              <Ionicons name="notifications-outline" size={30} color="#fff" />
-              {notifications > 0 && <Badge badgeStyle={styles.badge} />}
-            </TouchableOpacity>
-          </View>
-        }
-      />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            colors={["orange", "#ff5349", "grey"]}
-            size="large"
-            title="Relaoding"
-          />
-        }
-      >
-        <View style={[styles.add, styles.boxShadow]}>
-          <View style={{ padding: 5 }}>
-            <Text style={{ fontWeight: "600", fontSize: 30, color: "orange" }}>
-              Get 25%
-            </Text>
-            <Text style={styles.text}>Discount on your first trip</Text>
-          </View>
-          <View style={styles.addRight}>
-            <Image
-              source={require("../assets/add.png")}
-              style={{ width: "100%", height: "100%" }}
+          }
+          rightComponent={
+            <View style={{ display: "flex", flexDirection: "row" }}>
+              <TouchableOpacity onPress={cart}>
+                <MaterialCommunityIcons
+                  name="cart-variant"
+                  size={30}
+                  color="#fff"
+                />
+                {numberOfItemsOnCart > 0 && (
+                  <Badge
+                    badgeStyle={styles.badge}
+                    value={numberOfItemsOnCart}
+                  />
+                )}
+              </TouchableOpacity>
+              <TouchableOpacity onPress={nots}>
+                <Ionicons name="notifications-outline" size={30} color="#fff" />
+                {notifications > 0 && <Badge badgeStyle={styles.badge} />}
+              </TouchableOpacity>
+            </View>
+          }
+        />
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              colors={["orange", "#ff5349", "grey"]}
+              size="large"
+              title="Relaoding"
             />
-          </View>
-        </View>
-        <View
-          style={{
-            backgroundColor: "#fff",
-            padding: 0,
-            borderBottomWidth: 1,
-            borderColor: "lightgrey",
-          }}
+          }
         >
-          <View style={styles.itemsTop}>
-            <Text style={styles.text}>Recomended for you</Text>
-            <MaterialCommunityIcons
-              name="lightning-bolt"
-              size={30}
-              color="orange"
-            />
-          </View>
-          <FlatList
-            data={loading ? data : trips}
-            renderItem={
-              loading ? renderSkeletonForRecommend : renderRecommendations
-            }
-            keyExtractor={(item) => item.id}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            decelerationRate="fast"
-            snapToInterval={10}
-          />
-        </View>
-
-        <View style={styles.itemsTop}>
-          <Text style={styles.text}>Upcomming destinations</Text>
-          <TouchableOpacity>
-            <FontAwesome name="sliders" size={40} color="orange" />
-          </TouchableOpacity>
-        </View>
-        {loading ? (
-          <FlatList
-            scrollEnabled={false}
-            showsVerticalScrollIndicator={false}
-            data={data}
-            renderItem={renderSkeleton}
-            keyExtractor={(item) => item.id.toString()}
-            style={styles.row}
-            numColumns={2}
-          />
-        ) : (
-          <FlatList
-            scrollEnabled={false}
-            showsVerticalScrollIndicator={true}
-            data={trips}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id.toString()}
-            numColumns={2}
-            initialNumToRender={5}
-            maxToRenderPerBatch={5}
-            onEndReachedThreshold={5}
-            windowSize={5}
-            indicatorStyle={{ backgroundColor: "red" }}
-            removeClippedSubviews={true}
-            ListEmptyComponent={
-              <View
-                style={[styles.listFooter, styles.boxShadow, { height: 250 }]}
+          <View style={[styles.add, styles.boxShadow]}>
+            <View style={{ padding: 5 }}>
+              <Text
+                style={{ fontWeight: "600", fontSize: 30, color: "orange" }}
               >
-                <View style={styles.error}>
-                  <MaterialIcons name="error-outline" size={28} color="grey" />
-                  <Text style={styles.text}>{errMsg}</Text>
-                </View>
-                <TouchableOpacity onPress={onRefresh}>
-                  {refreshing ? (
-                    <ActivityIndicator size={80} color="orange" />
-                  ) : (
-                    <FontAwesome name="refresh" size={80} color="orange" />
-                  )}
-                </TouchableOpacity>
-              </View>
-            }
-            ListFooterComponent={
-              trips.length > 0 && (
-                <View style={[styles.listFooter, styles.boxShadow]}>
-                  <Text style={styles.title}>You have seen all the trips</Text>
-                </View>
-              )
-            }
-          />
-        )}
-      </ScrollView>
-      <BottomSheet
-        isVisible={itemIsSlected}
-        onBackdropPress={deselectItem}
-        containerStyle={{
-          backgroundColor: "#000000c0",
-        }}
-      >
-        <View style={styles.slectedItemView}>
-          <View style={styles.viewTop}>
-            <Text style={[{ fontSize: 22, fontWeight: "600", color: "#fff" }]}>
-              {selectedItem.title}
-            </Text>
-            <TouchableOpacity onPress={deselectItem}>
-              <Feather name="delete" size={30} color="#fff" />
-            </TouchableOpacity>
+                Get 25%
+              </Text>
+              <Text style={styles.text}>Discount on your first trip</Text>
+            </View>
+            <View style={styles.addRight}>
+              <Image
+                source={require("../assets/add.png")}
+                style={{ width: "100%", height: "100%" }}
+              />
+            </View>
           </View>
-          {/* <Image
-            //source={require("../assets/images/login.jpg")}
-            source={{ url: selectedItem.photoURL }}
-            style={{ width: "100%", height: 200 }}
-          /> */}
-        </View>
-        {booking ? (
-          <Chip
-            title="Account created"
-            buttonStyle={styles.chip}
-            containerStyle={styles.chipCont}
-            onAccessibilityEscape={deselectItem}
+          <View
+            style={{
+              backgroundColor: "#fff",
+              padding: 0,
+              borderBottomWidth: 1,
+              borderColor: "lightgrey",
+            }}
           >
-            <ActivityIndicator size={50} color="orange" />
-            <Text style={{ fontSize: 20, color: "orange" }}>
-              Booking in progress....
-            </Text>
-          </Chip>
-        ) : (
-          <Chip
-            title="Account created"
-            buttonStyle={styles.chip}
-            containerStyle={styles.chipCont}
-            onAccessibilityEscape={deselectItem}
-          >
-            <View style={styles.desc}>
-              <Ionicons
-                name="ios-information-circle"
-                size={24}
+            <View style={styles.itemsTop}>
+              <Text style={styles.text}>Recomended for you</Text>
+              <MaterialCommunityIcons
+                name="lightning-bolt"
+                size={30}
                 color="orange"
               />
-              <Text style={[styles.text]}>{selectedItem.description}</Text>
             </View>
-            <View style={styles.desc}>
-              <Ionicons name="md-location" size={24} color="orange" />
-              <Text style={styles.text}>{selectedItem.destination}</Text>
-            </View>
-            <View style={styles.desc}>
-              <Ionicons name="pricetags" size={24} color="orange" />
-              <Text style={styles.text}>UGX {selectedItem.price}</Text>
-            </View>
-            <View style={styles.desc}>
-              <Ionicons name="ios-calendar" size={24} color="orange" />
-              <Text style={styles.text}>
-                {selectedItem.startDate} - {selectedItem.endDate}
-              </Text>
-            </View>
-            <Rating
-              type="heart"
-              ratingCount={5}
-              imageSize={30}
-              showRating
-              onFinishRating={this.ratingCompleted}
-              ratingTextColor="#ff5349"
-            />
-            <Button
-              icon={
-                <MaterialCommunityIcons name="cart" color="#fff" size={30} />
+            <FlatList
+              data={loading ? data : trips}
+              renderItem={
+                loading ? renderSkeletonForRecommend : renderRecommendations
               }
-              title="Book now"
-              containerStyle={styles.btnCont}
-              buttonStyle={styles.btn}
-              titleStyle={{ fontSize: 20, fontWeight: "700" }}
-              onPress={bookingInProgress}
+              keyExtractor={(item) => item.id}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              decelerationRate="fast"
+              snapToInterval={10}
             />
-          </Chip>
-        )}
-      </BottomSheet>
+          </View>
 
-      <Navigation a={toAccount} isH={true} b={toBookings} r={toReviews} />
-    </View>
+          <View style={styles.itemsTop}>
+            <Text style={styles.text}>Upcomming destinations</Text>
+            <TouchableOpacity>
+              <FontAwesome name="sliders" size={40} color="orange" />
+            </TouchableOpacity>
+          </View>
+          {loading ? (
+            <FlatList
+              scrollEnabled={false}
+              showsVerticalScrollIndicator={false}
+              data={data}
+              renderItem={renderSkeleton}
+              keyExtractor={(item) => item.id.toString()}
+              style={styles.row}
+              numColumns={2}
+            />
+          ) : (
+            <FlatList
+              scrollEnabled={false}
+              showsVerticalScrollIndicator={true}
+              data={trips}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.id.toString()}
+              numColumns={2}
+              initialNumToRender={5}
+              maxToRenderPerBatch={5}
+              onEndReachedThreshold={5}
+              windowSize={5}
+              indicatorStyle={{ backgroundColor: "red" }}
+              removeClippedSubviews={true}
+              ListEmptyComponent={
+                <View
+                  style={[styles.listFooter, styles.boxShadow, { height: 250 }]}
+                >
+                  <View style={styles.error}>
+                    <MaterialIcons
+                      name="error-outline"
+                      size={28}
+                      color="grey"
+                    />
+                    <Text style={styles.text}>{errMsg}</Text>
+                  </View>
+                  <TouchableOpacity onPress={onRefresh}>
+                    {refreshing ? (
+                      <ActivityIndicator size={80} color="orange" />
+                    ) : (
+                      <FontAwesome name="refresh" size={80} color="orange" />
+                    )}
+                  </TouchableOpacity>
+                </View>
+              }
+              ListFooterComponent={
+                trips.length > 0 && (
+                  <View style={[styles.listFooter, styles.boxShadow]}>
+                    <Text style={styles.title}>
+                      You have seen all the trips
+                    </Text>
+                  </View>
+                )
+              }
+            />
+          )}
+        </ScrollView>
+        <Actionsheet
+          isOpen={itemIsSlected}
+          onClose={deselectItem}
+          containerStyle={{
+            backgroundColor: "#000000c0",
+          }}
+        >
+          <Actionsheet.Content>
+            <Heading>{selectedItem.title}</Heading>
+            {/* <Image
+              //source={require("../assets/images/login.jpg")}
+              source={{ url: selectedItem.photoURL }}
+              style={{ width: "100%", height: 200 }}
+            /> */}
+
+            {booking ? (
+              <>
+                <ActivityIndicator size={50} color="orange" />
+                <Text style={{ fontSize: 20, color: "orange" }}>
+                  Booking in progress....
+                </Text>
+              </>
+            ) : (
+              // </Chip>
+              <>
+                <View style={styles.desc}>
+                  <Ionicons
+                    name="ios-information-circle"
+                    size={24}
+                    color="orange"
+                  />
+                  <Text style={[styles.text]}>{selectedItem.description}</Text>
+                </View>
+                <View style={styles.desc}>
+                  <Ionicons name="md-location" size={24} color="orange" />
+                  <Text style={styles.text}>{selectedItem.destination}</Text>
+                </View>
+                <View style={styles.desc}>
+                  <Ionicons name="pricetags" size={24} color="orange" />
+                  <Text style={styles.text}>UGX {selectedItem.price}</Text>
+                </View>
+                <View style={styles.desc}>
+                  <Ionicons name="ios-calendar" size={24} color="orange" />
+                  <Text style={styles.text}>
+                    {selectedItem.startDate} - {selectedItem.endDate}
+                  </Text>
+                </View>
+                <Rating
+                  type="heart"
+                  ratingCount={5}
+                  imageSize={30}
+                  showRating
+                  onFinishRating={this.ratingCompleted}
+                  ratingTextColor="#ff5349"
+                />
+                <Button
+                  width={"80%"}
+                  onPress={bookingInProgress}
+                  backgroundColor="#ff5349"
+                >
+                  Book now
+                </Button>
+              </>
+            )}
+          </Actionsheet.Content>
+        </Actionsheet>
+
+        <Navigation a={toAccount} isH={true} b={toBookings} r={toReviews} />
+      </View>
+    </NativeBaseProvider>
   );
 }
 const styles = StyleSheet.create({
@@ -519,9 +488,9 @@ const styles = StyleSheet.create({
     fontSize: 29,
   },
   badge: {
-    top: -32,
+    top: -35,
     position: "absolute",
-    backgroundColor: "#000",
+    backgroundColor: "orange",
     left: 17,
   },
   add: {
@@ -593,7 +562,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "#000",
-    fontWeight: "800",
+    fontWeight: "400",
     fontSize: 15,
     color: "grey",
     textAlignVertical: "center",
