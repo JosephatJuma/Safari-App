@@ -1,4 +1,4 @@
-const port = "http://192.168.1.9:10000"; //10.7.2.108  192.168.117.45 10.7.2.108
+const port = "https://uprbrdwl7b.execute-api.us-west-2.amazonaws.com";
 export const apiUrl = {
   trips: `${port}/all/trips`,
   getBookings: `${port}/user/all/bookings`,

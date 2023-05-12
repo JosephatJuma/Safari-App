@@ -397,13 +397,7 @@ export default function Home({
             />
           )}
         </ScrollView>
-        <Actionsheet
-          isOpen={itemIsSlected}
-          onClose={deselectItem}
-          containerStyle={{
-            backgroundColor: "#000000c0",
-          }}
-        >
+        <Actionsheet isOpen={itemIsSlected} onClose={deselectItem}>
           <Actionsheet.Content>
             <Heading>{selectedItem.title}</Heading>
             {/* <Image
