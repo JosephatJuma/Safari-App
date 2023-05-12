@@ -19,6 +19,7 @@ import {
   Actionsheet,
   Heading,
   Button,
+  AlertDialog,
 } from "native-base";
 export default function Home({
   user,
@@ -40,7 +41,9 @@ export default function Home({
   const [selectedItem, setSelecttedItem] = useState({});
   const [refreshing, setRefreshing] = React.useState(false);
   const [booking, setBooking] = useState(false);
-
+  const [isOpen, setIsOpen] = useState(false);
+  const onClose = () => setIsOpen(false);
+  const cancelRef = React.useRef(null);
   //Fetch trips
   const fetchData = () => {
     if (trips.length <= 0) {
@@ -93,12 +96,9 @@ export default function Home({
 
   const bookingInProgress = () => {
     if (loggedIn === false) {
-      Alert.alert(
-        "Need to sign in:",
-        "You must login to make a booking",
-        [{ text: "Login", onPress: () => loginFirst() }, { text: "Not now" }],
-        { cancelable: true }
-      );
+      setItemIsSlected(false);
+      setIsOpen(true);
+
       return;
     }
     setBooking(true);
@@ -416,35 +416,53 @@ export default function Home({
             ) : (
               // </Chip>
               <>
-                <View style={styles.desc}>
-                  <Ionicons
-                    name="ios-information-circle"
-                    size={24}
-                    color="orange"
-                  />
-                  <Text style={[styles.text]}>{selectedItem.description}</Text>
-                </View>
-                <View style={styles.desc}>
-                  <Ionicons name="md-location" size={24} color="orange" />
-                  <Text style={styles.text}>{selectedItem.destination}</Text>
-                </View>
-                <View style={styles.desc}>
-                  <Ionicons name="pricetags" size={24} color="orange" />
+                <Actionsheet.Item
+                  startIcon={
+                    <Ionicons
+                      name="ios-information-circle"
+                      size={24}
+                      color="orange"
+                    />
+                  }
+                  paddingRight={10}
+                >
+                  <Text style={styles.text}>{selectedItem.description}</Text>
+                </Actionsheet.Item>
+                <Actionsheet.Item
+                  startIcon={
+                    <Ionicons name="pricetags" size={24} color="orange" />
+                  }
+                >
                   <Text style={styles.text}>UGX {selectedItem.price}</Text>
-                </View>
-                <View style={styles.desc}>
-                  <Ionicons name="ios-calendar" size={24} color="orange" />
+                </Actionsheet.Item>
+                <Actionsheet.Item
+                  startIcon={
+                    <Ionicons name="md-location" size={24} color="orange" />
+                  }
+                >
+                  <Text style={styles.text}>{selectedItem.destination}</Text>
+                </Actionsheet.Item>
+                <Actionsheet.Item
+                  startIcon={
+                    <Ionicons name="ios-calendar" size={24} color="orange" />
+                  }
+                >
                   <Text style={styles.text}>
                     {selectedItem.startDate} - {selectedItem.endDate}
                   </Text>
-                </View>
+                </Actionsheet.Item>
                 <Rating
                   type="heart"
                   ratingCount={5}
-                  imageSize={30}
+                  imageSize={25}
                   showRating
                   onFinishRating={this.ratingCompleted}
                   ratingTextColor="#ff5349"
+                  style={{
+                    flexDirection: "row",
+                    width: "90%",
+                    justifyContent: "space-between",
+                  }}
                 />
                 <Button
                   width={"80%"}
@@ -457,6 +475,31 @@ export default function Home({
             )}
           </Actionsheet.Content>
         </Actionsheet>
+        <AlertDialog
+          leastDestructiveRef={cancelRef}
+          isOpen={isOpen}
+          onClose={onClose}
+          width={450}
+          alignSelf="center"
+        >
+          <AlertDialog.Content>
+            <AlertDialog.CloseButton />
+            <AlertDialog.Header>Need to sign in!</AlertDialog.Header>
+            <AlertDialog.Body>
+              You must login to make a booking
+            </AlertDialog.Body>
+            <AlertDialog.Footer>
+              <Button.Group space={2}>
+                <Button colorScheme="red" onPress={onClose}>
+                  Cancel
+                </Button>
+                <Button colorScheme="orange" onPress={loginFirst}>
+                  Login
+                </Button>
+              </Button.Group>
+            </AlertDialog.Footer>
+          </AlertDialog.Content>
+        </AlertDialog>
 
         <Navigation a={toAccount} isH={true} b={toBookings} r={toReviews} />
       </View>

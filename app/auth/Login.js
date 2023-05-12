@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { Image, ActivityIndicator } from "react-native";
 import React, { useState, useRef } from "react";
 import { StatusBar } from "expo-status-bar";
-import { Input, Button } from "@rneui/base";
+import { Input, Button, NativeBaseProvider, Heading } from "native-base";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 const Login = ({ loginFunction, signup, validating, forgot }) => {
@@ -10,87 +10,94 @@ const Login = ({ loginFunction, signup, validating, forgot }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   return (
-    <View syle={styles.container}>
-      <StatusBar style="light" backgroundColor="orange" />
-
-      <ScrollView
-        contentContainerStyle={{
-          //marginTop: 100,
-          alignContent: "center",
-          alignItems: "center",
-          alignSelf: "center",
-          width: "100%",
-        }}
-      >
-        <Image
-          source={require("../assets/images/login.png")}
-          style={{
-            width: 300,
-            height: 300,
-            marginTop: 50,
+    <NativeBaseProvider>
+      <View syle={styles.container}>
+        <StatusBar style="light" backgroundColor="orange" />
+        <ScrollView
+          contentContainerStyle={{
+            alignContent: "center",
+            alignItems: "center",
+            alignSelf: "center",
+            width: "100%",
           }}
-        />
-        <Input
-          disabled={validating}
-          inputContainerStyle={styles.noBorder}
-          containerStyle={[styles.inputContainer, styles.boxShadow]}
-          placeholder="Enter email address"
-          leftIcon={
-            <MaterialCommunityIcons
-              name="email-outline"
-              size={24}
-              color="grey"
-            />
-          }
-          value={email}
-          onChangeText={setEmail}
-        />
-        <Input
-          disabled={validating}
-          secureTextEntry={!show}
-          placeholder="Enter your password"
-          passwordRules={"dhdh"}
-          inputContainerStyle={styles.noBorder}
-          containerStyle={[styles.inputContainer, styles.boxShadow]}
-          leftIcon={<FontAwesome name="lock" size={24} color="grey" />}
-          rightIcon={
-            <Ionicons
-              name={show ? "ios-eye-off-outline" : "ios-eye"}
-              size={18}
-              color="grey"
-              onPress={() => setShow(!show)}
-            />
-          }
-          value={password}
-          onChangeText={setPassword}
-        />
-        <Button
-          disabled={validating}
-          containerStyle={[styles.buttonContainer]}
-          buttonStyle={{ height: "100%", backgroundColor: "#ff5349" }}
-          title={
-            validating ? (
+        >
+          <Image
+            source={require("../assets/images/login.png")}
+            style={styles.image}
+          />
+          <Input
+            borderWidth={1.5}
+            borderColor="amber.500"
+            fontSize={15}
+            marginBottom={5}
+            disabled={validating}
+            placeholder="Enter email address"
+            InputLeftElement={
+              <MaterialCommunityIcons
+                name="email-outline"
+                size={24}
+                color="grey"
+              />
+            }
+            width={"90%"}
+            value={email}
+            onChangeText={setEmail}
+          />
+          <Input
+            borderColor="amber.500"
+            marginBottom={5}
+            fontSize={15}
+            width={"90%"}
+            borderWidth={1.5}
+            disabled={validating}
+            secureTextEntry={!show}
+            placeholder="Enter your password"
+            InputLeftElement={
+              <FontAwesome name="lock" size={24} color="grey" />
+            }
+            rightElement={
+              <Ionicons
+                name={show ? "ios-eye-off-outline" : "ios-eye"}
+                size={18}
+                color="grey"
+                onPress={() => setShow(!show)}
+              />
+            }
+            value={password}
+            onChangeText={setPassword}
+          />
+          <Button
+            marginBottom={5}
+            disabled={validating}
+            height={50}
+            width={"80%"}
+            backgroundColor="#ff5349"
+            onPress={() => loginFunction(email, password)}
+          >
+            {validating ? (
               <ActivityIndicator size={35} color="orange" />
             ) : (
-              "Sign in"
-            )
-          }
-          titleStyle={{ color: "#fff", fontSize: 25 }}
-          onPress={() => loginFunction(email, password)}
-          disabledStyle={{ backgroundColor: "#000000c0" }}
-        />
-        <Text onPress={forgot}>Forgot password</Text>
-        <Text>OR</Text>
-        <Button
-          disabled={validating}
-          containerStyle={[styles.buttonContainer]}
-          buttonStyle={{ height: "100%", backgroundColor: "transparent" }}
-          title="Sign Up"
-          titleStyle={{ color: "orange", fontSize: 25 }}
-          onPress={signup}
-        />
-      </ScrollView>
-    </View>
+              <Heading color="#fff">Sign in</Heading>
+            )}
+          </Button>
+          <Text onPress={forgot}>Forgot password</Text>
+          <Text>OR</Text>
+          <Button
+            marginTop={5}
+            width={"80%"}
+            height={50}
+            disabled={validating}
+            containerStyle={[styles.buttonContainer]}
+            buttonStyle={{ height: "100%", backgroundColor: "transparent" }}
+            title="Sign Up"
+            titleStyle={{ color: "orange", fontSize: 25 }}
+            onPress={signup}
+          >
+            <Heading color="#fff">Sign Up</Heading>
+          </Button>
+        </ScrollView>
+      </View>
+    </NativeBaseProvider>
   );
 };
 
@@ -104,31 +111,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "100%",
   },
-  noBorder: { borderBottomWidth: 0 },
-  inputContainer: {
-    backgroundColor: "#fff",
-    margin: 10,
-    width: "96%",
-    borderWidth: 0.5,
-    borderColor: "grey",
-    borderRadius: 8,
-    height: 53,
-  },
-  buttonContainer: {
-    margin: 10,
-    width: "90%",
-    borderWidth: 1,
-    height: 52,
-    borderColor: "#000",
-  },
-  boxShadow: {
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 10,
-    shadowRadius: 8,
-    elevation: 4,
+
+  image: {
+    width: 300,
+    height: 300,
+    marginTop: 50,
   },
 });
